@@ -3,8 +3,16 @@ https://harm-smits.github.io/42docs/libs/minilibx/getting_started.html
 
 ### TO DO:
 - Check return values van functies bijv. init
+- Vraag hulp bij X11, " It therefore is no secret that this header is very useful for finding all the according events of MiniLibX"Moet ik head toevoegen ofzo?
+	- Documentatie lezen over X11: "go read the documentation of each X11 function" 
+	bijv https://tronche.com/gui/x/xlib/events/keyboard-pointer/keyboard-pointer.html
+	- wss iets van mask aanpassen in struct oid?
 
 
+### COMPILEN
+Voorlopig:
+>$ make
+>$ gcc -Wall -Wextra -Werror -I mlx -L mlx -lmlx -framework OpenGL -framework AppKit main.c
 
 ### DESCRIPTION
 MiniLibX  is  an  easy way to create graphical software, without any X-Window/Cocoa programming knowledge. It provides simple window creation, a drawing tool, image and basic events management.
@@ -139,4 +147,95 @@ etc.
 
 ---
 Lijkt niet te kloppen:
-65280 lijkt toch groen
+65280 lijkt toch groen --> misschien wordt toch niet omgedraaid. Maarja
+
+
+
+--------------------------------------------
+#
+### EVENTS /MLX_lOOP
+int		mlx_loop ( void *mlx_ptr );
+int		mlx_key_hook 	(void *win_ptr, int (*funct_ptr)(), void *param );
+int		mlx_mouse_hook (void *win_ptr, int (*funct_ptr)(), void *param );
+int		mlx_expose_hook (void *win_ptr, int (*funct_ptr)(), void *param );
+int		mlx_loop_hook (void *mlx_ptr, int (*funct_ptr)(), void *param );
+
+Both X-Window and MacOSX graphical systems are bi-directionnal. 
+On one hand, the program sends orders to the screen to display pixels, images, and so on.  			
+On the other hand, it can get information from the keyboard and mouse associated to the screen. 	
+To do so, the  program receives "events" from the keyboard or the mouse.
+
+program --> screen
+keyboard/mouse --**events**--> program
+
+*Events are the foundation of writing interactive applications in MiniLibX.*
+
+To  receive  events,  you  must  use mlx_loop (). This function never returns. It is an infinite loop that waits for an event, and then calls a user-defined function associated with this event. A single parameter is needed, the connection identifier mlx_ptr.
+
+You can assign different functions to the three following events:
+- A key is pressed
+- The mouse button is pressed
+- A part of the window should be re-drawn (this is called an "expose" event, and it is your program's job to handle it).
+
+Each window can define a different function for the same event.
+
+#
+The three functions mlx_key_hook (), mlx_mouse_hook () and mlx_expose_hook () work exactly the same way:
+funct_ptr is a pointer to the function you want to be called when an event occurs. This assignment is specific to the window defined by the win_ptr identifier.
+The param adress will be passed to the function everytime it is called, and should be used to store the parameters it might need.
+
+(void *win_ptr, 				int (*funct_ptr)(), 				void *param );
+
+
+The  syntax  for  the  mlx_loop_hook () function is identical to the previous ones, but the given function will be called when **no** event occurs.
+#
+
+```
+ When it catches an event, the MiniLibX calls the corresponding function with fixed parameters:
+
+         expose_hook(void *param);
+         key_hook(int keycode,void *param);
+         mouse_hook(int button,int x,int y,void *param);
+         loop_hook(void *param);
+
+ These function names are arbitrary. They here are used to distinguish parameters according to the event. These functions are  NOT  part of the MiniLibX.
+```
+
+param  is  the  address  specified  in  the mlx_*_hook calls. This address is never used nor modified by the MiniLibX. 
+On key and mouse events, additional information is passed: 
+keycode tells you which key is pressed (X11 : look for the include file "keysymdef.h",  MacOS:  create  a small software and find out by yourself),( x , y ) are the coordinates of the mouse click in the window, and button tells you which mouse button was pressed.
+
+#
+All hooks in MiniLibX are nothing more than a function that gets called whenever a event is triggered.
+#
+
+#### X11 Events
+X11 is the library that is used alongside of MiniLibX. It therefore is no secret that this header is very useful for finding all the according events of MiniLibX. There are a number of events to which you may describe.
+
+02: KeyPress
+03: KeyRelease
+04: ButtonPress
+05: ButtonRelease
+etc.
+
+#### X11 Masks
+Each X11 event, also has a according mask. This way you can register to only one key when it triggers, or to all keys if you leave your mask to the default. Key masks therefore allow you to whitelist / blacklist events from your event subscriptions. The following masks are allowed:
+
+https://harm-smits.github.io/42docs/libs/minilibx/events.html
+
+#
+##### X-WINDOW CONCEPT
+X-Window is a network-oriented graphical system for Unix. It is based on two main parts:
+1. On one side, your software wants to draw something on the screen and/or get keyboard & mouse entries.
+2. On the other side, the X-Server manages the screen, keyboard and mouse (It is often refered to as a "display").
+
+A network connection must be established between these two entities to send drawing orders (from the software to the X-Server), 
+and keyboard/mouse events (from the X-Server to the software).
+
+Nowadays, most of the time, both run on the same computer.
+#
+
+## Hooking into events (often intercepting?)
+
+Keycodes:
+https://eastmanreference.com/complete-list-of-applescript-key-codes

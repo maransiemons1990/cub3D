@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/25 20:13:12 by msiemons       #+#    #+#                */
-/*   Updated: 2020/02/26 18:09:24 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/02/26 20:53:11 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,5 +147,5 @@ int     main(void)
 	mlx_loop(mlx);
 }
 
-/* Om een rode pixel te printen op window */
+/* Om een rode pixel te printen op window met bestaande trage functie */
 	// mlx_pixel_put(mlx, mlx_win, 10, 10, 16711680);
