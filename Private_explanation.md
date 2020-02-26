@@ -6,6 +6,7 @@ https://harm-smits.github.io/42docs/libs/minilibx/getting_started.html
 - Vraag hulp bij X11, " It therefore is no secret that this header is very useful for finding all the according events of MiniLibX"Moet ik head toevoegen ofzo?
 	- Documentatie lezen over X11: "go read the documentation of each X11 function" 
 	bijv https://tronche.com/gui/x/xlib/events/keyboard-pointer/keyboard-pointer.html
+	http://www6.uniovi.es/cscene/CS8/CS8-04.html
 	- wss iets van mask aanpassen in struct oid?
 
 
