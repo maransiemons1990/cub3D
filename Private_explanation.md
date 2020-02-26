@@ -78,7 +78,7 @@ R Red color;
 G Green color;
 B Blue color.
 
-Red: 0x00FF0000;
+Red: 0x00FF0000; ARGB(0,255,0,0)
 Green: 0x0000FF00;
 Blue: 0x000000FF;
 
@@ -86,3 +86,57 @@ Blue: 0x000000FF;
 Since each byte contains 2^8 values, and rgb values range from 0 to 255, we can perfeclty fit a integer (as an int is 4 bytes (32 bits)).
 
 > As the pixels are basically ints, these usually are 4 bytes, however, this can differ if we are dealing with a small endian (which means we most likely are on a remote display and only have 8 bit colors).
+
+### Bitshifting
+https://stackoverflow.com/questions/7358533/how-to-pack-argb-to-one-integer-uniquely
+
+0101 1010	= 90
+90 >> 1				; shift to the right by 1
+0010 1101	= 45 	; shift to the right by 1 is same as /2
+
+90 << 1				; shifting to the left by 1
+1011 0100	= 180	; shifting to the left by 1 is same as *2
+
+
+Because ints are stored from right to left, we need to bitshift each value the according amount of bits backwards. 
+
+
+----
+Each value in your color map is 8 bits long. So in order for the resulting number to be unique, it must string them all together, for a total of 8 *4 =32 bits.
+
+```
+TTTTTTTT
+RRRRRRRR
+GGGGGGGG
+BBBBBBBB
+```
+```
+TTTTTTTTRRRRRRRRGGGGGGGGBBBBBBBB
+```
+This means you have to add the following together:
+> Because ints are stored from right to left, we need to bitshift each value the according amount of bits backwards. 
+```
+						TTTTTTTT
+        		RRRRRRRR00000000
+        GGGGGGGG0000000000000000
+BBBBBBBB000000000000000000000000
+--------------------------------
+BBBBBBBBGGGGGGGGRRRRRRRRTTTTTTTT
+```
+We accomplish this by bit-shifting to the left. Taking B and shifting 24 bits to the left will produce BBBBBBBB followed by 24 0 bits, just like we want. Following that logic, you will want to do:
+
+```
+sum = b << 24 + g << 16 + r << 8 + t 
+```
+**BGRT**
+RED: 
+0000 0000 | 0000 0000 | 1111 1111 | 0000 0000 	= 65280
+
+GREEN:
+0000 0000 | 1111 1111 | 0000 0000 | 0000 0000 	= 16711680
+
+etc.
+
+---
+Lijkt niet te kloppen:
+65280 lijkt toch groen
