@@ -240,3 +240,10 @@ Nowadays, most of the time, both run on the same computer.
 
 Keycodes:
 https://eastmanreference.com/complete-list-of-applescript-key-codes
+
+# Notes uit files
+- Om een rode pixel te printen op window met bestaande trage functie:
+mlx_pixel_put(mlx, mlx_win, 10, 10, 16711680);
+- https://stackoverflow.com/c/42network/questions/531
+- gcc -Wall -Wextra -Werror -I mlx -L mlx -lmlx -framework OpenGL -framework AppKit main.c
+- keypress --> keypressfunction --> move --> delete --> move
