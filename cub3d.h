@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/02/28 21:19:19 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/02/28 21:23:11 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct	{
+typedef struct	s_addr {
 	char		*addr;
 	int			bits_per_pixel;
     int			line_length;
     int			endian;
 } 				t_addr;
 
-typedef struct	{
+typedef struct	s_data {
     void		*mlx;
 	void    	*mlx_win;
 	void        *img;
 
-// structure within structure
 	t_addr		ad;	
-    // char        *addr;
-    // int         bits_per_pixel;
-    // int         line_length;
-    // int         endian;
+
 }               t_data;
 
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
