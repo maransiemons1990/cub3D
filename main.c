@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/25 20:13:12 by msiemons       #+#    #+#                */
-/*   Updated: 2020/02/28 17:41:52 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/02/28 21:20:35 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
     char    *dst;
 
-    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    dst = data->ad.addr + (y * data->ad.line_length + x * (data->ad.bits_per_pixel / 8));
     *(unsigned int*)dst = color;
 }
 
@@ -60,7 +60,7 @@ int     main(void)
     img.mlx = mlx_init();
 	img.mlx_win = mlx_new_window(img.mlx, 1920, 1080, "Hello world!");
 	img.img = mlx_new_image(img.mlx, 1920, 1080);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	img.ad.addr = mlx_get_data_addr(img.img, &img.ad.bits_per_pixel, &img.ad.line_length, &img.ad.endian);
 
 /*------------PRINT SQUARES ETC. --------------- */	
 	//my_mlx_pixel_put(&img, 10, 10, 0x00FF0000);
