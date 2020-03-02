@@ -6,13 +6,15 @@
 #    By: msiemons <msiemons@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/25 15:42:59 by msiemons       #+#    #+#                 #
-#    Updated: 2020/02/28 13:19:53 by msiemons      ########   odam.nl          #
+#    Updated: 2020/03/02 18:39:33 by msiemons      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libcub3d
 
 MLX = mlx
+
+#LIBFT = libft
 
 LIBMLX = libmlx.dylib
 
@@ -33,6 +35,10 @@ $(NAME): $(LIBMLX) $(OBJ)
 $(LIBMLX):
 	@make -C $(MLX)
 	@cp $(MLX)/$(LIBMLX) .
+
+#$(LIBFT):
+#	make -C $(LIBFT)
+#	cp $(LIBFT)/$(LIBFT).a .
 
 clean:
 	make clean -C $(MLX)
