@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/02 19:06:52 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/03 19:56:33 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct	s_data {
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 //GNL
-int			ft_gnl_cub3d(int fd, char **line);
+char		*ft_gnl_cub3d(int fd);
 size_t		ft_strlen(const char *s);
 char		*ft_strdup(const char *s1);
 char		*ft_strjoin(char *s1, char *s2);

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/08 16:37:30 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/03 20:11:59 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/03 15:43:43 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 
 //gcc -Wall -Wextra -Werror -I mlx readmap.c gnl_cub3d.c gnl_cub3d_utils.c libft/ft_split.c libft/ft_substr.c
 
-static char		*ft_read(int fd, char *new_line)
+static char		*ft_read(int fd, char *new_line, int ret)
 {
 	char			*buf;
-	int				ret;
 
-	ret = 1;
 	while (ret > 0)
 	{
 		buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -44,19 +42,20 @@ static char		*ft_read(int fd, char *new_line)
 	return (new_line);
 }
 
-char		*ft_gnl_cub3d(int fd)
+int				ft_gnl_cub3d(int fd, char **line)
 {
+	int				ret;
 	static char		*new_line;
-	char			*line;
-	
-	if (fd < 0)
-		return (NULL);
+
+	if (fd < 0 || !line)
+		return (-1);
+	ret = 1;
 	if (new_line == NULL)
 		new_line = ft_strdup("");
 	if (new_line == NULL)
-		return (NULL);
-	line = ft_read(fd, new_line);
-	if (line == NULL)
-		return (NULL); //volgens mij free(new_line nu 1 te weinig, die van r==0)
-	return (line);
+		return (-1);
+	*line = ft_read(fd, new_line, ret);
+	if (new_line == NULL)
+		return (-1);
+	return (0);
 }
