@@ -6,14 +6,14 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/04 15:35:52 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/04 19:34:18 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include <mlx.h>
+//# include <mlx.h>
 
 //Delete?:
 #include <stdio.h>
@@ -42,6 +42,9 @@ typedef struct	s_data {
 
 typedef struct	s_read {
 	char		**array; //nog ergens freeen?
+//	int			error;
+	int 		render_x;
+	int 		render_y;
 }				t_read;
 
 typedef struct	s_base{
@@ -52,6 +55,11 @@ typedef struct	s_base{
 
 
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
+
+//GET cub
+t_base		*getcubfile(char *filename);
+void		check(t_base *base);
+int			ft_check_line(int y, t_base *base);
 
 //GNL
 char		*ft_gnl_cub3d(int fd);
@@ -67,5 +75,8 @@ void		print_square(t_data *img, int x, int xsize, int y, int ysize);
 //readmap/identifiers:
 char			**ft_split(char const *s, char c);
 void			ft_check(t_base *base);
+
+//Overig
+void		twod_checker(char **array);
 
 #endif

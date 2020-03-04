@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/02 18:56:10 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/04 15:42:01 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/04 18:43:00 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		ft_check_line(char *line)
 	return (1);
 }
 
-void	ft_check(t_base *base)
+void	check(t_base *base)
 {
 	int y;
 	int line;
