@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/04 15:35:52 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/04 12:30:32 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,13 @@ typedef struct	s_data {
     void		*mlx;
 	void    	*mlx_win;
 	void        *img;
+
+	char		**array;
+
+	t_addr		ad;	
+	int i;
+
 }               t_data;
-
-typedef struct	s_read {
-	char		**array; //nog ergens freeen?
-}				t_read;
-
-typedef struct	s_base{
-	t_read		read;		
-	t_data		data;
-	t_addr		addr;
-}				t_base;
-
 
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
@@ -66,6 +61,6 @@ void		print_square(t_data *img, int x, int xsize, int y, int ysize);
 
 //readmap/identifiers:
 char			**ft_split(char const *s, char c);
-void			ft_check(t_base *base);
+void			ft_check(t_data *data);
 
 #endif
