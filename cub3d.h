@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/05 13:19:20 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/05 16:05:12 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,19 @@ typedef struct	s_read {
 	int			error;
 	int 		render_x;
 	int 		render_y;
+
+	int			c_red;
+	int 		c_blue;
+	int			c_green;
+	int			f_red;
+	int 		f_blue;
+	int			f_green;
+
+	char 		*no;
+	char 		*ea;
+	char 		*so;
+	char 		*we;
+	char 		*sprite;
 }				t_read;
 
 typedef struct	s_base{
