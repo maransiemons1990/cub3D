@@ -6,14 +6,15 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/05 16:05:12 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/05 16:59:33 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-//# include <mlx.h>
+//# include <mlx.h> 
+//#include "libft.h"
 
 //Delete?:
 #include <stdio.h>
@@ -90,6 +91,7 @@ void		print_square(t_data *img, int x, int xsize, int y, int ysize);
 
 //readmap/identifiers:
 char			**ft_split(char const *s, char c);
+char			*ft_substr(char const *s, unsigned int start, size_t len);
 int				check(t_base *base);
 void			errormessages(t_base *base);
 
