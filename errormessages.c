@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 13:03:52 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/05 13:22:00 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/10 16:55:30 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,8 @@
 void	errormessages(t_base *base)
 {
 	if (base->read.error == 1)
-		perror("Invalid input file ");
+		perror("Error\nInvalid input file ");
+	if (base->read.error == 2)
+		perror("Error\nInvalid character, 
+		first information has to be the type identifier");	
 }

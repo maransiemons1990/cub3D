@@ -6,12 +6,15 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/05 16:59:33 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/10 15:26:05 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
+
+#define TWOD base->read.array
+#define READ base->read
 
 //# include <mlx.h> 
 //#include "libft.h"
@@ -94,6 +97,20 @@ char			**ft_split(char const *s, char c);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 int				check(t_base *base);
 void			errormessages(t_base *base);
+
+//identifiers_utils
+void			initialise(t_base *base);
+int				check_identifiers_valid(t_base *base);
+//Check_utils
+int				cfr_itoa(int *y, int *i, t_base *base, int cf_bg);
+int				cfr_endspaces(int y, int i, t_base *base);
+int				check_pathstart(int y, int *i, t_base *base);
+int				save_path_substr(int y, int i, char **identifier, t_base *base);
+
+
+//Check_map
+int			check_map(t_base *base);
+
 
 //Overig
 void		twod_checker(char **array);
