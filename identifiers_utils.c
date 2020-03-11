@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 15:25:07 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/11 12:35:17 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/11 14:09:06 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,3 @@ void			initialise(t_base *base)
 	base->read.we = NULL;
 	base->read.sprite = NULL;
 }
-
-//open(str, O_RDONLY )
-// if -1 bestaat niet.

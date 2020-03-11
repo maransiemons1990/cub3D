@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/28 13:11:26 by msiemons       #+#    #+#                */
-/*   Updated: 2020/02/28 21:19:48 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/11 14:41:17 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void		print_full_square(t_data *img, int x, int xsize, int y, int ysize)
 
 	org_x = x;
 	org_xsize = xsize;
-	color = 16711680; //16711680 == 0x00FF0000;
+	color = 65280; //16711680 == 0x00FF0000;
 	while(ysize > 0)
 	{
 		xsize = org_xsize;

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/04 15:35:52 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/11 14:38:58 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ typedef struct	s_data {
     void		*mlx;
 	void    	*mlx_win;
 	void        *img;
+	t_addr		ad;
 }               t_data;
-
+//
 typedef struct	s_read {
 	char		**array; //nog ergens freeen?
 }				t_read;
