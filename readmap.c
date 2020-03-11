@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/02 16:11:17 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/11 14:43:33 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/11 19:06:06 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,27 +97,27 @@ static int		check_save_colors_cf(int y, int i, t_base *base)
 	return (cfr_endspaces_resetrgb(y, i, base));
 }
 
-static int		check_line(int y, t_base *base)
+static int		check_line(int *y, t_base *base)
 {
 	int		i;
 	int		ret;
 
 	i = 0;
-	while (TWOD[y][i] == ' ' || TWOD[y][i] == '\t')
+	while (TWOD[*y][i] == ' ' || TWOD[*y][i] == '\t')
 		i++;
-	if (TWOD[y][i] == 'C' || TWOD[y][i] == 'F')
-		ret = check_save_colors_cf(y, (i + 1), base);
-	else if (TWOD[y][i] == 'R')
-		ret = check_save_resolution(y, (i + 1), base);
-	else if ((TWOD[y][i] == 'E' && TWOD[y][i + 1] == 'A') || (TWOD[y][i] == 'N'
-	&& TWOD[y][i + 1] == 'O') || (TWOD[y][i] == 'W' && TWOD[y][i + 1] == 'E')
-	|| (TWOD[y][i] == 'S' && (TWOD[y][i + 1] == 'O')))
-		ret = check_save_path(y, (i + 2), base);
-	else if (TWOD[y][i] == 'S')
-		ret = check_save_path(y, (i + 1), base);
-	else if (TWOD[y][i] == '1')
-		//base->read.error = check_map(base);
-		printf("--Het is een 1--\n");
+	if (TWOD[*y][i] == 'C' || TWOD[*y][i] == 'F')
+		ret = check_save_colors_cf(*y, (i + 1), base);
+	else if (TWOD[*y][i] == 'R')
+		ret = check_save_resolution(*y, (i + 1), base);
+	else if ((TWOD[*y][i] == 'E' && TWOD[*y][i + 1] == 'A') || (TWOD[*y][i] == 'N'
+	&& TWOD[*y][i + 1] == 'O') || (TWOD[*y][i] == 'W' && TWOD[*y][i + 1] == 'E')
+	|| (TWOD[*y][i] == 'S' && (TWOD[*y][i + 1] == 'O')))
+		ret = check_save_path(*y, (i + 2), base);
+	else if (TWOD[*y][i] == 'S')
+		ret = check_save_path(*y, (i + 1), base);
+	else if (TWOD[*y][i] == '1')
+		ret = check_map(&(*y), base);
+		//printf("--Het is een 1--\n");
 	else
 		base->read.error = 1;
 	if (base->read.error > 0 || ret > 0)
@@ -134,7 +134,7 @@ int			check(t_base *base)
 	initialise(base);
 	while (base->read.array[y])
 	{
-		line = check_line(y, base);
+		line = check_line(&y, base);
 		if (line > 0)
 			return (1);
 		y++;

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/11 14:09:15 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/11 19:06:13 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,24 @@ typedef struct	s_read {
 	char 		*so;
 	char 		*we;
 	char 		*sprite;
+
+	int			y_start;
+	int			y_end;
+
+	char		pos;
+	int			x_pos;
+	int			y_pos;
 }				t_read;
 
+typedef struct s_flood{
+	//char		type;
+    int			reachable;
+    int			visited;
+}				t_flood;
+
 typedef struct	s_base{
-	t_read		read;		
+	t_read		read;
+	t_flood		flood;		
 	t_data		data;
 	t_addr		addr;
 }				t_base;
@@ -78,7 +92,7 @@ void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 //GET cub
 t_base		*getcubfile(char *filename);
 //void		check(t_base *base);
-int			ft_check_line(int y, t_base *base);
+int			ft_check_line(int *y, t_base *base);
 
 //GNL
 char		*ft_gnl_cub3d(int fd);
@@ -109,7 +123,7 @@ int				create_trgb_colorcode(int y, int entry_i, t_base *base);
 
 
 //Check_map
-int			check_map(t_base *base);
+int			check_map(int *y, t_base *base);
 
 
 //Overig
