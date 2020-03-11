@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/10 15:26:05 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/11 12:32:15 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,11 @@ typedef struct	s_read {
 	int 		render_x;
 	int 		render_y;
 
-	int			c_red;
-	int 		c_blue;
-	int			c_green;
-	int			f_red;
-	int 		f_blue;
-	int			f_green;
+	int			red;
+	int 		blue;
+	int			green;
+	int			c_color;
+	int			f_color;
 
 	char 		*no;
 	char 		*ea;
@@ -103,9 +102,10 @@ void			initialise(t_base *base);
 int				check_identifiers_valid(t_base *base);
 //Check_utils
 int				cfr_itoa(int *y, int *i, t_base *base, int cf_bg);
-int				cfr_endspaces(int y, int i, t_base *base);
+int				cfr_endspaces_resetrgb(int y, int i, t_base *base);
 int				check_pathstart(int y, int *i, t_base *base);
 int				save_path_substr(int y, int i, char **identifier, t_base *base);
+int				create_trgb_colorcode(int y, int entry_i, t_base *base);
 
 
 //Check_map

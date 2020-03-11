@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/10 14:58:27 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/11 12:36:00 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,11 @@
 // Spaces are a valid part of the map, and is up to you to handle --> empty space?
 // ook tabs vooraan de regel?
 
-int			check_map(t_base *base) // int i, int y,
-{
-	if (check_identifiers_valid(base))
-		return (1);
-	// check of eerste regel uit spaties en 1 // save eerste 1
-	// opvolgende regels beginnen met 1
-		// 0, 1, 2, N,S,E or W
-	//
-	return (0);
-}
+// int			check_map(t_base *base) // int i, int y,
+// {
+// 	// check of eerste regel uit spaties en 1 // save eerste 1
+// 	// opvolgende regels beginnen met 1
+// 		// 0, 1, 2, N,S,E or W
+// 	//
+// 	return (0);
+// }

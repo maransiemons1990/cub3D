@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/05 13:22:58 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/10 20:25:08 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 */
 
 #include "cub3d.h"
+
+int		create_trgb(int t, int r, int g, int b)
+{
+	return(t << 24 | r << 16 | g << 8 | b);
+}
 
 int			main(int argc, char **argv)
 {	
@@ -37,9 +42,7 @@ int			main(int argc, char **argv)
 		errormessages(base);
 		return (1);
 	}
-		
-	
-	
+
 	//------------------DELETE LATER------------------------------------
 	valuechecker(base);
 	//twod_checker(base->read.array);

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:43:54 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/10 16:44:47 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/11 12:55:24 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,34 @@ int				cfr_itoa(int *y, int *i, t_base *base, int cf_bg)
 	return (nb_present == 1 ? number : -1);
 }
 
-int				cfr_endspaces(int y, int i, t_base *base)
+int		create_trgb_colorcode(int y, int entry_i, t_base *base)
 {
+	if (TWOD[y][entry_i] == 'C')
+	{
+		if (!(READ.c_color == -1))
+			return (3); // Several identical identifiers # 3
+		READ.c_color = (0 << 24 | base->read.red << 16 | base->read.green << 8 | base->read.blue);
+	}
+	if (TWOD[y][entry_i] == 'F')
+	{
+		if (!(READ.f_color == -1))
+			return (3); // Several identical identifiers # 3
+		READ.f_color = (0 << 24 | base->read.red << 16 | base->read.green << 8 | base->read.blue);
+	}
+	return (0);
+}
+
+int				cfr_endspaces_resetrgb(int y, int i, t_base *base)
+{
+	base->read.red = -1;
+	base->read.blue = -1;
+	base->read.green = -1;
 	while (TWOD[y][i])
 	{
 		if (TWOD[y][i] == ' ')
 			i++;
 		else
-			return (1); //invalid identifier format
+			return (4); //#4
 	}
 	return (0);
 }
@@ -58,15 +78,19 @@ int				check_pathstart(int y, int *i, t_base *base)
 	if (TWOD[y][*i] == '.' && TWOD[y][*i + 1] == '/')
 		return (0);
 	else
-		return (1); //Invalid path
+		return (5); //#5
 }
 
 int				save_path_substr(int y, int i, char **identifier, t_base *base)//freeeeee
 {
+	int ret;
 	if (*identifier != NULL)
-		return (1); // Multiple identifiers
+		return (3); // #3
 	*identifier = ft_substr(TWOD[y], i, (ft_strlen(TWOD[y]) - i));
+	ret = open(*identifier, O_RDONLY);
+	if (ret == -1)
+		return (9); // #9 //new
 	if (*identifier == NULL)
-		return (1); //malloc failed
+		return (6); //#6
 	return (0);
 }
