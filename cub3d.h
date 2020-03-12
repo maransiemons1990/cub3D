@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/11 19:06:13 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/12 18:58:52 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct	s_read {
 	char		pos;
 	int			x_pos;
 	int			y_pos;
+	int			big_strlen;
 }				t_read;
 
 typedef struct s_flood{

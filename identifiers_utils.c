@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 15:25:07 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/11 17:21:37 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/12 18:57:47 by msiemons      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,6 @@ void			initialise(t_base *base)
 
 	base->flood.reachable = 0;
     base->flood.visited = 0;
+
+	base->read.big_strlen = 0;
 }
