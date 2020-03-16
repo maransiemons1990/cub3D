@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/08 16:37:30 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/10 13:38:22 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/16 18:07:38 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,20 @@ char		*ft_gnl_cub3d(int fd)
 	return (line);
 }
 
+
+int				check_filetype(char *s)
+{
+	int		i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	i--;
+	if (s[i] == 'b' && s[i - 1] == 'u' && s[i - 2] == 'c' && s[i - 3] == '.')
+		return (0);
+	return (1);
+}
+
 t_base			*getcubfile(char *filename)
 {
 	t_base	*new;
@@ -69,10 +83,21 @@ t_base			*getcubfile(char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		printf("ERROR OPEN");
+	{
+		error_general(2);
+		return (NULL);
+	}
+	if (check_filetype(filename))
+	{
+		error_general(3);
+		return (NULL);
+	}
 	line = ft_gnl_cub3d(fd);
 	if (line == NULL)
-		printf("ERROR GNL");
+	{
+		error_general(4);
+		return (NULL);
+	}
 	new = (t_base *)malloc(sizeof(t_base));
 	if (new == NULL)
 		return (NULL);

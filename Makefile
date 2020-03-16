@@ -6,7 +6,7 @@
 #    By: msiemons <msiemons@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/03/04 17:11:26 by msiemons       #+#    #+#                 #
-#    Updated: 2020/03/10 15:26:51 by msiemons      ########   odam.nl          #
+#    Updated: 2020/03/16 16:35:10 by Maran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ LIBFT = libft
 #LIBMLX = libmlx.dylib
 
 SRC = main.c readmap.c gnl_cub3d.c gnl_cub3d_utils.c twod_checker.c valuechecker.c\
-		errormessages.c check_utils.c identifiers_utils.c check_map.c
+		errormessages.c check_utils.c identifiers_utils.c check_map.c\
+		check_map_utils.c
 
 OBJ = $(SRC:.c=.o)
 

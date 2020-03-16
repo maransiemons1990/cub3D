@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/16 09:26:42 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/16 17:58:03 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,16 @@ typedef struct	s_read {
 	char 		*we;
 	char 		*sprite;
 
-	int			y_start;
-	int			y_end;
+	int			map_start;
+	int			map_end;
 
 	char		pos;
 	int			x_pos;
 	int			y_pos;
-	int			big_strlen;
 }				t_read;
 
-typedef struct s_flood{
-	//char		type;
-    int			reachable;
-    int			visited;
-}				t_flood;
-
 typedef struct	s_base{
-	t_read		read;
-	t_flood		flood;		
+	t_read		read;		
 	t_data		data;
 	t_addr		addr;
 }				t_base;
@@ -110,7 +102,9 @@ void		print_square(t_data *img, int x, int xsize, int y, int ysize);
 char			**ft_split(char const *s, char c);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 int				check(t_base *base);
-void			errormessages(t_base *base);
+//
+void			error_distribution(t_base *base);
+void			error_general(int error);
 
 //identifiers_utils
 void			initialise(t_base *base);
@@ -125,6 +119,10 @@ int				create_trgb_colorcode(int y, int entry_i, t_base *base);
 
 //Check_map
 int			check_map(int *y, t_base *base);
+int				last_char_save_pos(int y, t_base *base);
+int				align_dif_back(int y, t_base *base);
+int				align_dif_front(char *s1, char *s2);
+int 			space_in_wall(int y, int i, t_base *base);
 
 
 //Overig

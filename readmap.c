@@ -6,27 +6,11 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/02 16:11:17 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/11 19:06:06 by msiemons      ########   odam.nl         */
+/*   Updated: 2020/03/16 17:02:20 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-/*
-** Return (0) is succesful, Return (1) is failure.
-** TO DO: meer definen met READ?
-** TO DO: leaks!, reorganise file.
-*/
-
-/*
-** each type of element can be separated by one or more empty line(s).
-** each type of element can be set in any order in the file.
-** each type of information from an element can be separated by one or more space(s).
-** Each element of the map must be separated by exactly one space. Spaces are valid elements of the map,
-** meaning there is nothing, and are up to you to handle.
-** Each element firsts information is the type identifier (composed by one or two character(s)),
-** followed by all specific informations for each object in a strict order such as :
-*/
 
 /*
 ** i_entry is index when entering function. It's the index directly behind
@@ -117,7 +101,6 @@ static int		check_line(int *y, t_base *base)
 		ret = check_save_path(*y, (i + 1), base);
 	else if (TWOD[*y][i] == '1')
 		ret = check_map(&(*y), base);
-		//printf("--Het is een 1--\n");
 	else
 		base->read.error = 1;
 	if (base->read.error > 0 || ret > 0)
