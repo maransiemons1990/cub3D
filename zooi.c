@@ -125,3 +125,110 @@
 		count--;
 		strlen2--;
 	}
+
+
+
+	----
+
+	y_start2 = *y;
+	y_start3= *y;
+	//printf("BIGGEST: [%d]\n", base->read.big_strlen);
+	
+	//----------------------------------------------
+
+	printf("------------------BEFORE--------------------------\n");
+	while(base->read.array[y_start2])
+	{
+		printf("[%i][%s]\n", y_start2, base->read.array[y_start2]);
+		y_start2++;
+	}
+	printf("--------------------------------------------------\n");
+
+
+
+	//fill_up(base);
+
+	
+	//
+	// printf("-----------------AFTER---------------------------\n");
+	// while(base->read.array[y_start3])
+	// {
+	// 	printf("[%i][%s]\n", y_start3, base->read.array[y_start3]);
+	// 	y_start3++;
+	// }
+	
+	//printf("**TWOD[%d][%d] = [%c]**\n", base->read.y_pos, base->read.x_pos, TWOD[base->read.y_pos][base->read.x_pos]);
+	//flood_fill(base, base->read.y_pos, base->read.x_pos);
+	//printf("ERROR SIGN = [%d]\n", base->read.error); 
+	//fill_up(base);
+
+	
+	//
+	// printf("-----------------AFTER---------------------------\n");
+	// while(base->read.array[y_start3])
+	// {
+	// 	printf("[%i][%s]\n", y_start3, base->read.array[y_start3]);
+	// 	y_start3++;
+	// }
+	
+	//printf("**TWOD[%d][%d] = [%c]**\n", base->read.y_pos, base->read.x_pos, TWOD[base->read.y_pos][base->read.x_pos]);
+	//flood_fill(base, base->read.y_pos, base->read.x_pos);
+	//printf("ERROR SIGN = [%d]\n", base->read.error); 
+
+int				flood_fill(t_base *base, int y, int x)
+{
+	if (TWOD[y][x] == '+' || TWOD[y][x] == '1' || TWOD[y][x] == '2')
+		return (0);
+	if (TWOD[y][x]== '\0' || y <= base->read.y_start || y >= base->read.y_back)
+	{
+		printf("--error 12--[%d][%d]----\n", y, x);
+		return (base->read.error = 12);	
+	}
+	if (TWOD[y][x] == ' ')
+	{
+		printf("--error 10--[%d][%d]----\n", y, x);
+		return (base->read.error = 10);
+	}
+    if (TWOD[y][x]!= '0' && TWOD[y][x] != base->read.pos)
+	{
+		printf("--error 11--[%d][%d]----\n", y, x);
+		return (base->read.error = 11);
+	}
+    TWOD[y][x] = '+';
+	//printf("---YES--TWOD[%d][%d] = [%c]--\n", y, x, TWOD[y][x]);
+    flood_fill(base, y - 1, x);
+    flood_fill(base, y, x + 1);
+    flood_fill(base, y + 1, x);
+    flood_fill(base, y, x - 1);
+    return (0);
+}
+
+int	padding(int y, t_base *base)
+{
+	int i;
+	
+	while(TWOD[y])
+	{
+		i = 0;
+		while (TWOD[y][i])
+		{
+			//if (TWOD[y][i] == ' ')
+			//	TWOD[y][i] = '0';
+			if (TWOD[y][i] != '0' && TWOD[y][i] != '1' && TWOD[y][i] != '2' && TWOD[y][i] != 'N' && TWOD[y][i] != 'S' && TWOD[y][i] != 'E' && TWOD[y][i] !='W' && TWOD[y][i] !=' ')
+				return (base->read.error = 99);
+			if (TWOD[y][i] == 'N' || TWOD[y][i] == 'S' || TWOD[y][i] == 'E' || TWOD[y][i] =='W')
+			{
+				if (base->read.pos != -1)
+					return (base->read.error = 999);
+				base->read.pos = TWOD[y][i];
+				base->read.x_pos = i;
+				base->read.y_pos = y;
+			}
+			i++;
+			if (i > base->read.big_strlen)
+				base->read.big_strlen = i;
+		}
+		y++;
+	}
+	return (0);
+}
