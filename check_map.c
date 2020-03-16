@@ -6,11 +6,41 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/16 12:07:57 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/16 14:08:54 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+/*
+** Check if player can reach a space. Invalid if so.
+*/
+
+int				flood_fill(t_base *base, int y, int x)
+{
+	if (TWOD[y][x] == '+' || TWOD[y][x] == '1' || TWOD[y][x] == '2')
+		return (0);
+	if (TWOD[y][x]== '\0' || y <= base->read.y_start || y >= base->read.y_end)
+	{
+		printf("--error 12--[%d][%d]----\n", y, x);
+		return (base->read.error = 12);	
+	}
+	if (TWOD[y][x] == ' ')
+	{
+		printf("--error 10--[%d][%d]----\n", y, x);
+		return (base->read.error = 10);
+	}
+    if (TWOD[y][x]!= '0' && TWOD[y][x] != base->read.pos)
+	{
+		printf("--error 11--[%d][%d]----\n", y, x);
+		return (base->read.error = 11);
+	}
+    TWOD[y][x] = '+';
+    flood_fill(base, y - 1, x);
+    flood_fill(base, y, x + 1);
+    flood_fill(base, y + 1, x);
+    flood_fill(base, y, x - 1);
+    return (0);
+}
 
 /*
 ** Looks for first character in line except spaces. Returns position.
@@ -30,16 +60,31 @@ int				first_char(char *y)
 ** Looks for last character in line except spaces. Returns position.
 */
 
-int				last_char(char *y)
+int				last_char(int y, t_base *base)
 {
 	int 	i;
 
-	i = 0;	
-	while(y[i])
+	i = 0;
+	while(TWOD[y][i])
+	{
+		if (TWOD[y][i] == 'N' || TWOD[y][i] == 'S' || TWOD[y][i] == 'E' ||
+		TWOD[y][i] =='W')
+		{
+			if (base->read.pos != -1 && y != base->read.y_pos &&
+			i != base->read.x_pos)
+				return (base->read.error = 999);
+			base->read.pos = TWOD[y][i];
+			base->read.x_pos = i;
+			base->read.y_pos = y;
+		}
+		if (TWOD[y][i] != '0' && TWOD[y][i] != '1' && TWOD[y][i] != '2'
+		&& TWOD[y][i] != ' ')
+			return (base->read.error = 99);
 		i++;
-	while(y[i] == ' ' || y[i] == '\0')
+	}
+	while(TWOD[y][i] == ' ' || TWOD[y][i] == '\0')
 		i--;
-	return(i);
+	return (i);
 }
 
 /*
@@ -49,7 +94,7 @@ int				last_char(char *y)
 ** 00001
 */
 
-int				align_dif_back(char *s1, char *s2)
+int				align_dif_back(int y, t_base *base)
 {
 	int 	back1;
 	int 	back2;
@@ -57,20 +102,22 @@ int				align_dif_back(char *s1, char *s2)
 	int 	count;
 
 	count = 0;
-	back1 = last_char(s1);
-	back2 = last_char(s2);
+	back1 = last_char(y, base);
+	back2 = last_char(y + 1, base);
+	if (base->read.error != 0)
+		return (1);
 	dif = back1 - back2;
-	if (s1[back1]!= '1' || s2[back2]!= '1')
+	if (TWOD[y][back1]!= '1' || TWOD[y + 1][back2]!= '1')
 		return (1);
 	while (dif > (count - 1))
 	{
-		if (s1[back1 - count] != '1' && s1[back1 - count] != ' ')
+		if (TWOD[y][back1 - count] != '1' && TWOD[y][back1 - count] != ' ')
 			return (1);
 		count++;
 	}
 	while (dif < 1)
 	{
-		if (s2[back2 + dif] != '1' && s2[back2 + dif] != ' ')
+		if (TWOD[y + 1][back2 + dif] != '1' && TWOD[y + 1][back2 + dif] != ' ')
 			return (1);
 		dif++;
 	}
@@ -155,10 +202,9 @@ int				check_walls_first_last(int y, t_base *base)
 	int 	ret;
 	
 	i = 0;
-	last = last_char(TWOD[y]);
+	last = last_char(y, base);
 	while(TWOD[y][i] == ' ')
 			i++;
-	//printf("first/last y=[%d] {%s}, last_char = [%d]\n" , y, TWOD[y], last);
 	while (i <= last)
 	{
 		if (TWOD[y][i] == '1')
@@ -174,7 +220,7 @@ int				check_walls_first_last(int y, t_base *base)
 		else
 		{
 			printf("FIRST LAST[%d][%i]\n", y, i);
-			//return (1); //invalid wall
+			return (1); //invalid wall
 		}
 	}
 	return (0);
@@ -198,7 +244,7 @@ int				check_edges_wall(int *y, t_base *base)
 		if (*y != base->read.y_end)
 		{
 			front = align_dif_front(TWOD[*y], TWOD[*y + 1]);
-			back = align_dif_back(TWOD[*y], TWOD[*y + 1]);
+			back = align_dif_back(*y, base);
 		}
 		else
 		{
@@ -207,7 +253,7 @@ int				check_edges_wall(int *y, t_base *base)
 				printf("LAST LINE ERROR [%d]\n", *y);
 		}
 		if 	(front != 0 || back != 0)
-			printf("SIDE WALLS ERROR [%d]\n", *y);
+			printf("SIDE WALLS ERROR [%d], front = [%d], back = [%d]\n", *y, front, back);
 		(*y)++;
 	}
 	return(0);
@@ -216,35 +262,25 @@ int				check_edges_wall(int *y, t_base *base)
 int				check_map(int *y, t_base *base)
 {
 	int 	ret;
-	int		y_start2;
 
 	base->read.y_start = *y;
-	y_start2 = *y;
 	while (base->read.array[*y])
 		(*y)++;
 	base->read.y_end = *y - 1;
 	*y = base->read.y_start;
-	
-	printf("y start = [%d], *y = [%d]\n", base->read.y_start, *y);
-//-----------------------------
-	while(base->read.array[y_start2])
-	{
-		printf("[%i][%s]\n", y_start2, base->read.array[y_start2]);
-		y_start2++;
-	}
-	printf("--------------------------------------------------\n");
-//------------------------------
-
 	ret = check_walls_first_last(*y, base);
 	if (ret == 	1)
 		printf("ERROR MAP: INVALID FIRST\n");
 	ret = check_edges_wall(&(*y), base);
 	if (ret == 1)
 		printf("ERROR MAP: return 1\n");
+	ret = flood_fill(base, base->read.y_pos, base->read.x_pos);
+	if (ret > 0)
+		printf("ERROR FLOOD FILL\n");
 	return (0);
 }
 
-//padding(base->read.y_start, base);
+
 
 //tabs
 //checken voor spaties in zijwall.

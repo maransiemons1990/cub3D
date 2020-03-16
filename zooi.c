@@ -232,3 +232,7 @@ int	padding(int y, t_base *base)
 	}
 	return (0);
 }
+
+
+TWOD[y][i] != 'N' && TWOD[y][i] != 'S' && TWOD[y][i] != 'E' &&
+		TWOD[y][i] != 'W'
