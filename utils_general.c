@@ -1,30 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   identifiers_utils.c                                :+:    :+:            */
+/*   initialise.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 15:25:07 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/16 16:59:58 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/17 15:42:17 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+void			end_free(t_base *base)
+{
+	int y;
 
-/*
-** base->read.error = 0 is default, 1 is error. Meaning the cub file is invalid
-** Other values default -1. Because these numbers can be 0.
-*/
+	y = 0;
+	while (base->read.array[y])
+	{
+		free(base->read.array[y]);
+		y++;
+	}
+	free(base->read.array);
+	free(base->read.no);
+	free(base->read.ea);
+	free(base->read.so);
+	free(base->read.we);
+	free(base->read.sprite);
+	free(base);
+}
+
 void			initialise(t_base *base)
 {
 	base->read.error = 0;
 	base->read.render_x = -1;
 	base->read.render_y = -1;
-	base->read.red = -1;
-	base->read.blue = -1;
-	base->read.green = -1;
 	base->read.c_color = -1;
 	base->read.f_color = -1;
 	base->read.no = NULL;

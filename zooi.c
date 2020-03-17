@@ -236,3 +236,38 @@ int	padding(int y, t_base *base)
 
 TWOD[y][i] != 'N' && TWOD[y][i] != 'S' && TWOD[y][i] != 'E' &&
 		TWOD[y][i] != 'W'
+
+
+
+
+//gcc -Wall -Wextra -Werror -I mlx readmap.c gnl_cub3d.c gnl_cub3d_utils.c libft/ft_split.c libft/ft_substr.c
+
+
+1. arrray initialiseren?
+2. define buffersize?
+2. struct in geheel freeen genoeg of ook array inside?
+3. Kan initialise nog ergens bij?
+4. save_path_subst free? Kan pas als struct in geheel?
+
+
+Testen + leaks:
+1. Te weinig en te veel argumenten
+2. File die niet bestaat.
+3. Bestaande file maar geen .cub
+4.  getcubfile:
+	line = NULL;
+	new = NULL; --> lijkt 1 leak, maar kan niet echt testen.
+	new->read.array == NULL --> heel veel leaks. Maar kan niet echt testen want is geen NULL.
+5. Foutief teken in file 
+6. Foutief teken in R line
+7. R getal 0
+8. Niet bestaand path
+9. ./ weghalen
+10. Extra komma's in F line
+11. getal groter dan 255
+12. Map fouten
+13. Missing elements
+14. Missing map
+15. Missing start pos
+
+16. ENTER IN MAP KAN IK NIET SOLVEN?

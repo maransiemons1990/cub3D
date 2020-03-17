@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/16 15:39:42 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/17 17:11:37 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 ** Spaces are a valid part of the map. Except when player can reach a space.
 ** Or when the space is in a wall and therefore the map is not closed by walls.
-** Flood fill checks if player can reach a space.
+** Flood fill checks if player can reach a space (' ').
 */
 
 static int		flood_fill(t_base *base, int y, int x)
@@ -39,14 +39,13 @@ static int		flood_fill(t_base *base, int y, int x)
 
 /*
 ** When the walls don't align edges and corners are created.
-** Check if all characters who touch empty space consist of 1's.
+** Check if all characters who touch empty space (' ') consist of 1's.
 */
 
-static int		check_edges_wall(int *y, t_base *base)
+static int		check_wall_edges(int *y, t_base *base)
 {
 	int 	back;
 	int 	front;
-
 	while (*y != base->read.map_end)
 	{
 		front = 0;
@@ -59,11 +58,14 @@ static int		check_edges_wall(int *y, t_base *base)
 			return (1);
 		(*y)++;
 	}
+	if (base->read.pos == -1)
+		return (base->read.error = 15);
 	return (0);
 }
 
 /*
-** Walls can be composed of 1's and under condition of spaces.
+** Walls can be composed of 1's and under condition out of spaces.
+** Spaces in walls are allowed when they don't touch empty floor space ('0'). 
 */
 
 static int		check_walls_first_last(int y, t_base *base)
@@ -95,10 +97,23 @@ static int		check_walls_first_last(int y, t_base *base)
 	return (0);
 }
 
+static int		check_elements_complete(t_base *base)
+{
+	if ( base->read.render_x == -1 || base->read.render_y == -1 ||
+	base->read.c_color == -1 || base->read.f_color == -1 ||
+	base->read.no == NULL || base->read.ea == NULL ||
+	base->read.so == NULL || base->read.we == NULL ||
+	base->read.sprite == NULL)
+		return (base->read.error = 14);
+	return (0);
+}
+
 int				check_map(int *y, t_base *base)
 {
 	int 	ret;
 
+	if (check_elements_complete(base) > 0)
+		return (1);
 	base->read.map_start = *y;
 	while (base->read.array[*y])
 		(*y)++;
@@ -107,7 +122,7 @@ int				check_map(int *y, t_base *base)
 	ret = check_walls_first_last(*y, base);
 	if (ret > 0)
 		return (1);
-	ret = check_edges_wall(&(*y), base);
+	ret = check_wall_edges(&(*y), base);
 	if (ret > 0)
 		return (1);
 	ret = check_walls_first_last(*y, base);

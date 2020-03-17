@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/16 15:34:37 by Maran          #+#    #+#                */
-/*   Updated: 2020/03/16 15:41:02 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/17 17:01:25 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int				last_char_save_pos(int y, t_base *base)
 }
 
 /*
-** Checks position last char (No space) of two adjacent lines.
+** Checks position last char (no space) of two adjacent lines.
 ** The difference between those 2 char's + 1 should consist of 1's.
 ** 0000111 --> correct.
 ** 00001
@@ -94,7 +94,7 @@ int				align_dif_back(int y, t_base *base)
 }
 
 /*
-** Checks position first char (No space) of two adjacent lines.
+** Checks position first char (no space) of two adjacent lines.
 ** The difference between those 2 char's + 1 should consist of 1's.
 **   1000 --> correct.
 ** 111000
@@ -127,7 +127,7 @@ int				align_dif_front(char *s1, char *s2)
 }
 
 /*
-** When a space characters in a wall appears, 
+** When a space (' ') character appears in a wall, 
 ** the adjacent elements can only consist of 1's and spaces.
 */
 

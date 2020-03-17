@@ -1,21 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   readmap.c                                          :+:    :+:            */
+/*   read_scene.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/02 16:11:17 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/16 17:02:20 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/17 17:19:03 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-/*
-** i_entry is index when entering function. It's the index directly behind
-** identifier.
-*/
 
 static int		check_save_path(int y, int i, t_base *base)
 {
@@ -50,13 +45,13 @@ static int		check_save_resolution(int y, int i, t_base *base)
 		return (base->read.error = 2);
 	if (!(base->read.render_x == -1 || base->read.render_y == -1))
 		return (base->read.error = 3);
-	base->read.render_x = cfr_itoa(&y, &i, base, 0);
-	base->read.render_y = cfr_itoa(&y, &i, base, 0);
+	base->read.render_x = cfr_itoa(y, &i, base, 0);
+	base->read.render_y = cfr_itoa(y, &i, base, 0);
 	if (base->read.render_x == -1 || base->read.render_y == -1)
 		return (base->read.error = 4);
-	if (base->read.render_x <= 0 || base->read.render_y <=0)
+	if (base->read.render_x == 0 || base->read.render_y ==0)
 		return (base->read.error = 7);
-	return (cfr_endspaces_resetrgb(y, i, base));
+	return (cfr_endspaces(y, i, base));
 }
 
 static int		check_save_colors_cf(int y, int i, t_base *base)
@@ -65,11 +60,14 @@ static int		check_save_colors_cf(int y, int i, t_base *base)
 	int	ret;
 	
 	entry_i = i - 1;
+	base->read.red = -1;
+	base->read.blue = -1;
+	base->read.green = -1;
 	if ((TWOD[y][i] < '0' && TWOD[y][i] != ' ') || TWOD[y][i] > '9')
 		return (base->read.error = 2);
-	base->read.red = cfr_itoa(&y, &i, base, 0);
-	base->read.blue = cfr_itoa(&y, &i, base, 1);
-	base->read.green = cfr_itoa(&y, &i, base, 1);
+	base->read.red = cfr_itoa(y, &i, base, 0);
+	base->read.blue = cfr_itoa(y, &i, base, 1);
+	base->read.green = cfr_itoa(y, &i, base, 1);
 	if (READ.red == -1 || READ.blue == -1 || READ.green == -1)
 		return (base->read.error = 4);
 	if (!((READ.red >= 0 &&  READ.red <= 255) && (READ.blue >= 0 &&
@@ -78,16 +76,21 @@ static int		check_save_colors_cf(int y, int i, t_base *base)
 	ret = create_trgb_colorcode(y, entry_i, base);
 	if (ret > 0)
 		return (1);
-	return (cfr_endspaces_resetrgb(y, i, base));
+	return (cfr_endspaces(y, i, base));
 }
 
-static int		check_line(int *y, t_base *base)
+/*
+** First information is the type identifier. Each type of information from an
+** element can be separated by one or more space(s).
+*/
+
+static int		check_scene_line(int *y, t_base *base)
 {
 	int		i;
 	int		ret;
 
 	i = 0;
-	while (TWOD[*y][i] == ' ' || TWOD[*y][i] == '\t')
+	while (TWOD[*y][i] == ' ')
 		i++;
 	if (TWOD[*y][i] == 'C' || TWOD[*y][i] == 'F')
 		ret = check_save_colors_cf(*y, (i + 1), base);
@@ -108,19 +111,21 @@ static int		check_line(int *y, t_base *base)
 	return (0);
 }
 
-int			check(t_base *base)
+int				read_scene_file(t_base *base)
 {
 	int		y;
 	int		line;
 
 	y = 0;
 	initialise(base);
-	while (base->read.array[y])
+	while (TWOD[y])
 	{
-		line = check_line(&y, base);
+		line = check_scene_line(&y, base);
 		if (line > 0)
 			return (1);
 		y++;
 	}
+	if (base->read.map_start == -1)
+		return (base->read.error = 16);
 	return (0);
 }

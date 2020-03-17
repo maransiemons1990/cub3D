@@ -6,18 +6,17 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/16 17:58:03 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/17 15:04:45 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
-
-#define TWOD base->read.array
-#define READ base->read
+# define TWOD base->read.array
+# define READ base->read
 
 //# include <mlx.h> 
-//#include "libft.h"
+#include "libft/libft.h"
 
 //Delete?:
 #include <stdio.h>
@@ -32,7 +31,6 @@
 #include <fcntl.h>
 //error
 #include <sys/errno.h>
-//
 
 typedef struct	s_addr {
 	char		*addr;
@@ -48,26 +46,22 @@ typedef struct	s_data {
 }               t_data;
 
 typedef struct	s_read {
-	char		**array; //nog ergens freeen?
+	char		**array;
 	int			error;
 	int 		render_x;
 	int 		render_y;
-
+	int			c_color;
+	int			f_color;
 	int			red;
 	int 		blue;
 	int			green;
-	int			c_color;
-	int			f_color;
-
 	char 		*no;
 	char 		*ea;
 	char 		*so;
 	char 		*we;
 	char 		*sprite;
-
 	int			map_start;
 	int			map_end;
-
 	char		pos;
 	int			x_pos;
 	int			y_pos;
@@ -80,50 +74,39 @@ typedef struct	s_base{
 }				t_base;
 
 
-void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
+//GNL_CUB3D
+char			*gnl_strjoin(char *s1, char *s2);
 
-//GET cub
-t_base		*getcubfile(char *filename);
-//void		check(t_base *base);
-int			ft_check_line(int *y, t_base *base);
+//ERRORMESSAGES
+int				error_distribution(t_base *base);
+void			*error_general(int error, char *line);
+//GET_cub
+t_base			*getcubfile(char *filename);
 
-//GNL
-char		*ft_gnl_cub3d(int fd);
-size_t		ft_strlen(const char *s);
-char		*ft_strdup(const char *s1);
-char		*ft_strjoin(char *s1, char *s2);
-
-//Tutorial:
-void		print_triangle(t_data *img, int x, int y, int radius);
-void		print_full_square(t_data *img, int x, int xsize, int y, int ysize);
-void		print_square(t_data *img, int x, int xsize, int y, int ysize);
-
-//readmap/identifiers:
-char			**ft_split(char const *s, char c);
-char			*ft_substr(char const *s, unsigned int start, size_t len);
-int				check(t_base *base);
-//
-void			error_distribution(t_base *base);
-void			error_general(int error);
-
-//identifiers_utils
+//READ_SCENE_FILE
+int				read_scene_file(t_base *base);
 void			initialise(t_base *base);
-int				check_identifiers_valid(t_base *base);
-//Check_utils
-int				cfr_itoa(int *y, int *i, t_base *base, int cf_bg);
-int				cfr_endspaces_resetrgb(int y, int i, t_base *base);
+void			end_free(t_base *base);
+
+//READ_SCENE_UTILS
+int				cfr_itoa(int y, int *i, t_base *base, int cf_blue_green);
+int				create_trgb_colorcode(int y, int entry_i, t_base *base);
+int				cfr_endspaces(int y, int i, t_base *base);
 int				check_pathstart(int y, int *i, t_base *base);
 int				save_path_substr(int y, int i, char **identifier, t_base *base);
-int				create_trgb_colorcode(int y, int entry_i, t_base *base);
 
-
-//Check_map
-int			check_map(int *y, t_base *base);
+//Check_map_UTILS
+int				check_map(int *y, t_base *base);
 int				last_char_save_pos(int y, t_base *base);
-int				align_dif_back(int y, t_base *base);
-int				align_dif_front(char *s1, char *s2);
 int 			space_in_wall(int y, int i, t_base *base);
+int				align_dif_front(char *s1, char *s2);
+int				align_dif_back(int y, t_base *base);
 
+//Tutorial:
+// void		print_triangle(t_data *img, int x, int y, int radius);
+// void		print_full_square(t_data *img, int x, int xsize, int y, int ysize);
+// void		print_square(t_data *img, int x, int xsize, int y, int ysize);
+//void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 //Overig
 void		twod_checker(char **array);

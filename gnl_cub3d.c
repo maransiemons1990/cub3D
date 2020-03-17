@@ -6,16 +6,15 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/08 16:37:30 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/16 18:07:38 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/17 16:21:56 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #define BUFFER_SIZE 128
 
-//gcc -Wall -Wextra -Werror -I mlx readmap.c gnl_cub3d.c gnl_cub3d_utils.c libft/ft_split.c libft/ft_substr.c
 
-static char		*ft_read(int fd, char *new_line)
+static char		*gnl_cub3d_read(int fd, char *new_line)
 {
 	char			*buf;
 	int				ret;
@@ -23,7 +22,7 @@ static char		*ft_read(int fd, char *new_line)
 	ret = 1;
 	while (ret > 0)
 	{
-		buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1)); //m check
 		if (buf == NULL)
 		{
 			free(new_line);
@@ -37,14 +36,14 @@ static char		*ft_read(int fd, char *new_line)
 			return (NULL);
 		}
 		buf[ret] = '\0';
-		new_line = ft_strjoin(new_line, buf);
+		new_line = gnl_strjoin(new_line, buf); //m check
 		if (new_line == NULL)
 			return (NULL);
 	}
 	return (new_line);
 }
 
-char		*ft_gnl_cub3d(int fd)
+static char		*gnl_cub3d(int fd)
 {
 	static char		*new_line;
 	char			*line;
@@ -52,17 +51,17 @@ char		*ft_gnl_cub3d(int fd)
 	if (fd < 0)
 		return (NULL);
 	if (new_line == NULL)
-		new_line = ft_strdup("");
+		new_line = ft_strdup(""); //m check
 	if (new_line == NULL)
 		return (NULL);
-	line = ft_read(fd, new_line);
-	if (line == NULL)
-		return (NULL); //volgens mij free(new_line nu 1 te weinig, die van r==0)
+	line = gnl_cub3d_read(fd, new_line);
+	if (line == NULL) //m check
+		return (NULL); 
 	return (line);
 }
 
 
-int				check_filetype(char *s)
+static int		check_filetype(char *s)
 {
 	int		i;
 
@@ -82,26 +81,20 @@ t_base			*getcubfile(char *filename)
 	int		fd;
 
 	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-	{
-		error_general(2);
-		return (NULL);
-	}
-	if (check_filetype(filename))
-	{
-		error_general(3);
-		return (NULL);
-	}
-	line = ft_gnl_cub3d(fd);
+	if (check_filetype(filename) || fd < 0)
+		return (error_general(2, NULL));
+	line = gnl_cub3d(fd);
 	if (line == NULL)
-	{
-		error_general(4);
-		return (NULL);
-	}
-	new = (t_base *)malloc(sizeof(t_base));
+		return (error_general(3, NULL));
+	new = (t_base *)malloc(sizeof(t_base)); //m check
 	if (new == NULL)
-		return (NULL);
-	new->read.array = ft_split(line, '\n');
-	free(line);
+		return (error_general(4, line));
+	new->read.array = ft_split(line, '\n'); //m check
+	if (new->read.array == NULL)
+	{
+		free(new);
+		return (error_general(4, line));
+	}
+	free(line); //Free strjoin m check
 	return (new);
 }
