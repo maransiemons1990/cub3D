@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/17 15:04:45 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/24 17:02:39 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # define TWOD base->read.array
 # define READ base->read
 
-//# include <mlx.h> 
+# include "mlx/mlx.h" 
 #include "libft/libft.h"
 
 //Delete?:
@@ -32,18 +32,22 @@
 //error
 #include <sys/errno.h>
 
-typedef struct	s_addr {
+// typedef struct	s_addr {
+// 	char		*addr;
+// 	int			bits_per_pixel;
+//     int			line_length;
+//     int			endian;
+// } 				t_addr;
+
+typedef struct	s_mlx {
+    void		*mlx;
+	void    	*mlx_win;
+	void        *img;
 	char		*addr;
 	int			bits_per_pixel;
     int			line_length;
     int			endian;
-} 				t_addr;
-
-typedef struct	s_data {
-    void		*mlx;
-	void    	*mlx_win;
-	void        *img;
-}               t_data;
+}               t_mlx;
 
 typedef struct	s_read {
 	char		**array;
@@ -68,9 +72,9 @@ typedef struct	s_read {
 }				t_read;
 
 typedef struct	s_base{
-	t_read		read;		
-	t_data		data;
-	t_addr		addr;
+	t_read		read;
+	t_mlx		mlx;
+	//t_addr		addr;
 }				t_base;
 
 
@@ -102,6 +106,9 @@ int 			space_in_wall(int y, int i, t_base *base);
 int				align_dif_front(char *s1, char *s2);
 int				align_dif_back(int y, t_base *base);
 
+
+//MLX
+int				mlx(t_base *base);
 //Tutorial:
 // void		print_triangle(t_data *img, int x, int y, int radius);
 // void		print_full_square(t_data *img, int x, int xsize, int y, int ysize);

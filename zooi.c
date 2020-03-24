@@ -243,11 +243,6 @@ TWOD[y][i] != 'N' && TWOD[y][i] != 'S' && TWOD[y][i] != 'E' &&
 //gcc -Wall -Wextra -Werror -I mlx readmap.c gnl_cub3d.c gnl_cub3d_utils.c libft/ft_split.c libft/ft_substr.c
 
 
-1. arrray initialiseren?
-2. define buffersize?
-2. struct in geheel freeen genoeg of ook array inside?
-3. Kan initialise nog ergens bij?
-4. save_path_subst free? Kan pas als struct in geheel?
 
 
 Testen + leaks:
@@ -271,3 +266,9 @@ Testen + leaks:
 15. Missing start pos
 
 16. ENTER IN MAP KAN IK NIET SOLVEN?
+
+
+
+To do:
+1. arrray initialiseren nodig?
+2. define buffersize?

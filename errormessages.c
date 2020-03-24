@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 13:03:52 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/17 17:23:07 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/17 17:35:55 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,6 @@ int				error_distribution(t_base *base)
 	if (base->read.error >= 10)
 		errormessages_10up(base);
 	end_free(base);
-	while (1)
-	{
-		
-	}
 	return (1);
 }
 

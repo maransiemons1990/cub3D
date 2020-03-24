@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/08 16:37:30 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/17 16:21:56 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/17 17:38:10 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char		*gnl_cub3d_read(int fd, char *new_line)
 	ret = 1;
 	while (ret > 0)
 	{
-		buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1)); //m check
+		buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 		if (buf == NULL)
 		{
 			free(new_line);
@@ -36,7 +36,7 @@ static char		*gnl_cub3d_read(int fd, char *new_line)
 			return (NULL);
 		}
 		buf[ret] = '\0';
-		new_line = gnl_strjoin(new_line, buf); //m check
+		new_line = gnl_strjoin(new_line, buf);
 		if (new_line == NULL)
 			return (NULL);
 	}
@@ -51,11 +51,11 @@ static char		*gnl_cub3d(int fd)
 	if (fd < 0)
 		return (NULL);
 	if (new_line == NULL)
-		new_line = ft_strdup(""); //m check
+		new_line = ft_strdup("");
 	if (new_line == NULL)
 		return (NULL);
 	line = gnl_cub3d_read(fd, new_line);
-	if (line == NULL) //m check
+	if (line == NULL)
 		return (NULL); 
 	return (line);
 }
@@ -86,15 +86,15 @@ t_base			*getcubfile(char *filename)
 	line = gnl_cub3d(fd);
 	if (line == NULL)
 		return (error_general(3, NULL));
-	new = (t_base *)malloc(sizeof(t_base)); //m check
+	new = (t_base *)malloc(sizeof(t_base));
 	if (new == NULL)
 		return (error_general(4, line));
-	new->read.array = ft_split(line, '\n'); //m check
+	new->read.array = ft_split(line, '\n');
 	if (new->read.array == NULL)
 	{
 		free(new);
 		return (error_general(4, line));
 	}
-	free(line); //Free strjoin m check
+	free(line);
 	return (new);
 }

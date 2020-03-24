@@ -6,18 +6,10 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/17 17:30:19 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/24 18:20:41 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* 
-** Check of .cub file
-**
-** Return (0) is succesful, Return (1) is failure.
-** TO DO: meer definen met READ?
-** TO DO: leaks!, reorganise file.
-** TO DO: GNL etc fix.
-*/
 
 #include "cub3d.h"
 
@@ -40,6 +32,8 @@ int			main(int argc, char **argv)
 	//------------------DELETE LATER------------------------------------
 	valuechecker(base);
 	//twod_checker(base->read.array);
+	//------------------------------------------------------------------
+	mlx(base);
 	//------------------------------------------------------------------
 	end_free(base);
 	return (0);

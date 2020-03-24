@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/25 20:13:12 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/24 16:13:02 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/24 16:18:30 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ int             ft_keypress(int keycode, t_data *img)
 	{
 		mlx_destroy_window(img->mlx, img->mlx_win);
 		exit (0);
-	}
-	if (keycode == 2) //move right
-	{
 	}
     return (0);
 }
