@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/24 17:02:39 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/25 18:42:22 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,19 @@
 # define TWOD base->read.array
 # define READ base->read
 
+# define X11_EVENT_KEY_PRESS		2
+# define X11_EVENT_EXIT				17
+
+# define KEY_ESC		53
+# define KEY_LEFT		123
+# define KEY_RIGHT		124
+
 # include "mlx/mlx.h" 
-#include "libft/libft.h"
+# include "libft/libft.h"
 
 //Delete?:
-#include <stdio.h>
-#include <stdlib.h>
+# include <stdio.h>
+# include <stdlib.h>
 
 //GNL
 # include <sys/types.h>
@@ -28,16 +35,9 @@
 # include <unistd.h>
 # include <stdlib.h>
 // Open
-#include <fcntl.h>
+# include <fcntl.h>
 //error
-#include <sys/errno.h>
-
-// typedef struct	s_addr {
-// 	char		*addr;
-// 	int			bits_per_pixel;
-//     int			line_length;
-//     int			endian;
-// } 				t_addr;
+# include <sys/errno.h>
 
 typedef struct	s_mlx {
     void		*mlx;
@@ -71,10 +71,15 @@ typedef struct	s_read {
 	int			y_pos;
 }				t_read;
 
+typedef struct s_game {
+	int			x;
+	int			y;
+}				t_game;
+
 typedef struct	s_base{
 	t_read		read;
 	t_mlx		mlx;
-	//t_addr		addr;
+	t_game		game;
 }				t_base;
 
 
@@ -109,6 +114,14 @@ int				align_dif_back(int y, t_base *base);
 
 //MLX
 int				mlx(t_base *base);
+
+//Ray
+int				raycasting(t_base *base);
+
+//Rayhooks
+int             keypress(int keycode, t_base *img);
+int				windowclose_x(t_base *img);
+
 //Tutorial:
 // void		print_triangle(t_data *img, int x, int y, int radius);
 // void		print_full_square(t_data *img, int x, int xsize, int y, int ysize);

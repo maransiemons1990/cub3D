@@ -6,7 +6,7 @@
 #    By: msiemons <msiemons@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/03/04 17:11:26 by msiemons       #+#    #+#                 #
-#    Updated: 2020/03/24 18:32:14 by Maran         ########   odam.nl          #
+#    Updated: 2020/03/25 18:19:45 by Maran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ LIBMLX = libmlx.dylib
 SRC = main.c errormessages.c gnl_cub3d.c gnl_cub3d_utils.c read_scene.c\
 		utils_general.c read_scene_utils.c check_map.c check_map_utils.c\
 		twod_checker.c valuechecker.c\
-		mlx.c
+		mlx.c raycaster.c keys.c
 
 OBJ = $(SRC:.c=.o)
 
