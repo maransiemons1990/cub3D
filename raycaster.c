@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran          #+#    #+#                */
-/*   Updated: 2020/03/26 14:07:05 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/26 20:37:27 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,28 +162,56 @@ int		raycasting(t_base *base)
     	verLine(base, x);
 	  	x++;
 	}
+	base->game.oldtime = base->game.time;
+	base->game.time = clock();
+	base->game.frametime = (base->game.time - base->game.oldtime) / CLOCKS_PER_SEC;
+	base->game.movespeed = base->game.frametime * 5.0;
+	base->game.rotspeed = base->game.frametime * 3.0;
 	return (0);
-}
-
-//initial direction vector
-void			orientation(t_base *base)
-{
-	base->game.dirX = 0; 
-	base->game.dirY = 0; 
-	if (base->read.pos == 'N')
-		base->game.dirY = -1;
-	if (base->read.pos == 'S')
-		base->game.dirY = 1;
-	if (base->read.pos == 'E')
-		base->game.dirX = 1;	
-	if (base->read.pos == 'W')
-		base->game.dirX = -1;
 }
 
 int				loop(t_base *base)
 {
-	orientation(base);
-	raycasting(base);
-	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
+	static int	update = 1;
+	//TEST
+	// base->mlx.new_img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
+	// base->mlx.new_addr = mlx_get_data_addr(base->mlx.new_img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
+	printf("Hier?\n");
+	//
+	base->mlx.img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
+	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
+	// base->mlx.img = base->mlx.new_img;
+	// base->mlx.addr = base->mlx.new_addr;
+	
+	
+	if (base->game.move_front == 1)
+	{
+		if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirX * base->game.movespeed)] == '+')
+			base->read.x_pos += base->game.dirX * base->game.movespeed;
+		if (TWOD[(int)(base->read.y_pos + base->game.dirY * base->game.movespeed)][base->read.x_pos] == '+')
+			base->read.y_pos += base->game.dirY * base->game.movespeed;
+		update = 1;
+	}
+	if (update)
+	{
+		raycasting(base);
+		mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
+		//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);
+	}
+	update = 0;
 	return (0);
 }
+
+
+
+
+
+
+
+
+
+
+		// mlx_clear_window(base->mlx.mlx, base->mlx.mlx_win);
+		// // gl->img = mlx_new_image(gl->mlx, gl->s_x, gl->s_y);
+		// // gl->disp = mlx_get_data_addr(gl->img, &(gl->bpp), &(gl->sizeline),
+		// // 	&(gl->endian));

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/26 13:21:06 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/26 20:09:04 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,16 @@
 # include <fcntl.h>
 //error
 # include <sys/errno.h>
+//TEST
+# include <time.h>
 
 typedef struct	s_mlx {
     void		*mlx;
 	void    	*mlx_win;
 	void        *img;
+	void        *new_img;
 	char		*addr;
+	char		*new_addr;
 	int			bits_per_pixel;
     int			line_length;
     int			endian;
@@ -97,8 +101,14 @@ typedef struct s_game {
 	
 	int			side; //was a NS or a EW wall hit?
 	
-	int			move_x;
+	int			move_front;
 	int			move_y;
+
+	double		time;
+	double		oldtime;
+	double		frametime;
+	double		movespeed;
+	double		rotspeed;
 }				t_game;
 
 typedef struct	s_base{

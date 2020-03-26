@@ -6,11 +6,26 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran          #+#    #+#                */
-/*   Updated: 2020/03/26 14:09:25 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/26 20:34:54 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+//initial direction vector
+void			orientation(t_base *base)
+{
+	base->game.dirX = 0; 
+	base->game.dirY = 0; 
+	if (base->read.pos == 'N')
+		base->game.dirY = -1;
+	if (base->read.pos == 'S')
+		base->game.dirY = 1;
+	if (base->read.pos == 'E')
+		base->game.dirX = 1;	
+	if (base->read.pos == 'W')
+		base->game.dirX = -1;
+}
 
 /*
 ** mlx_init: This will establish a connection to the correct graphical system
@@ -29,20 +44,18 @@
 
 int				mlx(t_base *base)
 {
+	orientation(base);
 	base->mlx.mlx = mlx_init();
 	base->mlx.mlx_win = mlx_new_window(base->mlx.mlx, base->read.render_x, base->read.render_y, "Hello world!");
-	base->mlx.img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
-	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
-	
-	// print_full_square(base, 100, 200, 100, 200);
-	//(void)base;
+	//base->mlx.img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
+	//base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
 
 // /* ----------HOOKING EVENT-----------------*/ 
-	mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_PRESS, 1L<<0, keypress, &base);
-	mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_RELEASE, 1L<<1, keyrelease, &base);
-	mlx_hook(base->mlx.mlx_win, X11_EVENT_EXIT, 1L<<17, windowclose_x, &base);
-	loop(base);
-	//mlx_loop_hook(base->mlx.mlx, &loop, &base);
+	mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_PRESS, 1L<<0, &keypress, &base);
+	mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_RELEASE, 1L<<1, &keyrelease, &base);
+	mlx_hook(base->mlx.mlx_win, X11_EVENT_EXIT, 1L<<17, &windowclose_x, &base);
+	//loop(base);
+	mlx_loop_hook(base->mlx.mlx, &loop, base);
 	
 // // /*----------------------------------------------*/
  	mlx_loop(base->mlx.mlx);
