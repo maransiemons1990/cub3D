@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/25 18:42:22 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/26 13:21:06 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,16 @@
 # define READ base->read
 
 # define X11_EVENT_KEY_PRESS		2
+# define X11_EVENT_KEY_RELEASE		3
 # define X11_EVENT_EXIT				17
 
 # define KEY_ESC		53
 # define KEY_LEFT		123
 # define KEY_RIGHT		124
+# define KEY_W			13
+# define KEY_A			0
+# define KEY_S			1
+# define KEY_D			2
 
 # include "mlx/mlx.h" 
 # include "libft/libft.h"
@@ -72,8 +77,28 @@ typedef struct	s_read {
 }				t_read;
 
 typedef struct s_game {
-	int			x;
-	int			y;
+	double		dirX;
+	double		dirY;
+
+	int			mapX;
+	int 		mapY;
+
+	int			stepX; //what direction to step in x or y-direction (either +1 or -1)
+    int 		stepY;
+	
+	double		rayDirX;
+	double		rayDirY;
+	
+	double		sideDistX; //length of ray from current position to next x or y-side
+    double		sideDistY;
+
+	double		deltaDistX;
+	double		deltaDistY;
+	
+	int			side; //was a NS or a EW wall hit?
+	
+	int			move_x;
+	int			move_y;
 }				t_game;
 
 typedef struct	s_base{
@@ -114,12 +139,14 @@ int				align_dif_back(int y, t_base *base);
 
 //MLX
 int				mlx(t_base *base);
+int				loop(t_base *base);
 
 //Ray
 int				raycasting(t_base *base);
 
 //Rayhooks
 int             keypress(int keycode, t_base *img);
+int             keyrelease(int keycode, t_base *base);
 int				windowclose_x(t_base *img);
 
 //Tutorial:

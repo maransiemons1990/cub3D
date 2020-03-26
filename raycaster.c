@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran          #+#    #+#                */
-/*   Updated: 2020/03/25 19:12:13 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/26 14:07:05 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,34 @@ void            my_mlx_pixel_put(t_base *base, int x, int y, int color)
     *(unsigned int*)dst = color;
 }
 
-void		verLine(t_base *base, int x, int drawStart, int drawEnd, int color)
+void			verLine(t_base *base, int x)
 {
+	int		lineHeight;
+	int		drawStart;
+	int		drawEnd;
+	int		color;
+    double	perpWallDist;
+	
+	//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
+    if (base->game.side == 0)
+		perpWallDist = (base->game.mapX - base->read.x_pos + (1 - base->game.stepX) / 2) / base->game.rayDirX;
+	else
+		perpWallDist = (base->game.mapY - base->read.y_pos + (1 - base->game.stepY) / 2) / base->game.rayDirY;
+	//Calculate height of line to draw on screen
+   	lineHeight = (int)(base->read.render_y / perpWallDist);
+   	//calculate lowest and highest pixel to fill in current stripe
+	drawStart = -lineHeight / 2 + base->read.render_y / 2;
+	if(drawStart < 0)
+		drawStart = 0;
+	drawEnd = lineHeight / 2 + base->read.render_y / 2;
+	if(drawEnd >= base->read.render_y)
+		drawEnd = base->read.render_y - 1;
+	//   printf("----------------------------------------------\n");
+    //choose wall color
+    color = 16711680;
+    //give x and y sides different brightness
+    if (base->game.side == 1) 
+	 	color = 16728899;
 	//printf(" x =[%d], start=[%d], end=[%d], color=[%d]\n", x, drawStart, drawEnd, color);
 	while (drawStart < drawEnd)
 	{
@@ -43,186 +69,121 @@ void		verLine(t_base *base, int x, int drawStart, int drawEnd, int color)
 	}
 }
 
-void	orientation(t_base *base, double *dirX, double *dirY)
+void	DDA(t_base *base)
 {
-	if (base->read.pos == 'N')
-		*dirY = -1;
-	if (base->read.pos == 'S')
-		*dirY = 1;
-	if (base->read.pos == 'E')
-		*dirX = 1;	
-	if (base->read.pos == 'W')
-		*dirX = -1;
+	//perform DDA
+    int hit;
+	
+	hit = 0;	//was there a wall hit?
+ 	//printf("START pos [%d][%d] = [%c]\n", base->read.y_pos, base->read.x_pos, base->read.array[mapY][mapX]);
+   	while (hit == 0)
+	{
+		//jump to next map square, OR in x-direction, OR in y-direction
+		//printf("TWOD[%d][%d] = [%c]\n", mapY, mapX, base->read.array[mapY][mapX]);
+    	if(base->game.sideDistX < base->game.sideDistY)
+    	{
+    		base->game.sideDistX += base->game.deltaDistX;
+    		base->game.mapX += base->game.stepX;
+    		base->game.side = 0;
+		//   printf("Jump in X direction: new mapX[%d], new sideDistX[%f]\n", mapX, sideDistX);
+    	}
+    	else
+    	{
+        		base->game.sideDistY += base->game.deltaDistY;
+        		base->game.mapY += base->game.stepY;
+        		base->game.side = 1;
+		//   printf("Jump in Y direction: new mapY[%d], new sideDistY[%f]\n", mapY, sideDistY);
+    	}
+    	//Check if ray has hit a wall
+		//printf("CHANGED TWOD[%d][%d] = [%c][%d]\n", mapY, mapX, base->read.array[mapY][mapX], base->read.array[mapY][mapX]);
+    	if(TWOD[base->game.mapY][base->game.mapX] > 0 && TWOD[base->game.mapY][base->game.mapX] != '+')
+		{
+			hit = 1;
+			//	printf("**HIT**[%d][%d]\n", mapY, mapX);
+		}
+	}
+}
+
+void	initial_step_sidedist(t_base *base)
+{
+	//calculate step and initial sideDist
+    if(base->game.rayDirX < 0)
+    {
+    	base->game.stepX = -1;
+    	base->game.sideDistX = (base->read.x_pos - base->game.mapX) * base->game.deltaDistX;
+    }
+    else
+    {
+    	base->game.stepX = 1;
+    	base->game.sideDistX = (base->game.mapX + 1.0 - base->read.x_pos) * base->game.deltaDistX;
+    }
+    if(base->game.rayDirY < 0)
+    {
+      base->game.stepY = -1;
+      base->game.sideDistY = (base->read.y_pos - base->game.mapY) * base->game.deltaDistY;
+    }
+    else
+    {
+    	base->game.stepY = 1;
+    	base->game.sideDistY = (base->game.mapY + 1.0 - base->read.y_pos) * base->game.deltaDistY;
+    }
+}
+void	ray_position(t_base *base, int x)
+{
+	double cameraX;
+	double planeX;
+	double planeY;
+	
+	planeX = 0;	//the 2d raycaster version of camera plane
+	planeY = 0.66;
+	//calculate ray position and direction
+    cameraX = 2 * x / (double)base->read.render_x - 1; //x-coordinate in camera space
+    base->game.rayDirX = base->game.dirX + planeX * cameraX;
+    base->game.rayDirY = base->game.dirY + planeY * cameraX;
+    //which box of the map we're in
+    base->game.mapX = (int)base->read.x_pos;
+	base->game.mapY = (int)base->read.y_pos;
+	//length of ray from one x or y-side to next x or y-side
+    base->game.deltaDistX = fabs(1 / base->game.rayDirX);
+    base->game.deltaDistY = fabs(1 / base->game.rayDirY);
 }
 
 int		raycasting(t_base *base)
 {
-	//double posX = 22, posY = 12;  //x and y start position
-	double dirX = 0, dirY = 0; //initial direction vector
-	orientation(base, &dirX, &dirY);
-	//printf("orientation dirY = [%f], dirY = [%f]\n", dirX, dirY);
-	
-	double planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
+	int x;
 
-	// double time = 0; //time of current frame
-	// double oldTime = 0; //time of previous frame
-	// double frameTime;
-	int x = 0;
-	
-	int lineHeight;
-	int drawStart;
-	int drawEnd;
-	int color;
-
+	x = 0;
 	while(x < base->read.render_x)
 	{
-		//calculate ray position and direction
-     	double cameraX = 2 * x / (double)base->read.render_x - 1; //x-coordinate in camera space
-    	double rayDirX = dirX + planeX * cameraX;
-    	double rayDirY = dirY + planeY * cameraX;
-      	//which box of the map we're in
-      	int mapX = (int)base->read.x_pos;
-		int mapY = (int)base->read.y_pos;
-
-	    //length of ray from current position to next x or y-side
-    	double sideDistX;
-      	double sideDistY;
-
-		//length of ray from one x or y-side to next x or y-side
-      	double deltaDistX = fabs(1 / rayDirX);
-     	double deltaDistY = fabs(1 / rayDirY);
-      	double perpWallDist;
-
-     	//what direction to step in x or y-direction (either +1 or -1)
-      	int stepX;
-      	int stepY;
-
-      	int hit = 0; //was there a wall hit?
-      	int side; //was a NS or a EW wall hit?
-      	
-		//calculate step and initial sideDist
-     	if(rayDirX < 0)
-    	{
-        	stepX = -1;
-        	sideDistX = (base->read.x_pos - mapX) * deltaDistX;
-      	}
-      	else
-      	{
-        	stepX = 1;
-        	sideDistX = (mapX + 1.0 - base->read.x_pos) * deltaDistX;
-     	}
-      	if(rayDirY < 0)
-      	{
-      	  stepY = -1;
-      	  sideDistY = (base->read.y_pos - mapY) * deltaDistY;
-      	}
-      	else
-     	{
-        	stepY = 1;
-        	sideDistY = (mapY + 1.0 - base->read.y_pos) * deltaDistY;
-     	}
-      	//perform DDA
-	  	//printf("START pos [%d][%d] = [%c]\n", base->read.y_pos, base->read.x_pos, base->read.array[mapY][mapX]);
-      	while (hit == 0)
-      	{
-        //jump to next map square, OR in x-direction, OR in y-direction
-		//printf("TWOD[%d][%d] = [%c]\n", mapY, mapX, base->read.array[mapY][mapX]);
-        	if(sideDistX < sideDistY)
-        	{
-        		sideDistX += deltaDistX;
-        		mapX += stepX;
-        		side = 0;
-			//   printf("Jump in X direction: new mapX[%d], new sideDistX[%f]\n", mapX, sideDistX);
-        	}
-        	else
-        	{
-         		sideDistY += deltaDistY;
-         		mapY += stepY;
-         		side = 1;
-			//   printf("Jump in Y direction: new mapY[%d], new sideDistY[%f]\n", mapY, sideDistY);
-        	}
-        	//Check if ray has hit a wall
-			//printf("CHANGED TWOD[%d][%d] = [%c][%d]\n", mapY, mapX, base->read.array[mapY][mapX], base->read.array[mapY][mapX]);
-        	if(TWOD[mapY][mapX] > 0 && TWOD[mapY][mapX] != '+')
-			{
-				hit = 1;
-			//	printf("**HIT**[%d][%d]\n", mapY, mapX);
-			}
-		}
-		//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
-    	if (side == 0)
-			perpWallDist = (mapX - base->read.x_pos + (1 - stepX) / 2) / rayDirX;
-    	else
-			perpWallDist = (mapY - base->read.y_pos + (1 - stepY) / 2) / rayDirY;
-
-		//Calculate height of line to draw on screen
-    	lineHeight = (int)(base->read.render_y / perpWallDist);
-
-    	//calculate lowest and highest pixel to fill in current stripe
-		drawStart = -lineHeight / 2 + base->read.render_y / 2;
-		if(drawStart < 0)
-			drawStart = 0;
-		drawEnd = lineHeight / 2 + base->read.render_y / 2;
-		if(drawEnd >= base->read.render_y)
-			drawEnd = base->read.render_y - 1;
-
-		//   printf("----------------------------------------------\n");
-    	//choose wall color
-    	color = 16711680;
-    	//give x and y sides different brightness
-    	if (side == 1) 
-		 	color = 16728899;
-    	//draw the pixels of the stripe as a vertical line
-    	verLine(base, x, drawStart, drawEnd, color);
+		ray_position(base, x);
+		initial_step_sidedist(base);
+		DDA(base);
+    	//draw the pixels of the stripe as a vertical line //and calculate first
+    	verLine(base, x);
 	  	x++;
 	}
-    //timing for input and FPS counter
-    // oldTime = time;
-    // time = GetTickCount();
-    // frameTime = (time - oldTime) / 1000.0; //frameTime is the time this frame has taken, in seconds
-   // print(1.0 / frameTime); //FPS counter
-    //redraw();
-    //cls();
+	return (0);
+}
 
+//initial direction vector
+void			orientation(t_base *base)
+{
+	base->game.dirX = 0; 
+	base->game.dirY = 0; 
+	if (base->read.pos == 'N')
+		base->game.dirY = -1;
+	if (base->read.pos == 'S')
+		base->game.dirY = 1;
+	if (base->read.pos == 'E')
+		base->game.dirX = 1;	
+	if (base->read.pos == 'W')
+		base->game.dirX = -1;
+}
+
+int				loop(t_base *base)
+{
+	orientation(base);
+	raycasting(base);
 	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
-	
-    // //speed modifiers
-    // double moveSpeed = frameTime * 5.0; //the constant value is in squares/second
-    // double rotSpeed = frameTime * 3.0; //the constant value is in radians/second
-    // readKeys();
-    // //move forward if no wall in front of you
-    // if(keyDown(SDLK_UP))
-    // {
-    //   if(worldMap[int(posX + dirX * moveSpeed)][int(posY)] == false) posX += dirX * moveSpeed;
-    //   if(worldMap[int(posX)][int(posY + dirY * moveSpeed)] == false) posY += dirY * moveSpeed;
-    // }
-    // //move backwards if no wall behind you
-    // if(keyDown(SDLK_DOWN))
-    // {
-    //   if(worldMap[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
-    //   if(worldMap[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
-    // }
-    // //rotate to the right
-    // if(keyDown(SDLK_RIGHT))
-    // {
-    //   //both camera direction and camera plane must be rotated
-    //   double oldDirX = dirX;
-    //   dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
-    //   dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
-    //   double oldPlaneX = planeX;
-    //   planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
-    //   planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
-    // }
-    // //rotate to the left
-    // if(keyDown(SDLK_LEFT))
-    // {
-    //   //both camera direction and camera plane must be rotated
-    //   double oldDirX = dirX;
-    //   dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
-    //   dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
-    //   double oldPlaneX = planeX;
-    //   planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
-    //   planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
-	// }
 	return (0);
 }

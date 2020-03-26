@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran          #+#    #+#                */
-/*   Updated: 2020/03/25 18:30:59 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/26 14:09:25 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,14 @@ int				mlx(t_base *base)
 	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
 	
 	// print_full_square(base, 100, 200, 100, 200);
-	raycasting(base);
-	//mlx_loop_hook(mlx, raycasting, &base);
 	//(void)base;
 
 // /* ----------HOOKING EVENT-----------------*/ 
 	mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_PRESS, 1L<<0, keypress, &base);
+	mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_RELEASE, 1L<<1, keyrelease, &base);
 	mlx_hook(base->mlx.mlx_win, X11_EVENT_EXIT, 1L<<17, windowclose_x, &base);
+	loop(base);
+	//mlx_loop_hook(base->mlx.mlx, &loop, &base);
 	
 // // /*----------------------------------------------*/
  	mlx_loop(base->mlx.mlx);
