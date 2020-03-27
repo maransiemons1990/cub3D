@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/26 20:09:04 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/27 13:35:44 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,17 @@ typedef struct s_game {
 	int			side; //was a NS or a EW wall hit?
 	
 	int			move_front;
-	int			move_y;
+	int			move_back;
+	int			move_right;
+	int			move_left;
 
 	double		time;
 	double		oldtime;
 	double		frametime;
 	double		movespeed;
 	double		rotspeed;
+
+	int			update;
 }				t_game;
 
 typedef struct	s_base{

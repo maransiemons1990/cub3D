@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran          #+#    #+#                */
-/*   Updated: 2020/03/26 20:37:27 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/27 13:52:46 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,40 +165,61 @@ int		raycasting(t_base *base)
 	base->game.oldtime = base->game.time;
 	base->game.time = clock();
 	base->game.frametime = (base->game.time - base->game.oldtime) / CLOCKS_PER_SEC;
-	base->game.movespeed = base->game.frametime * 5.0;
+	base->game.movespeed = base->game.frametime * 5.0; //werkt nog niet lekker.
 	base->game.rotspeed = base->game.frametime * 3.0;
 	return (0);
 }
 
-int				loop(t_base *base)
+void			move(t_base *base)
 {
-	static int	update = 1;
-	//TEST
-	// base->mlx.new_img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
-	// base->mlx.new_addr = mlx_get_data_addr(base->mlx.new_img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
-	printf("Hier?\n");
-	//
-	base->mlx.img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
-	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
-	// base->mlx.img = base->mlx.new_img;
-	// base->mlx.addr = base->mlx.new_addr;
-	
-	
 	if (base->game.move_front == 1)
 	{
 		if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirX * base->game.movespeed)] == '+')
 			base->read.x_pos += base->game.dirX * base->game.movespeed;
 		if (TWOD[(int)(base->read.y_pos + base->game.dirY * base->game.movespeed)][base->read.x_pos] == '+')
 			base->read.y_pos += base->game.dirY * base->game.movespeed;
-		update = 1;
 	}
-	if (update)
+	if (base->game.move_back == 1)
 	{
-		raycasting(base);
-		mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
-		//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);
+		if (TWOD[base->read.y_pos][(int)(base->read.x_pos - base->game.dirX)] == '+')
+		{
+			//printf("%d - %f * %f\n", base->read.x_pos, base->game.dirX, base->game.movespeed);
+			base->read.x_pos -= base->game.dirX;
+			//* base->game.movespeed;
+		if (TWOD[(int)(base->read.y_pos - base->game.dirY)][base->read.x_pos] == '+')
+			base->read.y_pos -= base->game.dirY;
+			//* base->game.movespeed;
+		}
 	}
-	update = 0;
+	if (base->game.move_right == 1)
+	{
+		// if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirX * base->game.movespeed)] == '+')
+		// 	base->read.x_pos += base->game.dirX * base->game.movespeed;
+		if (TWOD[(int)(base->read.y_pos + base->game.dirX)][base->read.x_pos] == '+')
+			base->read.y_pos += base->game.dirX;
+			//* base->game.movespeed;
+	}
+	if (base->game.move_left == 1)
+	{
+		// if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirX * base->game.movespeed)] == '+')
+		// 	base->read.x_pos += base->game.dirX * base->game.movespeed;
+		if (TWOD[(int)(base->read.y_pos - base->game.dirX)][base->read.x_pos] == '+')
+			base->read.y_pos -= base->game.dirX;
+			//* base->game.movespeed;
+	}
+}
+
+
+int				loop(t_base *base)
+{
+	base->mlx.img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
+	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
+	if (base->game.update)
+		move(base);
+	raycasting(base);
+	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
+	//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);
+	base->game.update = 0;
 	return (0);
 }
 
@@ -209,6 +230,15 @@ int				loop(t_base *base)
 
 
 
+
+
+
+
+	//TESTJE
+	// base->mlx.new_img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
+	// base->mlx.new_addr = mlx_get_data_addr(base->mlx.new_img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
+	// base->mlx.img = base->mlx.new_img;
+	// base->mlx.addr = base->mlx.new_addr;
 
 
 		// mlx_clear_window(base->mlx.mlx, base->mlx.mlx_win);
