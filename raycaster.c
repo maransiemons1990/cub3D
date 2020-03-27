@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran          #+#    #+#                */
-/*   Updated: 2020/03/27 13:52:46 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/27 16:34:23 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,16 @@ void	ray_position(t_base *base, int x)
 	double planeX;
 	double planeY;
 	
-	planeX = 0;	//the 2d raycaster version of camera plane
-	planeY = 0.66;
+	if (base->game.dirY == 0) //NS
+	{
+		planeX = 0;	//the 2d raycaster version of camera plane
+		planeY = 0.66;	
+	}
+	else		//EW
+	{
+		planeX = 0.66;
+		planeY = 0;	
+	}		
 	//calculate ray position and direction
     cameraX = 2 * x / (double)base->read.render_x - 1; //x-coordinate in camera space
     base->game.rayDirX = base->game.dirX + planeX * cameraX;
@@ -170,45 +178,43 @@ int		raycasting(t_base *base)
 	return (0);
 }
 
+//* base->game.movespeed; Overal uitgehaald. Want issues.
 void			move(t_base *base)
 {
 	if (base->game.move_front == 1)
 	{
-		if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirX * base->game.movespeed)] == '+')
-			base->read.x_pos += base->game.dirX * base->game.movespeed;
-		if (TWOD[(int)(base->read.y_pos + base->game.dirY * base->game.movespeed)][base->read.x_pos] == '+')
-			base->read.y_pos += base->game.dirY * base->game.movespeed;
+		if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirX)] == '+')
+			base->read.x_pos += base->game.dirX;		//EW
+		if (TWOD[(int)(base->read.y_pos + base->game.dirY)][base->read.x_pos] == '+')
+			base->read.y_pos += base->game.dirY;		//SN
+		printf("FRONT [%d][%d]\n", base->read.y_pos, base->read.x_pos);
 	}
 	if (base->game.move_back == 1)
 	{
 		if (TWOD[base->read.y_pos][(int)(base->read.x_pos - base->game.dirX)] == '+')
-		{
-			//printf("%d - %f * %f\n", base->read.x_pos, base->game.dirX, base->game.movespeed);
 			base->read.x_pos -= base->game.dirX;
-			//* base->game.movespeed;
 		if (TWOD[(int)(base->read.y_pos - base->game.dirY)][base->read.x_pos] == '+')
 			base->read.y_pos -= base->game.dirY;
-			//* base->game.movespeed;
-		}
+		printf("BACK [%d][%d]\n", base->read.y_pos, base->read.x_pos);
 	}
 	if (base->game.move_right == 1)
 	{
-		// if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirX * base->game.movespeed)] == '+')
-		// 	base->read.x_pos += base->game.dirX * base->game.movespeed;
+		if (TWOD[base->read.y_pos][(int)(base->read.x_pos - base->game.dirY)] == '+')
+		 	base->read.x_pos -= base->game.dirY;		//S N
 		if (TWOD[(int)(base->read.y_pos + base->game.dirX)][base->read.x_pos] == '+')
-			base->read.y_pos += base->game.dirX;
-			//* base->game.movespeed;
+			base->read.y_pos += base->game.dirX;		//E W
+		printf("RIGHT [%d][%d]\n", base->read.y_pos, base->read.x_pos);
 	}
 	if (base->game.move_left == 1)
 	{
-		// if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirX * base->game.movespeed)] == '+')
-		// 	base->read.x_pos += base->game.dirX * base->game.movespeed;
+		if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirY)] == '+')
+			base->read.x_pos += base->game.dirY;	//S N
 		if (TWOD[(int)(base->read.y_pos - base->game.dirX)][base->read.x_pos] == '+')
-			base->read.y_pos -= base->game.dirX;
-			//* base->game.movespeed;
+			base->read.y_pos -= base->game.dirX;	//E W
+		printf("LEFT [%d][%d]\n", base->read.y_pos, base->read.x_pos);
 	}
+	
 }
-
 
 int				loop(t_base *base)
 {
@@ -222,26 +228,3 @@ int				loop(t_base *base)
 	base->game.update = 0;
 	return (0);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-	//TESTJE
-	// base->mlx.new_img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
-	// base->mlx.new_addr = mlx_get_data_addr(base->mlx.new_img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
-	// base->mlx.img = base->mlx.new_img;
-	// base->mlx.addr = base->mlx.new_addr;
-
-
-		// mlx_clear_window(base->mlx.mlx, base->mlx.mlx_win);
-		// // gl->img = mlx_new_image(gl->mlx, gl->s_x, gl->s_y);
-		// // gl->disp = mlx_get_data_addr(gl->img, &(gl->bpp), &(gl->sizeline),
-		// // 	&(gl->endian));
