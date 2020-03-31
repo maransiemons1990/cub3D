@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran          #+#    #+#                */
-/*   Updated: 2020/03/27 16:34:23 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/31 11:47:57 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,29 +131,31 @@ void	initial_step_sidedist(t_base *base)
 void	ray_position(t_base *base, int x)
 {
 	double cameraX;
-	double planeX;
-	double planeY;
 	
 	if (base->game.dirY == 0) //NS
 	{
-		planeX = 0;	//the 2d raycaster version of camera plane
-		planeY = 0.66;	
+		base->game.planeX = 0;	//the 2d raycaster version of camera plane
+		base->game.planeY = 0.66;	
 	}
-	else		//EW
+	else					//EW
 	{
-		planeX = 0.66;
-		planeY = 0;	
+		base->game.planeX = 0.66;
+		base->game.planeY = 0;	
 	}		
 	//calculate ray position and direction
-    cameraX = 2 * x / (double)base->read.render_x - 1; //x-coordinate in camera space
-    base->game.rayDirX = base->game.dirX + planeX * cameraX;
-    base->game.rayDirY = base->game.dirY + planeY * cameraX;
+    if (base->read.pos == 'W' || base->read.pos == 'S')		//Spiegelen terug gedraaid, maar nu kleuren verkeerd om?
+		cameraX = (2 * x / (double)base->read.render_x - 1) * -1; //x-coordinate in camera space
+    else
+		cameraX = 2 * x / (double)base->read.render_x - 1;
+	base->game.rayDirX = base->game.dirX + base->game.planeX * cameraX;
+    base->game.rayDirY = base->game.dirY + base->game.planeY * cameraX;
     //which box of the map we're in
     base->game.mapX = (int)base->read.x_pos;
 	base->game.mapY = (int)base->read.y_pos;
 	//length of ray from one x or y-side to next x or y-side
     base->game.deltaDistX = fabs(1 / base->game.rayDirX);
     base->game.deltaDistY = fabs(1 / base->game.rayDirY);
+	//printf("ROTATE raypostion dirX[%f], dirY[%f], planeX[%f], planeY[%f]\n", base->game.dirX, base->game.dirY, base->game.planeX, base->game.planeY);
 }
 
 int		raycasting(t_base *base)
@@ -177,6 +179,35 @@ int		raycasting(t_base *base)
 	base->game.rotspeed = base->game.frametime * 3.0;
 	return (0);
 }
+
+void			rotate(t_base *base)
+{
+	double	oldDirX;
+	double	oldPlaneX;
+	
+	if (base->game.rotate_right == 1)
+	{
+		//printf("ROTATE LEFT rotspeed[%f]", base->game.rotspeed);
+		oldDirX = base->game.dirX;
+		base->game.dirX = base->game.dirX * cos(base->game.rotspeed) - base->game.dirY * sin(base->game.rotspeed);
+		base->game.dirY = oldDirX * sin(base->game.rotspeed) + base->game.dirY * cos(base->game.rotspeed);
+		oldPlaneX = base->game.planeX;
+		base->game.planeX = base->game.planeX * cos(base->game.rotspeed) - base->game.planeY * sin(base->game.rotspeed);
+		base->game.planeY = oldPlaneX * sin(base->game.rotspeed) + base->game.planeY * cos(base->game.rotspeed);
+		printf("ROTATE RIGHT dirX[%f], dirY[%f], planeX[%f], planeY[%f]\n", base->game.dirX, base->game.dirY, base->game.planeX, base->game.planeY);
+	}
+	if (base->game.rotate_left == 1)
+	{
+		oldDirX = base->game.dirX;
+		base->game.dirX = base->game.dirX * cos(-base->game.rotspeed) - base->game.dirY * sin(-base->game.rotspeed);
+		base->game.dirY = oldDirX * sin(-base->game.rotspeed) + base->game.dirY * cos(-base->game.rotspeed);
+		oldPlaneX = base->game.planeX;
+		base->game.planeX = base->game.planeX * cos(-base->game.rotspeed) - base->game.planeY * sin(-base->game.rotspeed);
+		base->game.planeY = oldPlaneX * sin(-base->game.rotspeed) + base->game.planeY * cos(-base->game.rotspeed);
+		printf("ROTATE LEFT dirX[%f], dirY[%f], planeX[%f], planeY[%f]\n", base->game.dirX, base->game.dirY, base->game.planeX, base->game.planeY);
+	}
+}
+
 
 //* base->game.movespeed; Overal uitgehaald. Want issues.
 void			move(t_base *base)
@@ -213,7 +244,8 @@ void			move(t_base *base)
 			base->read.y_pos -= base->game.dirX;	//E W
 		printf("LEFT [%d][%d]\n", base->read.y_pos, base->read.x_pos);
 	}
-	
+	if (base->game.rotate_left == 1 || base->game.rotate_right == 1)
+		rotate(base);
 }
 
 int				loop(t_base *base)
@@ -228,3 +260,5 @@ int				loop(t_base *base)
 	base->game.update = 0;
 	return (0);
 }
+
+//To do: R/L richtingen uitzoeken.(Wil)

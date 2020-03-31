@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/27 13:35:44 by Maran         ########   odam.nl         */
+/*   Updated: 2020/03/30 10:22:37 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,9 @@ typedef struct s_game {
 
 	double		deltaDistX;
 	double		deltaDistY;
+
+	double		planeX;
+	double		planeY;
 	
 	int			side; //was a NS or a EW wall hit?
 	
@@ -105,6 +108,9 @@ typedef struct s_game {
 	int			move_back;
 	int			move_right;
 	int			move_left;
+	
+	int 		rotate_left;
+	int			rotate_right;
 
 	double		time;
 	double		oldtime;
