@@ -6,18 +6,13 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran          #+#    #+#                */
-/*   Updated: 2020/03/31 11:47:57 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/02 16:05:13 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <math.h>
 #include <string.h>
-//#include <vector.h>
-//#include <iostream>
-
-//#include "quickcg.h"
-
 
 /*
 ** Pushing pixels to the window. we will have to buffer all of our pixels to a image
@@ -33,14 +28,59 @@ void            my_mlx_pixel_put(t_base *base, int x, int y, int color)
     *(unsigned int*)dst = color;
 }
 
-void			verLine(t_base *base, int x)
+// void			verLine(t_base *base, int x)
+// {
+// 	int		lineHeight;
+// 	int		drawStart;
+// 	int		drawEnd;
+// 	int		color;
+//     double	perpWallDist;
+	
+// 	//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
+//     if (base->game.side == 0)
+// 		perpWallDist = (base->game.mapX - base->read.x_pos + (1 - base->game.stepX) / 2) / base->game.rayDirX;
+// 	else
+// 		perpWallDist = (base->game.mapY - base->read.y_pos + (1 - base->game.stepY) / 2) / base->game.rayDirY;
+// 	//Calculate height of line to draw on screen
+//    	lineHeight = (int)(base->read.render_y / perpWallDist);
+//    	//calculate lowest and highest pixel to fill in current stripe
+// 	drawStart = -lineHeight / 2 + base->read.render_y / 2;
+// 	if(drawStart < 0)
+// 		drawStart = 0;
+// 	drawEnd = lineHeight / 2 + base->read.render_y / 2;
+// 	if(drawEnd >= base->read.render_y)
+// 		drawEnd = base->read.render_y - 1;
+// 	//   printf("----------------------------------------------\n");
+//     //choose wall color
+//     color = 16711680;
+//     //give x and y sides different brightness
+//     if (base->game.side == 1) 
+// 	 	color = 16728899;
+// 	//printf(" x =[%d], start=[%d], end=[%d], color=[%d]\n", x, drawStart, drawEnd, color);
+// 	while (drawStart < drawEnd)
+// 	{
+// 		my_mlx_pixel_put(base, x, drawStart, color);
+// 		drawStart++;
+// 	}
+// }
+
+void			verLine2(t_base *base, int x)
 {
 	int		lineHeight;
 	int		drawStart;
 	int		drawEnd;
-	int		color;
     double	perpWallDist;
+	char	*dest;
+
+	double	wallX; //where exactly the wall was hit
+	int 	texX;
+	double	step;
+	double	texPos;
+	int		y;
+	int		texY;
+	int		color;
 	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
     if (base->game.side == 0)
 		perpWallDist = (base->game.mapX - base->read.x_pos + (1 - base->game.stepX) / 2) / base->game.rayDirX;
@@ -55,18 +95,49 @@ void			verLine(t_base *base, int x)
 	drawEnd = lineHeight / 2 + base->read.render_y / 2;
 	if(drawEnd >= base->read.render_y)
 		drawEnd = base->read.render_y - 1;
-	//   printf("----------------------------------------------\n");
-    //choose wall color
-    color = 16711680;
-    //give x and y sides different brightness
-    if (base->game.side == 1) 
-	 	color = 16728899;
-	//printf(" x =[%d], start=[%d], end=[%d], color=[%d]\n", x, drawStart, drawEnd, color);
-	while (drawStart < drawEnd)
-	{
-		my_mlx_pixel_put(base, x, drawStart, color);
-		drawStart++;
-	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////
+  	
+	//calculate value of wallX (The value wallX represents the exact value where the wall was hit)
+    if (base->game.side == 0)
+ 	 	wallX = base->read.y_pos + perpWallDist * base->game.rayDirY;	//the exact x or y coordinate in the world,
+    else
+		wallX = base->read.x_pos + perpWallDist * base->game.rayDirX;
+    wallX -= (int)wallX; 												//substracting the integer value of the wall off it
+	//x coordinate on the texture
+    texX = wallX * (double)base->tex.texWidth; //(int)WallX !!!! Hierna een texture!
+    if (base->game.side == 0 && base->game.rayDirX > 0)
+		texX = base->tex.texWidth - texX - 1;
+    if (base->game.side == 1 && base->game.rayDirY < 0)
+		texX = base->tex.texWidth - texX - 1;
+	//Now that we know the x-coordinate of the texture, we know that this coordinate will remain the same,
+	// because we stay in the same vertical stripe of the screen.
+	
+	// The step size tells how much to increase in the texture coordinates (in floating point) for every pixel in vertical screen coordinates.
+	// It then needs to cast the floating point value to integer to select the actual texture pixel.
+	// = affine texture mapping
+	// How much to increase the texture coordinate per screen pixel
+	step = 1.0 * base->tex.texHeight / lineHeight;
+   
+    // Starting texture coordinate
+    texPos = (drawStart - base->read.render_y / 2 + lineHeight / 2) * step;
+    y = drawStart;
+	//printf("--------------------- x = [%d]---------------------\n", base->game.count);
+	while (y < drawEnd)
+    {
+		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+        texY = (int)texPos & (base->tex.texHeight - 1);
+        texPos += step;
+		//-------------NEW--------------		
+		dest = base->tex.png_addr + (texY * base->tex.png_line_length + texX * (base->tex.png_bits_per_pixel / 8));
+		color = *(unsigned int*)dest;
+		//-----------------------------
+		//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
+        // if(side == 1) color = (color >> 1) & 8355711;
+        //buffer[y][x] = color;
+		my_mlx_pixel_put(base, x, y, color);
+		y++;
+      }
+	  base->game.count++;
 }
 
 void	DDA(t_base *base)
@@ -131,7 +202,7 @@ void	initial_step_sidedist(t_base *base)
 void	ray_position(t_base *base, int x)
 {
 	double cameraX;
-	
+
 	if (base->game.dirY == 0) //NS
 	{
 		base->game.planeX = 0;	//the 2d raycaster version of camera plane
@@ -169,7 +240,8 @@ int		raycasting(t_base *base)
 		initial_step_sidedist(base);
 		DDA(base);
     	//draw the pixels of the stripe as a vertical line //and calculate first
-    	verLine(base, x);
+    	//verLine(base, x);
+		verLine2(base, x);
 	  	x++;
 	}
 	base->game.oldtime = base->game.time;
@@ -247,6 +319,18 @@ void			move(t_base *base)
 	if (base->game.rotate_left == 1 || base->game.rotate_right == 1)
 		rotate(base);
 }
+
+/*
+** 
+** img_ptr - specifies the image to use. 
+** bits_per_pixel - the number of bits needed to represent a pixel color
+** (also called the depth of the image).
+** size_line - the number of bytes used to store one line of the image in memory.
+** This information is needed to move from one line to another in the image.
+** endian - tells you wether the pixel color in the image needs to be stored in
+** little endian (== 0), or big endian (== 1).
+*/
+
 
 int				loop(t_base *base)
 {

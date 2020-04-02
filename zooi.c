@@ -272,3 +272,197 @@ Testen + leaks:
 To do:
 1. arrray initialiseren nodig?
 2. define buffersize?
+
+
+
+-----------------------------------------------
+// void		texture(t_base *base)
+// {
+// 	//FILE	*fd;
+// 	int fd;
+// 	int ret;
+// 	//unsigned int *texture[3];
+// 	base->game.texWidth = 64;
+// 	base->game.texHeight = 64;
+// 	int			*tex_n;
+// 	char buf[3345];
+// 	int	buff[1];
+// 	int iter;
+// 	int iter2;
+// 	int iter3;
+
+// 	//while (i < 4)
+// 	//texture[0] = 
+		
+
+// 	fd = open("path_to_the_north_texture/colorstone.png", O_RDONLY);
+// 	if (fd == -1)
+// 		printf("ERROR\n");
+// 	//ret = read(fd, buf, 3344);
+// 	//printf("ret = %d\n", ret);
+// 	tex_n = (int *)malloc(sizeof(int) * (64 * 64 + 1));
+// 	iter3 = 64*64;
+// 	tex_n[iter3] = 0;
+
+// 	iter = 0;
+// 	while (iter < 64)
+// 	{
+// 		iter2 = 0;
+// 		while (iter2 < 64)
+// 		{
+// 			read(fd, buff, 1);
+// 			tex_n[iter3--] = buff[0];
+// 		}
+// 		iter++;
+// 	}	
+// 	//new
+// 	//buffer[base->read.y_pos][base->read.x_pos];
+//}
+
+
+// void		texture(t_base *base)
+// {
+// 	int x;
+// 	int y;
+// 	base->game.texWidth = 64;
+// 	base->game.texHeight = 64;
+// 	unsigned int *texture[3][base->game.texWidth * base->game.texHeight];
+	
+// 	x = 0;
+// 	y = 0;
+	
+// 	while (y < base->game.texHeight)
+// 	{
+// 		while (x < base->game.texWidth)
+// 		{
+// 			int xorcolor = (x * 256 / texWidth) ^ (y * 256 / texHeight);
+//     		//int xcolor = x * 256 / texWidth;
+//     		int ycolor = y * 256 / texHeight;
+//     		int xycolor = y * 128 / texHeight + x * 128 / texWidth;
+//     		texture[0][texWidth * y + x] = 65536 * 254 * (x != y && x != texWidth - y); //flat red texture with black cross
+//     		texture[1][texWidth * y + x] = xycolor + 256 * xycolor + 65536 * xycolor; //sloped greyscale
+//     		texture[2][texWidth * y + x] = 256 * xycolor + 65536 * xycolor; //sloped yellow gradient
+//     		texture[3][texWidth * y + x] = xorcolor + 256 * xorcolor + 65536 * xorcolor; //xor greyscale
+//     		texture[4][texWidth * y + x] = 256 * xorcolor; //xor green
+//     		texture[5][texWidth * y + x] = 65536 * 192 * (x % 16 && y % 16); //red bricks
+//     		texture[6][texWidth * y + x] = 65536 * ycolor; //red gradient
+//     		texture[7][texWidth * y + x] = 128 + 256 * 128 + 65536 * 128; //flat grey texture
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+    
+// void	loop_tex64_64(t_base *base, FILE *img, int *tex)
+// {
+// 	int	buff[1];
+
+// 	while (base->game.iter++ < base->game.texh)
+// 	{
+// 		base->game.iter2 = 0;
+// 		while (base->game.iter2++ < base->game.texw)
+// 		{
+// 			fread(buff, 3, 1, img);
+// 			tex[base->game.iter3--] = buff[0];
+// 		}
+// 	}
+// }
+
+// void	texture(t_base *base)
+// {
+// 	unsigned char	header[54];
+// 	FILE			*img;
+// 	base->game.texWidth = 64;
+//  	base->game.texHeight = 64;
+
+// 	base->game.iter = 0;
+// 	img = fopen("bmp/greystone.bmp", "r");
+// 	fread(header, sizeof(unsigned char), 54, img);
+// 	fseek(img, header[10], SEEK_SET);
+// 	base->game.texw = header[18];
+// 	base->game.texh = header[22];
+// 	base->game.tex_grey = (int *)malloc(sizeof(int) * (base->game.texw * base->game.texh + 1));
+// 	base->game.iter3 = base->game.texw * base->game.texh;
+// 	base->game.tex_grey[base->game.iter3--] = 0;
+// 	loop_tex64_64(base, img, base->game.tex_grey);
+// }
+
+void	texture(t_base *base)
+{
+	//FILE			*img;
+	int				fd;
+	int				buf[1];
+	int				y;
+	int				x;
+
+	y = 0;
+	x = 0;
+	base->game.texWidth = 64;
+ 	base->game.texHeight = 64;
+	base->game.texres = base->game.texWidth * base->game.texHeight;
+	//img = fopen("bmp/greystone.bmp", "r");
+	fd = open("bmp/greystone.bmp", O_RDONLY);
+	base->game.tex_grey = (int *)malloc(sizeof(int) * (base->game.texres + 1));
+	// base->game.iter3 = base->game.texw * base->game.texh;
+	base->game.tex_grey[base->game.texres] = 0;
+	//loop_tex64_64(base, img, base->game.tex_grey);
+
+	base->game.texres--;
+	// while (y < base->game.texHeight)
+	// {
+	// 	x = 0;
+	// 	while (x < base->game.texWidth)
+	// 	{
+	// 		fread(buf, 3, 1, img); // leest 1 element, grootte van 3 bytes(RGB)
+	// 		base->game.tex_grey[base->game.texres] = buf[0];
+	// 		x++;
+	// 		base->game.texres--;
+	// 	}
+	// 	y++;
+	// }
+	while (y < base->game.texHeight)
+	{
+		x = 0;
+		while (x < base->game.texWidth)
+		{
+			read(fd, buf, 3); // leest 1 element, grootte van 3 bytes(RGB)
+			base->game.tex_grey[base->game.texres] = buf[0];
+			x++;
+			base->game.texres--;
+		}
+		y++;
+	}
+	printf("grey: %d\n", base->game.tex_grey[0]);
+	printf("grey: %d\n", base->game.tex_grey[4095]);
+	printf("grey: %d\n", base->game.tex_grey[4096]);
+}
+
+-------------
+
+
+
+void		texture(t_base *base)
+{
+	// int		current_color;
+	// char    *dst;
+	// int		x;
+	// int		y;
+	
+	// x = 0;
+	base->tex.texWidth = 64;
+	base->tex.texHeight = 64;
+	base->tex.png_img = mlx_png_file_to_image(base->mlx.mlx, "./path_to_the_north_texture/colorstone.png", &base->tex.texWidth, &base->tex.texHeight);
+	base->tex.png_addr = mlx_get_data_addr(base->tex.png_img, &base->tex.png_bits_per_pixel, &base->tex.png_line_length, &base->tex.png_endian);
+	// while (x < base->tex.texWidth)
+	// {
+	// 	y = 0;
+	// 	while (y < base->tex.texHeight)
+	// 	{
+	// 		dst = base->tex.png_addr + (y * base->tex.png_line_length + x * (base->tex.png_bits_per_pixel / 8));
+	// 		//printf("Komt hier?\n");
+	// 		current_color = *(unsigned int*)dst;
+	// 		printf("current color[%d][%d] = [%d]\n", y , x, current_color);
+	// 		y++;
+	// 	}
+	// 	x++;
+	// }
+}

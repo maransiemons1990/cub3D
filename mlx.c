@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran          #+#    #+#                */
-/*   Updated: 2020/03/31 10:21:54 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/02 16:05:30 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,24 @@ void			orientation(t_base *base)
 }
 
 /*
+** 
+** img_ptr - specifies the image to use. 
+** bits_per_pixel - the number of bits needed to represent a pixel color
+** (also called the depth of the image).
+** size_line - the number of bytes used to store one line of the image in memory.
+** This information is needed to move from one line to another in the image.
+** endian - tells you wether the pixel color in the image needs to be stored in
+** little endian (== 0), or big endian (== 1).
+*/
+void		texture(t_base *base)
+{
+	base->tex.texWidth = 64;
+	base->tex.texHeight = 64;
+	base->tex.png_img = mlx_png_file_to_image(base->mlx.mlx, "./path_to_the_north_texture/colorstone.png", &base->tex.texWidth, &base->tex.texHeight);
+	base->tex.png_addr = mlx_get_data_addr(base->tex.png_img, &base->tex.png_bits_per_pixel, &base->tex.png_line_length, &base->tex.png_endian);
+}
+
+/*
 ** mlx_init: This will establish a connection to the correct graphical system
 ** and will return a void * which holds the location of our current MLX instance/ connection identifier.
 ** mlx_new_window: creating a window. Return a pointer to the window we have just created.
@@ -41,14 +59,15 @@ void			orientation(t_base *base)
 ** We should ALWAYS calculate the memory offset using the line length set by mlx_get_data_addr.
 ** TO DO: temporary image aanmaken. 
 */
-
 int				mlx(t_base *base)
 {
+	base->game.count = 0;
 	orientation(base);
 	base->mlx.mlx = mlx_init();
 	base->mlx.mlx_win = mlx_new_window(base->mlx.mlx, base->read.render_x, base->read.render_y, "Hello world!");
 	//base->mlx.img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
 	//base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
+	texture(base);
 
 // /* ----------HOOKING EVENT-----------------*/ 
 	mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_PRESS, 1L<<0, &keypress, base);				//wel of geen & voor functie? // geen & voor base!

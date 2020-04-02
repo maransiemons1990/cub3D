@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/30 10:22:37 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/02 14:59:51 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,7 @@ typedef struct	s_mlx {
     void		*mlx;
 	void    	*mlx_win;
 	void        *img;
-	void        *new_img;
 	char		*addr;
-	char		*new_addr;
 	int			bits_per_pixel;
     int			line_length;
     int			endian;
@@ -119,12 +117,26 @@ typedef struct s_game {
 	double		rotspeed;
 
 	int			update;
+	int			count;
 }				t_game;
+
+typedef struct	s_tex{
+	int			texWidth;
+	int			texHeight;
+	int			texres;
+
+	void		*png_img;
+	void		*png_addr;
+	int			png_bits_per_pixel;
+    int			png_line_length;
+    int			png_endian;
+}				t_tex;
 
 typedef struct	s_base{
 	t_read		read;
 	t_mlx		mlx;
 	t_game		game;
+	t_tex		tex;
 }				t_base;
 
 
