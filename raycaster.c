@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran          #+#    #+#                */
-/*   Updated: 2020/04/02 16:05:13 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/02 18:53:35 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,9 +127,28 @@ void			verLine2(t_base *base, int x)
 		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
         texY = (int)texPos & (base->tex.texHeight - 1);
         texPos += step;
-		//-------------NEW--------------		
-		dest = base->tex.png_addr + (texY * base->tex.png_line_length + texX * (base->tex.png_bits_per_pixel / 8));
-		color = *(unsigned int*)dest;
+		//-------------NEW--------------
+		if (base->game.tex_side == 1)
+		{
+			dest = base->tex.png_addr + (texY * base->tex.png_line_length + texX * (base->tex.png_bits_per_pixel / 8));
+			color = *(unsigned int*)dest;
+		}
+		else if (base->game.tex_side == 2) //
+		{
+			dest = base->tex_ea.png_addr + (texY * base->tex_ea.png_line_length + texX * (base->tex_ea.png_bits_per_pixel / 8));
+			color = *(unsigned int*)dest;
+		}
+		else if (base->game.tex_side == 3)
+		{
+			dest = base->tex_so.png_addr + (texY * base->tex_so.png_line_length + texX * (base->tex_so.png_bits_per_pixel / 8));
+			color = *(unsigned int*)dest;
+		}
+		else //W
+		{
+			dest = base->tex_we.png_addr + (texY * base->tex_we.png_line_length + texX * (base->tex_we.png_bits_per_pixel / 8));
+			color = *(unsigned int*)dest;
+		}
+		
 		//-----------------------------
 		//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
         // if(side == 1) color = (color >> 1) & 8355711;
@@ -156,6 +175,7 @@ void	DDA(t_base *base)
     		base->game.sideDistX += base->game.deltaDistX;
     		base->game.mapX += base->game.stepX;
     		base->game.side = 0;
+			base->game.tex_side = base->game.stepX < 0 ? 2 : 4;
 		//   printf("Jump in X direction: new mapX[%d], new sideDistX[%f]\n", mapX, sideDistX);
     	}
     	else
@@ -163,6 +183,7 @@ void	DDA(t_base *base)
         		base->game.sideDistY += base->game.deltaDistY;
         		base->game.mapY += base->game.stepY;
         		base->game.side = 1;
+				base->game.tex_side = base->game.stepY < 0 ? 3 : 1;
 		//   printf("Jump in Y direction: new mapY[%d], new sideDistY[%f]\n", mapY, sideDistY);
     	}
     	//Check if ray has hit a wall
@@ -344,5 +365,3 @@ int				loop(t_base *base)
 	base->game.update = 0;
 	return (0);
 }
-
-//To do: R/L richtingen uitzoeken.(Wil)

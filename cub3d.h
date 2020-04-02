@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons       #+#    #+#                */
-/*   Updated: 2020/04/02 14:59:51 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/02 18:31:27 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ typedef struct s_game {
 
 	int			update;
 	int			count;
+
+	int			tex_side;
 }				t_game;
 
 typedef struct	s_tex{
@@ -132,11 +134,44 @@ typedef struct	s_tex{
     int			png_endian;
 }				t_tex;
 
+// typedef struct	s_tex_so{
+	
+
+// 	void		*png_img;
+// 	void		*png_addr;
+// 	int			png_bits_per_pixel;
+//     int			png_line_length;
+//     int			png_endian;
+// }				t_tex_so;
+
+// typedef struct	s_tex_so{
+	
+
+// 	void		*png_img;
+// 	void		*png_addr;
+// 	int			png_bits_per_pixel;
+//     int			png_line_length;
+//     int			png_endian;
+// }				t_tex_so;
+
+// typedef struct	s_tex_we{
+	
+
+// 	void		*png_img;
+// 	void		*png_addr;
+// 	int			png_bits_per_pixel;
+//     int			png_line_length;
+//     int			png_endian;
+// }				t_tex_we;
+
 typedef struct	s_base{
 	t_read		read;
 	t_mlx		mlx;
 	t_game		game;
 	t_tex		tex;
+	t_tex		tex_so;
+	t_tex		tex_we;
+	t_tex		tex_ea;
 }				t_base;
 
 
