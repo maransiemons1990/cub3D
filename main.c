@@ -5,8 +5,8 @@
 /*                                                     +:+                    */
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/03/04 18:30:15 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/24 18:20:41 by Maran         ########   odam.nl         */
+/*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
+/*   Updated: 2020/04/08 11:02:40 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int			main(int argc, char **argv)
 	if (ret > 0)
 		return (error_distribution(base));
 	//------------------DELETE LATER------------------------------------
-	valuechecker(base);
+	//valuechecker(base);
 	//twod_checker(base->read.array);
 	//------------------------------------------------------------------
 	mlx(base);

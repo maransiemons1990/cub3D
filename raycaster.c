@@ -5,8 +5,8 @@
 /*                                                     +:+                    */
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/03/25 10:58:10 by Maran          #+#    #+#                */
-/*   Updated: 2020/04/02 18:53:35 by Maran         ########   odam.nl         */
+/*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
+/*   Updated: 2020/04/08 10:58:18 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,42 +27,6 @@ void            my_mlx_pixel_put(t_base *base, int x, int y, int color)
     dst = base->mlx.addr + (y * base->mlx.line_length + x * (base->mlx.bits_per_pixel / 8));
     *(unsigned int*)dst = color;
 }
-
-// void			verLine(t_base *base, int x)
-// {
-// 	int		lineHeight;
-// 	int		drawStart;
-// 	int		drawEnd;
-// 	int		color;
-//     double	perpWallDist;
-	
-// 	//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
-//     if (base->game.side == 0)
-// 		perpWallDist = (base->game.mapX - base->read.x_pos + (1 - base->game.stepX) / 2) / base->game.rayDirX;
-// 	else
-// 		perpWallDist = (base->game.mapY - base->read.y_pos + (1 - base->game.stepY) / 2) / base->game.rayDirY;
-// 	//Calculate height of line to draw on screen
-//    	lineHeight = (int)(base->read.render_y / perpWallDist);
-//    	//calculate lowest and highest pixel to fill in current stripe
-// 	drawStart = -lineHeight / 2 + base->read.render_y / 2;
-// 	if(drawStart < 0)
-// 		drawStart = 0;
-// 	drawEnd = lineHeight / 2 + base->read.render_y / 2;
-// 	if(drawEnd >= base->read.render_y)
-// 		drawEnd = base->read.render_y - 1;
-// 	//   printf("----------------------------------------------\n");
-//     //choose wall color
-//     color = 16711680;
-//     //give x and y sides different brightness
-//     if (base->game.side == 1) 
-// 	 	color = 16728899;
-// 	//printf(" x =[%d], start=[%d], end=[%d], color=[%d]\n", x, drawStart, drawEnd, color);
-// 	while (drawStart < drawEnd)
-// 	{
-// 		my_mlx_pixel_put(base, x, drawStart, color);
-// 		drawStart++;
-// 	}
-// }
 
 void			verLine2(t_base *base, int x)
 {
@@ -104,11 +68,11 @@ void			verLine2(t_base *base, int x)
 		wallX = base->read.x_pos + perpWallDist * base->game.rayDirX;
     wallX -= (int)wallX; 												//substracting the integer value of the wall off it
 	//x coordinate on the texture
-    texX = wallX * (double)base->tex.texWidth; //(int)WallX !!!! Hierna een texture!
+    texX = wallX * (double)base->game.texWidth; //(int)WallX !!!! Hierna een texture!
     if (base->game.side == 0 && base->game.rayDirX > 0)
-		texX = base->tex.texWidth - texX - 1;
+		texX = base->game.texWidth - texX - 1;
     if (base->game.side == 1 && base->game.rayDirY < 0)
-		texX = base->tex.texWidth - texX - 1;
+		texX = base->game.texWidth - texX - 1;
 	//Now that we know the x-coordinate of the texture, we know that this coordinate will remain the same,
 	// because we stay in the same vertical stripe of the screen.
 	
@@ -116,7 +80,7 @@ void			verLine2(t_base *base, int x)
 	// It then needs to cast the floating point value to integer to select the actual texture pixel.
 	// = affine texture mapping
 	// How much to increase the texture coordinate per screen pixel
-	step = 1.0 * base->tex.texHeight / lineHeight;
+	step = 1.0 * base->game.texHeight / lineHeight;
    
     // Starting texture coordinate
     texPos = (drawStart - base->read.render_y / 2 + lineHeight / 2) * step;
@@ -125,12 +89,12 @@ void			verLine2(t_base *base, int x)
 	while (y < drawEnd)
     {
 		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-        texY = (int)texPos & (base->tex.texHeight - 1);
+        texY = (int)texPos & (base->game.texHeight - 1);
         texPos += step;
 		//-------------NEW--------------
 		if (base->game.tex_side == 1)
 		{
-			dest = base->tex.png_addr + (texY * base->tex.png_line_length + texX * (base->tex.png_bits_per_pixel / 8));
+			dest = base->tex_no.png_addr + (texY * base->tex_no.png_line_length + texX * (base->tex_no.png_bits_per_pixel / 8));
 			color = *(unsigned int*)dest;
 		}
 		else if (base->game.tex_side == 2) //

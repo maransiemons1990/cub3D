@@ -5,8 +5,8 @@
 #                                                      +:+                     #
 #    By: msiemons <msiemons@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
-#    Created: 2020/03/04 17:11:26 by msiemons       #+#    #+#                 #
-#    Updated: 2020/03/25 18:19:45 by Maran         ########   odam.nl          #
+#    Created: 2020/03/04 17:11:26 by msiemons      #+#    #+#                  #
+#    Updated: 2020/04/08 11:13:50 by Maran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,13 @@ LIBFT = libft
 
 LIBMLX = libmlx.dylib
 
-SRC = main.c errormessages.c gnl_cub3d.c gnl_cub3d_utils.c read_scene.c\
-		utils_general.c read_scene_utils.c check_map.c check_map_utils.c\
-		twod_checker.c valuechecker.c\
+SRC = main.c errormessages.c read_scene/gnl_cub3d.c read_scene/gnl_cub3d_utils.c\
+		read_scene/read_scene.c\
+		read_scene/utils_general.c read_scene/read_scene_utils.c\
+		read_scene/check_map.c read_scene/check_map_utils.c\
 		mlx.c raycaster.c keys.c
 
+#twod_checker.c valuechecker.c\#
 OBJ = $(SRC:.c=.o)
 
 FLAGS = -Wall -Wextra -Werror

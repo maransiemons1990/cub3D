@@ -5,8 +5,8 @@
 /*                                                     +:+                    */
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/03/24 16:30:07 by Maran          #+#    #+#                */
-/*   Updated: 2020/04/02 18:34:28 by Maran         ########   odam.nl         */
+/*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
+/*   Updated: 2020/04/08 10:48:40 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,32 +39,25 @@ void			orientation(t_base *base)
 */
 void		texture(t_base *base)
 {
-	base->tex.texWidth = 64;
-	base->tex.texHeight = 64;
-
 	char *path_no;
 	char *path_so;
 	char *path_we;
 	char *path_ea;
 	
+	base->game.texWidth = 64;
+	base->game.texHeight = 64;
 	path_no = ft_strjoin(base->read.no, "/colorstone.png"); //free
 	path_so = ft_strjoin(base->read.so, "/mossy.png");
-	path_we = ft_strjoin(base->read.we, "/bluestone.png");
-	path_ea = ft_strjoin(base->read.ea, "/wood.png");
-	//printf("%s\n", path_no);
-	//load_textures()
-	
-		base->tex.png_img = mlx_png_file_to_image(base->mlx.mlx, path_no, &base->tex.texWidth, &base->tex.texHeight);
-		base->tex.png_addr = mlx_get_data_addr(base->tex.png_img, &base->tex.png_bits_per_pixel, &base->tex.png_line_length, &base->tex.png_endian);
-
-		base->tex_so.png_img = mlx_png_file_to_image(base->mlx.mlx, path_so, &base->tex.texWidth, &base->tex.texHeight);
-		base->tex_so.png_addr = mlx_get_data_addr(base->tex_so.png_img, &base->tex_so.png_bits_per_pixel, &base->tex_so.png_line_length, &base->tex_so.png_endian);
-
-		base->tex_ea.png_img = mlx_png_file_to_image(base->mlx.mlx, path_ea, &base->tex.texWidth, &base->tex.texHeight);
-		base->tex_ea.png_addr = mlx_get_data_addr(base->tex_ea.png_img, &base->tex_ea.png_bits_per_pixel, &base->tex_ea.png_line_length, &base->tex_ea.png_endian);
-
-		base->tex_we.png_img = mlx_png_file_to_image(base->mlx.mlx, path_we, &base->tex.texWidth, &base->tex.texHeight);
-		base->tex_we.png_addr = mlx_get_data_addr(base->tex_we.png_img, &base->tex_we.png_bits_per_pixel, &base->tex_we.png_line_length, &base->tex_we.png_endian);
+	path_we = ft_strjoin(base->read.we, "/redbrick.png");
+	path_ea = ft_strjoin(base->read.ea, "/pink_big.png");
+	base->tex_no.png_img = mlx_png_file_to_image(base->mlx.mlx, path_no, &base->game.texWidth, &base->game.texHeight);
+	base->tex_no.png_addr = mlx_get_data_addr(base->tex_no.png_img, &base->tex_no.png_bits_per_pixel, &base->tex_no.png_line_length, &base->tex_no.png_endian);
+	base->tex_so.png_img = mlx_png_file_to_image(base->mlx.mlx, path_so, &base->game.texWidth, &base->game.texHeight);
+	base->tex_so.png_addr = mlx_get_data_addr(base->tex_so.png_img, &base->tex_so.png_bits_per_pixel, &base->tex_so.png_line_length, &base->tex_so.png_endian);
+	base->tex_ea.png_img = mlx_png_file_to_image(base->mlx.mlx, path_ea, &base->game.texWidth, &base->game.texHeight);
+	base->tex_ea.png_addr = mlx_get_data_addr(base->tex_ea.png_img, &base->tex_ea.png_bits_per_pixel, &base->tex_ea.png_line_length, &base->tex_ea.png_endian);
+	base->tex_we.png_img = mlx_png_file_to_image(base->mlx.mlx, path_we, &base->game.texWidth, &base->game.texHeight);
+	base->tex_we.png_addr = mlx_get_data_addr(base->tex_we.png_img, &base->tex_we.png_bits_per_pixel, &base->tex_we.png_line_length, &base->tex_we.png_endian);
 }
 
 /*
