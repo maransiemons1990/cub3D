@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/08 10:58:18 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/08 14:20:24 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ void            my_mlx_pixel_put(t_base *base, int x, int y, int color)
     dst = base->mlx.addr + (y * base->mlx.line_length + x * (base->mlx.bits_per_pixel / 8));
     *(unsigned int*)dst = color;
 }
+
+/*
+**
+*/
 
 void			verLine2(t_base *base, int x)
 {
@@ -101,6 +105,7 @@ void			verLine2(t_base *base, int x)
 		{
 			dest = base->tex_ea.png_addr + (texY * base->tex_ea.png_line_length + texX * (base->tex_ea.png_bits_per_pixel / 8));
 			color = *(unsigned int*)dest;
+			color = (color >> 1) & 8355711;
 		}
 		else if (base->game.tex_side == 3)
 		{
@@ -111,12 +116,9 @@ void			verLine2(t_base *base, int x)
 		{
 			dest = base->tex_we.png_addr + (texY * base->tex_we.png_line_length + texX * (base->tex_we.png_bits_per_pixel / 8));
 			color = *(unsigned int*)dest;
-		}
+			color = (color >> 1) & 8355711;	//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
 		
-		//-----------------------------
-		//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-        // if(side == 1) color = (color >> 1) & 8355711;
-        //buffer[y][x] = color;
+		}
 		my_mlx_pixel_put(base, x, y, color);
 		y++;
       }

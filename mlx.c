@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/08 10:48:40 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/08 14:13:56 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void		texture(t_base *base)
 	
 	base->game.texWidth = 64;
 	base->game.texHeight = 64;
-	path_no = ft_strjoin(base->read.no, "/colorstone.png"); //free
-	path_so = ft_strjoin(base->read.so, "/mossy.png");
-	path_we = ft_strjoin(base->read.we, "/redbrick.png");
-	path_ea = ft_strjoin(base->read.ea, "/pink_big.png");
+	path_no = ft_strjoin(base->read.no, "/dark-green.png"); //free
+	path_so = ft_strjoin(base->read.so, "/water.png");
+	path_we = ft_strjoin(base->read.we, "/zebra.png");
+	path_ea = ft_strjoin(base->read.ea, "/diamonds.png");
 	base->tex_no.png_img = mlx_png_file_to_image(base->mlx.mlx, path_no, &base->game.texWidth, &base->game.texHeight);
 	base->tex_no.png_addr = mlx_get_data_addr(base->tex_no.png_img, &base->tex_no.png_bits_per_pixel, &base->tex_no.png_line_length, &base->tex_no.png_endian);
 	base->tex_so.png_img = mlx_png_file_to_image(base->mlx.mlx, path_so, &base->game.texWidth, &base->game.texHeight);
