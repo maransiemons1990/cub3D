@@ -6,7 +6,7 @@
 #    By: msiemons <msiemons@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/03/04 17:11:26 by msiemons      #+#    #+#                  #
-#    Updated: 2020/04/08 11:13:50 by Maran         ########   odam.nl          #
+#    Updated: 2020/04/08 16:09:07 by Maran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRC = main.c errormessages.c read_scene/gnl_cub3d.c read_scene/gnl_cub3d_utils.c
 		read_scene/read_scene.c\
 		read_scene/utils_general.c read_scene/read_scene_utils.c\
 		read_scene/check_map.c read_scene/check_map_utils.c\
-		mlx.c raycaster.c keys.c
+		mlx.c raycaster.c keys.c floor.c
 
 #twod_checker.c valuechecker.c\#
 OBJ = $(SRC:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/08 14:20:24 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/08 18:21:19 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,7 +267,6 @@ void			rotate(t_base *base)
 	}
 }
 
-
 //* base->game.movespeed; Overal uitgehaald. Want issues.
 void			move(t_base *base)
 {
@@ -317,14 +316,14 @@ void			move(t_base *base)
 ** endian - tells you wether the pixel color in the image needs to be stored in
 ** little endian (== 0), or big endian (== 1).
 */
-
-
 int				loop(t_base *base)
 {
 	base->mlx.img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
 	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
 	if (base->game.update)
 		move(base);
+	//floorcasting(base);
+	floorcasting_texture(base);
 	raycasting(base);
 	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
 	//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);

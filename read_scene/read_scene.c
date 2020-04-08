@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/02 16:11:17 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/08 11:16:20 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/08 17:46:42 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ static int		check_save_colors_cf(int y, int i, t_base *base)
 	if ((TWOD[y][i] < '0' && TWOD[y][i] != ' ') || TWOD[y][i] > '9')
 		return (base->read.error = 2);
 	base->read.red = cfr_itoa(y, &i, base, 0);
-	base->read.blue = cfr_itoa(y, &i, base, 1);
 	base->read.green = cfr_itoa(y, &i, base, 1);
+	base->read.blue = cfr_itoa(y, &i, base, 1);
 	if (READ.red == -1 || READ.blue == -1 || READ.green == -1)
 		return (base->read.error = 4);
 	if (!((READ.red >= 0 &&  READ.red <= 255) && (READ.blue >= 0 &&

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/08 10:39:55 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/08 18:54:35 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,8 @@ typedef struct	s_base{
 	t_tex		tex_so;
 	t_tex		tex_we;
 	t_tex		tex_ea;
+	t_tex		tex_f;
+	t_tex		tex_c;
 }				t_base;
 
 
@@ -185,6 +187,13 @@ int				raycasting(t_base *base);
 int             keypress(int keycode, t_base *img);
 int             keyrelease(int keycode, t_base *base);
 int				windowclose_x(t_base *img);
+
+//floor
+void			floorcasting(t_base *base);
+void			floorcasting_texture(t_base *base); //extra
+
+//
+void            my_mlx_pixel_put(t_base *base, int x, int y, int color);
 
 //Tutorial:
 // void		print_triangle(t_data *img, int x, int y, int radius);
