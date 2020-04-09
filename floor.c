@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/08 14:53:21 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/08 19:05:30 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/09 11:04:25 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,16 @@ void	floorcasting(t_base *base)
 		while(x < base->read.render_x)
       	{
 			color = base->read.f_color;
-        	color = (color >> 1) & 8355711; // make a bit darker
+        	//color = (color >> 1) & 8355711; // make a bit darker
 			my_mlx_pixel_put(base, x, y, color);
         	color = base->read.c_color;
-        	color = (color >> 1) & 8355711; // make a bit darker
+        	//color = (color >> 1) & 8355711; // make a bit darker
 			my_mlx_pixel_put(base, x, (base->read.render_y - y - 1), color);
 			x++;
       	}
 	  y++;
     }
 }
-
 
 void	floorcasting_texture(t_base *base)
 {
@@ -68,10 +67,10 @@ void	floorcasting_texture(t_base *base)
 	while(y < base->read.render_y)
     {
 		//rayDir for leftmost ray (x = 0) and rightmost ray (x = width screen)
-      	rayDirX0 = base->game.dirX - base->game.planeX; //W dirX=-1 dirY=0/ -1 - 0.66= -1.66
-      	rayDirY0 = base->game.dirY - base->game.planeY; // 				/ 0 - 0 = 0
-      	rayDirX1 = base->game.dirX + base->game.planeX; //				/ -1 + 0.66 = 0.44
-      	rayDirY1 = base->game.dirY + base->game.planeY; //				/ 0 + 0 = 0	
+      	rayDirX0 = base->game.dirX - base->game.planeX;
+      	rayDirY0 = base->game.dirY - base->game.planeY;
+      	rayDirX1 = base->game.dirX + base->game.planeX;
+      	rayDirY1 = base->game.dirY + base->game.planeY;				
 
       	//Current y position compared to the center of the screen (the horizon)
       	p = y - base->read.render_y / 2;
@@ -101,6 +100,7 @@ void	floorcasting_texture(t_base *base)
 
       	// calculate the real world step vector we have to add for each x (parallel to camera plane)
       	// adding step by step avoids multiplications with a weight in the inner loop
+		//OFFICIALLY WE HAVE TO DEVIDE IT THROUGH render_x, but y looked prettier.
       	floorStepX = rowDistance * (rayDirX1 - rayDirX0) / base->read.render_y;
       	floorStepY = rowDistance * (rayDirY1 - rayDirY0) / base->read.render_y;
 
@@ -129,7 +129,7 @@ void	floorcasting_texture(t_base *base)
         	floorY += floorStepY;
 			
 			//NEW
-			//dest = base->tex_f.png_addr + (base->game.texWidth * ty + tx * (base->tex_we.png_bits_per_pixel / 8)); MINDER MOOI
+			//dest = base->tex_f.png_addr + (base->game.texWidth * ty + tx * (base->tex_we.png_bits_per_pixel / 8)); //MINDER MOOI
 			dest = base->tex_f.png_addr + (base->tex_f.png_line_length * ty + tx * (base->tex_we.png_bits_per_pixel / 8));
 			color = *(unsigned int*)dest;
 			color = (color >> 1) & 8355711;

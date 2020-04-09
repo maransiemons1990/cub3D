@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/08 18:21:19 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/09 10:23:51 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void            my_mlx_pixel_put(t_base *base, int x, int y, int color)
 }
 
 /*
-**
+** We hebben een addr. Dus als reversed my_mlx_put krijg je kleur van coordinaat op adres.
 */
 
 void			verLine2(t_base *base, int x)
