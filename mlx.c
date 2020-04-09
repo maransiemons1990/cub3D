@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/09 10:27:35 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/09 13:59:07 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void		texture(t_base *base)
 	char *path_so;
 	char *path_we;
 	char *path_ea;
+	char *path_s;
 	
 	base->game.texWidth = 64;
 	base->game.texHeight = 64;
@@ -50,6 +51,7 @@ void		texture(t_base *base)
 	path_so = ft_strjoin(base->read.so, "/redbrick.png");
 	path_we = ft_strjoin(base->read.we, "/zebra.png");
 	path_ea = ft_strjoin(base->read.ea, "/diamonds.png");
+	path_s = ft_strjoin(base->read.sprite, "/barrel.png");
 	base->tex_no.png_img = mlx_png_file_to_image(base->mlx.mlx, path_no, &base->game.texWidth, &base->game.texHeight);
 	base->tex_no.png_addr = mlx_get_data_addr(base->tex_no.png_img, &base->tex_no.png_bits_per_pixel, &base->tex_no.png_line_length, &base->tex_no.png_endian);
 	base->tex_so.png_img = mlx_png_file_to_image(base->mlx.mlx, path_so, &base->game.texWidth, &base->game.texHeight);
@@ -63,6 +65,9 @@ void		texture(t_base *base)
 	base->tex_f.png_addr = mlx_get_data_addr(base->tex_f.png_img, &base->tex_f.png_bits_per_pixel, &base->tex_f.png_line_length, &base->tex_f.png_endian);
 	base->tex_c.png_img = mlx_png_file_to_image(base->mlx.mlx,"./Textures_png/greystone.png", &base->game.texWidth, &base->game.texHeight);
 	base->tex_c.png_addr = mlx_get_data_addr(base->tex_c.png_img, &base->tex_c.png_bits_per_pixel, &base->tex_c.png_line_length, &base->tex_c.png_endian);
+
+	base->tex_s.png_img = mlx_png_file_to_image(base->mlx.mlx, path_s, &base->game.texWidth, &base->game.texHeight);
+	base->tex_s.png_addr = mlx_get_data_addr(base->tex_s.png_img, &base->tex_s.png_bits_per_pixel, &base->tex_s.png_line_length, &base->tex_s.png_endian);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/09 12:26:39 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/09 15:44:50 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,11 +134,30 @@ typedef struct	s_tex{
 }				t_tex;
 
 typedef struct s_floor{
-	float floorStepX;
-	float floorStepY;
-	float floorX;
-	float floorY;
+	float		floorStepX;
+	float		floorStepY;
+	float		floorX;
+	float		floorY;
 }				t_floor;
+
+typedef struct s_sprite{
+	double		x;
+	double		y;
+	int			texture;
+}				t_sprite;
+
+typedef struct s_tex_co{
+	double		step;
+	double		texPos;
+	int			texX;
+}				t_tex_co;
+
+typedef struct s_wall{
+	int			lineHeight;
+	int			drawStart;
+	int			drawEnd;
+	double		wallX;
+}				t_wall;
 
 typedef struct	s_base{
 	t_read		read;
@@ -151,7 +170,12 @@ typedef struct	s_base{
 	t_tex		tex_ea;
 	t_tex		tex_f;
 	t_tex		tex_c;
+	t_tex		tex_s;
 	t_floor		floor;
+	t_sprite	sprite;
+	
+	t_tex_co	tex_co;
+	t_wall		wall;
 }				t_base;
 
 

@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/09 12:40:20 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/09 16:02:10 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,142 +29,166 @@ void            my_mlx_pixel_put(t_base *base, int x, int y, int color)
 }
 
 /*
-** We hebben een addr. Dus als reversed my_mlx_put krijg je kleur van coordinaat op adres.
+** Reversed my_mlx_pixel_put-dest formula.
+** We got the addr of the texture. So we can get the pixel color of a certain
+** texturecoordinate. Coordinate color = addr + coordinate.
 */
 
-void			verLine2(t_base *base, int x)
+int				texture_pick_wallside(t_base *base, int texX, int texY)
 {
-	int		lineHeight;
-	int		drawStart;
-	int		drawEnd;
-    double	perpWallDist;
 	char	*dest;
-
-	double	wallX; //where exactly the wall was hit
-	int 	texX;
-	double	step;
-	double	texPos;
-	int		y;
-	int		texY;
 	int		color;
 	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
+	if (base->game.tex_side == 1)
+	{
+		dest = base->tex_no.png_addr + (texY * base->tex_no.png_line_length + texX * (base->tex_no.png_bits_per_pixel / 8));
+		color = *(unsigned int*)dest;
+	}
+	else if (base->game.tex_side == 2)
+	{
+		dest = base->tex_ea.png_addr + (texY * base->tex_ea.png_line_length + texX * (base->tex_ea.png_bits_per_pixel / 8));
+		color = *(unsigned int*)dest;
+		color = (color >> 1) & 8355711;
+	}
+	else if (base->game.tex_side == 3)
+	{
+		dest = base->tex_so.png_addr + (texY * base->tex_so.png_line_length + texX * (base->tex_so.png_bits_per_pixel / 8));
+		color = *(unsigned int*)dest;
+	}
+	else
+	{
+		dest = base->tex_we.png_addr + (texY * base->tex_we.png_line_length + texX * (base->tex_we.png_bits_per_pixel / 8));
+		color = *(unsigned int*)dest;
+		color = (color >> 1) & 8355711;
+	
+	}
+	return (color);
+}
+
+/*
+** PERPWALLDIST: Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
+** LINEHIGHT: Calculate height of line to draw on screen
+** DRAWSTART/END: calculate lowest and highest pixel to fill in current stripe
+** ------------Textured wall------------------------------------------
+** WALLX: calculate value of wallX (The value wallX represents the exact value where the wall was hit)
+** the exact x or y coordinate in the world.
+** Next substracting the integer value of the wall off it.
+*/
+
+void			draw_calculations_wall(t_base *base)
+{
+    double	perpWallDist;
+
     if (base->game.side == 0)
 		perpWallDist = (base->game.mapX - base->read.x_pos + (1 - base->game.stepX) / 2) / base->game.rayDirX;
 	else
 		perpWallDist = (base->game.mapY - base->read.y_pos + (1 - base->game.stepY) / 2) / base->game.rayDirY;
-	//Calculate height of line to draw on screen
-   	lineHeight = (int)(base->read.render_y / perpWallDist);
-   	//calculate lowest and highest pixel to fill in current stripe
-	drawStart = -lineHeight / 2 + base->read.render_y / 2;
-	if(drawStart < 0)
-		drawStart = 0;
-	drawEnd = lineHeight / 2 + base->read.render_y / 2;
-	if(drawEnd >= base->read.render_y)
-		drawEnd = base->read.render_y - 1;
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////
-  	
-	//calculate value of wallX (The value wallX represents the exact value where the wall was hit)
+   	base->wall.lineHeight = (int)(base->read.render_y / perpWallDist);
+	base->wall.drawStart = -base->wall.lineHeight / 2 + base->read.render_y / 2;
+	if(base->wall.drawStart < 0)
+		base->wall.drawStart = 0;
+	base->wall.drawEnd = base->wall.lineHeight / 2 + base->read.render_y / 2;
+	if(base->wall.drawEnd >= base->read.render_y)
+		base->wall.drawEnd = base->read.render_y - 1;
     if (base->game.side == 0)
- 	 	wallX = base->read.y_pos + perpWallDist * base->game.rayDirY;	//the exact x or y coordinate in the world,
+ 	 	base->wall.wallX = base->read.y_pos + perpWallDist * base->game.rayDirY;
     else
-		wallX = base->read.x_pos + perpWallDist * base->game.rayDirX;
-    wallX -= (int)wallX; 												//substracting the integer value of the wall off it
-	//x coordinate on the texture
-    texX = wallX * (double)base->game.texWidth; //(int)WallX !!!! Hierna een texture!
-    if (base->game.side == 0 && base->game.rayDirX > 0)
-		texX = base->game.texWidth - texX - 1;
-    if (base->game.side == 1 && base->game.rayDirY < 0)
-		texX = base->game.texWidth - texX - 1;
-	//Now that we know the x-coordinate of the texture, we know that this coordinate will remain the same,
-	// because we stay in the same vertical stripe of the screen.
-	
-	// The step size tells how much to increase in the texture coordinates (in floating point) for every pixel in vertical screen coordinates.
-	// It then needs to cast the floating point value to integer to select the actual texture pixel.
-	// = affine texture mapping
-	// How much to increase the texture coordinate per screen pixel
-	step = 1.0 * base->game.texHeight / lineHeight;
-   
-    // Starting texture coordinate
-    texPos = (drawStart - base->read.render_y / 2 + lineHeight / 2) * step;
-    y = drawStart;
-	//printf("--------------------- x = [%d]---------------------\n", base->game.count);
-	while (y < drawEnd)
-    {
-		// Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-        texY = (int)texPos & (base->game.texHeight - 1);
-        texPos += step;
-		//-------------NEW--------------
-		if (base->game.tex_side == 1)
-		{
-			dest = base->tex_no.png_addr + (texY * base->tex_no.png_line_length + texX * (base->tex_no.png_bits_per_pixel / 8));
-			color = *(unsigned int*)dest;
-		}
-		else if (base->game.tex_side == 2) //
-		{
-			dest = base->tex_ea.png_addr + (texY * base->tex_ea.png_line_length + texX * (base->tex_ea.png_bits_per_pixel / 8));
-			color = *(unsigned int*)dest;
-			color = (color >> 1) & 8355711;
-		}
-		else if (base->game.tex_side == 3)
-		{
-			dest = base->tex_so.png_addr + (texY * base->tex_so.png_line_length + texX * (base->tex_so.png_bits_per_pixel / 8));
-			color = *(unsigned int*)dest;
-		}
-		else //W
-		{
-			dest = base->tex_we.png_addr + (texY * base->tex_we.png_line_length + texX * (base->tex_we.png_bits_per_pixel / 8));
-			color = *(unsigned int*)dest;
-			color = (color >> 1) & 8355711;	//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
-		
-		}
-		my_mlx_pixel_put(base, x, y, color);
-		y++;
-      }
-	  base->game.count++;
+		base->wall.wallX = base->read.x_pos + perpWallDist * base->game.rayDirX;
+    base->wall.wallX -= (int)base->wall.wallX;
 }
 
-void	DDA(t_base *base)
+/*
+** TEXX: x coordinate on the texture
+** This coordinate will remain the same, because we stay in the same vertical stripe of the screen.
+** STEP: How much to increase the texture coordinate (in floating point) per screen pixel, 
+** every pixel in vertical screen coordinates.
+** It then needs to cast the floating point value to integer to select the actual texture pixel.
+** = affine texture mapping
+** TEXPOS: Starting texture coordinate.
+*/
+
+void			texture_coordinates_wall(t_base *base)
 {
-	//perform DDA
-    int hit;
+	base->tex_co.texX = base->wall.wallX * (double)base->game.texWidth; //(int)WallX !!!! Hierna een texture!
+    if (base->game.side == 0 && base->game.rayDirX > 0)
+		base->tex_co.texX = base->game.texWidth - base->tex_co.texX - 1;
+    if (base->game.side == 1 && base->game.rayDirY < 0)
+		base->tex_co.texX = base->game.texWidth - base->tex_co.texX - 1;
+	base->tex_co.step = 1.0 * base->game.texHeight / base->wall.lineHeight;
+    base->tex_co.texPos = (base->wall.drawStart - base->read.render_y / 2 + base->wall.lineHeight / 2) * base->tex_co.step;
+}
+
+/*
+** TEXY: Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow. 
+** TEXPOS: Starting texture coordinate change with a step.
+** ----OWN PART----
+** Check which side the ray the wall hit (1[N], E[2], S[3], W[4])
+** This determines which texture is used as color.
+** E and W walls have a slightly darker color (shadow): R, G and B byte each
+** divided through two with a "shift" and an "and"
+** my_mlx: set wall coordinate to new color.
+*/
+
+void			verLine(t_base *base, int x)
+{
+	int		texY;
+	int		color;
+	int		y;
+
+	draw_calculations_wall(base);
+	texture_coordinates_wall(base);
+    y = base->wall.drawStart;
+	while (y < base->wall.drawEnd)
+    {
+        texY = (int)base->tex_co.texPos & (base->game.texHeight - 1);
+        base->tex_co.texPos += base->tex_co.step;
+		color = texture_pick_wallside(base, base->tex_co.texX, texY);
+		my_mlx_pixel_put(base, x, y, color);
+		y++;
+    }
+}
+
+/*
+** perform DDA
+** HIT: was there a wall hit?
+** jump to next map square, OR in x-direction, OR in y-direction.
+** if: Jump in X direction.
+** else: JUmp in Y direction.
+** Check if ray has hit a wall
+*/
+
+void			DDA(t_base *base)
+{
+    int		hit;
 	
-	hit = 0;	//was there a wall hit?
- 	//printf("START pos [%d][%d] = [%c]\n", base->read.y_pos, base->read.x_pos, base->read.array[mapY][mapX]);
+	hit = 0;
    	while (hit == 0)
 	{
-		//jump to next map square, OR in x-direction, OR in y-direction
-		//printf("TWOD[%d][%d] = [%c]\n", mapY, mapX, base->read.array[mapY][mapX]);
-    	if(base->game.sideDistX < base->game.sideDistY)
+    	if (base->game.sideDistX < base->game.sideDistY)
     	{
     		base->game.sideDistX += base->game.deltaDistX;
     		base->game.mapX += base->game.stepX;
     		base->game.side = 0;
 			base->game.tex_side = base->game.stepX < 0 ? 2 : 4;
-		//   printf("Jump in X direction: new mapX[%d], new sideDistX[%f]\n", mapX, sideDistX);
     	}
     	else
     	{
-        		base->game.sideDistY += base->game.deltaDistY;
-        		base->game.mapY += base->game.stepY;
-        		base->game.side = 1;
-				base->game.tex_side = base->game.stepY < 0 ? 3 : 1;
-		//   printf("Jump in Y direction: new mapY[%d], new sideDistY[%f]\n", mapY, sideDistY);
+        	base->game.sideDistY += base->game.deltaDistY;
+        	base->game.mapY += base->game.stepY;
+        	base->game.side = 1;
+			base->game.tex_side = base->game.stepY < 0 ? 3 : 1;
     	}
-    	//Check if ray has hit a wall
-		//printf("CHANGED TWOD[%d][%d] = [%c][%d]\n", mapY, mapX, base->read.array[mapY][mapX], base->read.array[mapY][mapX]);
-    	if(TWOD[base->game.mapY][base->game.mapX] > 0 && TWOD[base->game.mapY][base->game.mapX] != '+')
-		{
+    	if (TWOD[base->game.mapY][base->game.mapX] > 0 && TWOD[base->game.mapY][base->game.mapX] != '+')
 			hit = 1;
-			//	printf("**HIT**[%d][%d]\n", mapY, mapX);
-		}
 	}
 }
 
-void	initial_step_sidedist(t_base *base)
+/*
+** Calculate step and initial sideDist
+*/
+
+void			initial_step_sidedist(t_base *base)
 {
-	//calculate step and initial sideDist
     if(base->game.rayDirX < 0)
     {
     	base->game.stepX = -1;
@@ -186,34 +210,34 @@ void	initial_step_sidedist(t_base *base)
     	base->game.sideDistY = (base->game.mapY + 1.0 - base->read.y_pos) * base->game.deltaDistY;
     }
 }
-void	ray_position(t_base *base, int x)
-{
-	double cameraX;
 
-	if (base->game.dirY == 0) //NS
-	{
-		base->game.planeX = 0;	//the 2d raycaster version of camera plane
-		base->game.planeY = 0.66;	
-	}
-	else					//EW
-	{
-		base->game.planeX = 0.66;
-		base->game.planeY = 0;	
-	}		
-	//calculate ray position and direction
-    if (base->read.pos == 'W' || base->read.pos == 'S')		//Spiegelen terug gedraaid, maar nu kleuren verkeerd om?
-		cameraX = (2 * x / (double)base->read.render_x - 1) * -1; //x-coordinate in camera space
+/*
+** -PLANE: the 2d raycaster version of camera plane
+** if (base->game.dirY == 0) THEN planeX = 0, planeY 0.66 --> N and S
+** if (base->game.dirY == 1 || == -1) THEN planeX = 0.66 , planeY 0 --> E and W
+** -CAMERAX: x-coordinate in camera space
+** if W || S the image was mirrored. Unmirror: camerax * -1.
+** -RAYDIR: calculate ray position and direction
+** -MAPX/Y: which box of the map we're in
+** -DELTADIST: length of ray from one x or y-side to next x or y-side
+*/
+
+void			ray_position(t_base *base, int x)
+{
+	double	cameraX;
+	
+	base->game.planeX = (base->game.dirY == 0) ? 0 : 0.66;
+	base->game.planeY = (base->game.dirY == 0) ? 0.66 : 0;
+    if (base->read.pos == 'W' || base->read.pos == 'S')
+		cameraX = (2 * x / (double)base->read.render_x - 1) * -1;
     else
 		cameraX = 2 * x / (double)base->read.render_x - 1;
 	base->game.rayDirX = base->game.dirX + base->game.planeX * cameraX;
     base->game.rayDirY = base->game.dirY + base->game.planeY * cameraX;
-    //which box of the map we're in
     base->game.mapX = (int)base->read.x_pos;
 	base->game.mapY = (int)base->read.y_pos;
-	//length of ray from one x or y-side to next x or y-side
     base->game.deltaDistX = fabs(1 / base->game.rayDirX);
     base->game.deltaDistY = fabs(1 / base->game.rayDirY);
-	//printf("ROTATE raypostion dirX[%f], dirY[%f], planeX[%f], planeY[%f]\n", base->game.dirX, base->game.dirY, base->game.planeX, base->game.planeY);
 }
 
 int		raycasting(t_base *base)
@@ -227,8 +251,8 @@ int		raycasting(t_base *base)
 		initial_step_sidedist(base);
 		DDA(base);
     	//draw the pixels of the stripe as a vertical line //and calculate first
-    	//verLine(base, x);
-		verLine2(base, x);
+		verLine(base, x);
+		//sprite(base, x);
 	  	x++;
 	}
 	base->game.oldtime = base->game.time;
