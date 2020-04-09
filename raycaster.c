@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/09 10:23:51 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/09 12:40:20 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,8 +322,8 @@ int				loop(t_base *base)
 	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
 	if (base->game.update)
 		move(base);
-	//floorcasting(base);
-	floorcasting_texture(base);
+	floor_ceiling_smooth(base);
+	//floor_ceiling_texture(base);
 	raycasting(base);
 	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
 	//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);
