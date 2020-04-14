@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/09 16:02:10 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/14 15:37:59 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,11 @@ int				texture_pick_wallside(t_base *base, int texX, int texY)
 
 void			draw_calculations_wall(t_base *base)
 {
-    double	perpWallDist;
-
     if (base->game.side == 0)
-		perpWallDist = (base->game.mapX - base->read.x_pos + (1 - base->game.stepX) / 2) / base->game.rayDirX;
+		base->wall.perpWallDist = (base->game.mapX - base->read.x_pos + (1 - base->game.stepX) / 2) / base->game.rayDirX;
 	else
-		perpWallDist = (base->game.mapY - base->read.y_pos + (1 - base->game.stepY) / 2) / base->game.rayDirY;
-   	base->wall.lineHeight = (int)(base->read.render_y / perpWallDist);
+		base->wall.perpWallDist = (base->game.mapY - base->read.y_pos + (1 - base->game.stepY) / 2) / base->game.rayDirY;
+   	base->wall.lineHeight = (int)(base->read.render_y / base->wall.perpWallDist);
 	base->wall.drawStart = -base->wall.lineHeight / 2 + base->read.render_y / 2;
 	if(base->wall.drawStart < 0)
 		base->wall.drawStart = 0;
@@ -91,9 +89,9 @@ void			draw_calculations_wall(t_base *base)
 	if(base->wall.drawEnd >= base->read.render_y)
 		base->wall.drawEnd = base->read.render_y - 1;
     if (base->game.side == 0)
- 	 	base->wall.wallX = base->read.y_pos + perpWallDist * base->game.rayDirY;
+ 	 	base->wall.wallX = base->read.y_pos + base->wall.perpWallDist * base->game.rayDirY;
     else
-		base->wall.wallX = base->read.x_pos + perpWallDist * base->game.rayDirX;
+		base->wall.wallX = base->read.x_pos + base->wall.perpWallDist * base->game.rayDirX;
     base->wall.wallX -= (int)base->wall.wallX;
 }
 
@@ -196,13 +194,13 @@ void			initial_step_sidedist(t_base *base)
     }
     else
     {
-    	base->game.stepX = 1;
+		base->game.stepX = 1;
     	base->game.sideDistX = (base->game.mapX + 1.0 - base->read.x_pos) * base->game.deltaDistX;
     }
     if(base->game.rayDirY < 0)
     {
-      base->game.stepY = -1;
-      base->game.sideDistY = (base->read.y_pos - base->game.mapY) * base->game.deltaDistY;
+		base->game.stepY = -1;
+		base->game.sideDistY = (base->read.y_pos - base->game.mapY) * base->game.deltaDistY;
     }
     else
     {
@@ -240,7 +238,7 @@ void			ray_position(t_base *base, int x)
     base->game.deltaDistY = fabs(1 / base->game.rayDirY);
 }
 
-int		raycasting(t_base *base)
+int				raycasting(t_base *base)
 {
 	int x;
 
@@ -252,7 +250,7 @@ int		raycasting(t_base *base)
 		DDA(base);
     	//draw the pixels of the stripe as a vertical line //and calculate first
 		verLine(base, x);
-		//sprite(base, x);
+		zbuffer(base, x);
 	  	x++;
 	}
 	base->game.oldtime = base->game.time;
@@ -349,6 +347,7 @@ int				loop(t_base *base)
 	floor_ceiling_smooth(base);
 	//floor_ceiling_texture(base);
 	raycasting(base);
+	sprite(base);
 	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
 	//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);
 	base->game.update = 0;

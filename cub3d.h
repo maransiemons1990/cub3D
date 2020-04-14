@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/09 15:44:50 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/14 15:08:49 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ typedef struct s_game {
 	int			tex_side;
 	int			texWidth;
 	int			texHeight;
+
 }				t_game;
 
 typedef struct	s_tex{
@@ -143,7 +144,7 @@ typedef struct s_floor{
 typedef struct s_sprite{
 	double		x;
 	double		y;
-	int			texture;
+//	int			texture;
 }				t_sprite;
 
 typedef struct s_tex_co{
@@ -157,6 +158,7 @@ typedef struct s_wall{
 	int			drawStart;
 	int			drawEnd;
 	double		wallX;
+	double		perpWallDist;
 }				t_wall;
 
 typedef struct	s_base{
@@ -176,6 +178,7 @@ typedef struct	s_base{
 	
 	t_tex_co	tex_co;
 	t_wall		wall;
+	double 		ZBuffer[1280]; //!
 }				t_base;
 
 
@@ -226,6 +229,10 @@ void			floor_ceiling_texture(t_base *base); //extra
 
 //
 void            my_mlx_pixel_put(t_base *base, int x, int y, int color);
+
+//sprites
+void			zbuffer(t_base *base, int x);
+void            sprite(t_base *base);
 
 //Tutorial:
 // void		print_triangle(t_data *img, int x, int y, int radius);
