@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/15 11:02:42 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/15 11:58:15 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,5 +138,6 @@ int				check_map(int *y, t_base *base)
 	ret = flood_fill(base, base->read.y_pos, base->read.x_pos);
 	if (ret > 0)
 		return (1);
+	ll_count_sprites(base);
 	return (0);
 }

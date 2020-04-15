@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/09 13:36:12 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/14 17:04:43 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/15 12:40:32 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void            zbuffer(t_base *base, int x)
   base->ZBuffer[x] = base->wall.perpWallDist;
 }
 
+/*
 void            sortSprites(int *order, double *dist, int amount)
 {
   int i;
@@ -64,28 +65,28 @@ void            sortSprites(int *order, double *dist, int amount)
 void            sprite(t_base *base)
 {
   int       i;
-  int       numSprites;
-  numSprites = 3;
-  int       spriteOrder[numSprites];
-  double    spriteDistance[numSprites];
-  t_sprite  sprite[3];
-
+  int       spriteOrder[base->read.nb_sprites];
+  double    spriteDistance[base->read.nb_sprites];
+  t_sprite  *current;
+  
+  current = base->head;
   i = 0;
  
   //SPRITE CASTING
   //sort sprites from far to close
-  while (i < numSprites)
+  while (i < base->read.nb_sprites)
   {
       spriteOrder[i] = i;
-      spriteDistance[i] = ((base->read.x_pos - sprite[i].x) * (base->read.x_pos - sprite[i].x) + (base->read.y_pos - sprite[i].y) * (base->read.y_pos - sprite[i].y));
+      spriteDistance[i] = ((base->read.x_pos - current->x) * (base->read.x_pos - current->x) + (base->read.y_pos - current->y) * (base->read.y_pos - current->y));
       //printf("spriteOrder[%d] = [%d] | spritedistance[%d] = [%f]\n", i, spriteOrder[i] = i, i, spriteDistance[i]);
+      current = current->next;
       i++;
   }
   //function used to sort the sprites
-  sortSprites(spriteOrder, spriteDistance, numSprites);
+  sortSprites(spriteOrder, spriteDistance, base->read.nb_sprites);
   
   i = 0;
-  while (i < numSprites)
+  while (i < base->read.nb_sprites)
   {
     //translate sprite position to relative to camera
     double spriteX = sprite[spriteOrder[i]].x - base->read.x_pos;
@@ -173,12 +174,6 @@ void            sprite(t_base *base)
     i++;
   }
 }
-
-
-
-/*
-
-
 
 Uint32 buffer[screenHeight][screenWidth]; // y-coordinate first because it works per scanline
 

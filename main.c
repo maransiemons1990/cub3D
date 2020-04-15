@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/15 11:04:06 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/15 12:43:28 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int			main(int argc, char **argv)
 	if (ret > 0)
 		return (error_distribution(base));
 	//------------------DELETE LATER------------------------------------
-	print_list(base->head);
+	print_list(base);
 	//valuechecker(base);
 	//twod_checker(base->read.array);
 	//------------------------------------------------------------------

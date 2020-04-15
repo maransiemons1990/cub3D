@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/15 11:04:45 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/15 12:44:43 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ typedef struct s_wall{
 typedef struct s_sprite{
 	double				x;
 	double				y;
+	double				distance;
 	struct s_sprite		*next;
 }				t_sprite;
 
@@ -187,7 +188,6 @@ typedef struct	s_base{
 	
 	double 		ZBuffer[1280]; //!
 	
-	//t_sprite	*sprites;
 	t_sprite	*head;
 }				t_base;
 
@@ -220,6 +220,10 @@ int 			space_in_wall(int y, int i, t_base *base);
 int				align_dif_front(char *s1, char *s2);
 int				align_dif_back(int y, t_base *base);
 
+//SAVE_SPRITES
+void			save_sprite_coordinates(t_base *base, double y, double x);
+void			ll_count_sprites(t_base *base);
+
 
 //MLX
 int				mlx(t_base *base);
@@ -243,8 +247,7 @@ void            my_mlx_pixel_put(t_base *base, int x, int y, int color);
 //sprites
 void			zbuffer(t_base *base, int x);
 void            sprite(t_base *base);
-//
-void			save_sprite_coordinates(t_base *base, double y, double x);
+
 
 //Tutorial:
 // void		print_triangle(t_data *img, int x, int y, int radius);
@@ -255,6 +258,6 @@ void			save_sprite_coordinates(t_base *base, double y, double x);
 //Overig
 void		twod_checker(char **array);
 void		valuechecker(t_base *base);
-void			print_list(t_sprite *head);
+void		print_list(t_base *base);
 
 #endif
