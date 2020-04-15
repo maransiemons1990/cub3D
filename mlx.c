@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/09 13:59:07 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/15 22:16:50 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void		texture(t_base *base)
 	
 	base->tex_f.png_img = mlx_png_file_to_image(base->mlx.mlx, "./Textures_png/greystone.png", &base->game.texWidth, &base->game.texHeight);
 	base->tex_f.png_addr = mlx_get_data_addr(base->tex_f.png_img, &base->tex_f.png_bits_per_pixel, &base->tex_f.png_line_length, &base->tex_f.png_endian);
-	base->tex_c.png_img = mlx_png_file_to_image(base->mlx.mlx,"./Textures_png/greystone.png", &base->game.texWidth, &base->game.texHeight);
+	base->tex_c.png_img = mlx_png_file_to_image(base->mlx.mlx,"./Textures_png/bluestone.png", &base->game.texWidth, &base->game.texHeight);
 	base->tex_c.png_addr = mlx_get_data_addr(base->tex_c.png_img, &base->tex_c.png_bits_per_pixel, &base->tex_c.png_line_length, &base->tex_c.png_endian);
 
 	base->tex_s.png_img = mlx_png_file_to_image(base->mlx.mlx, path_s, &base->game.texWidth, &base->game.texHeight);

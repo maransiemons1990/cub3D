@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/15 12:44:43 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/15 19:12:09 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,7 @@ int				align_dif_back(int y, t_base *base);
 //SAVE_SPRITES
 void			save_sprite_coordinates(t_base *base, double y, double x);
 void			ll_count_sprites(t_base *base);
+void			ll_sort_sprites_swap_data(t_base  *base);
 
 
 //MLX

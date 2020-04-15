@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/15 12:13:21 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/15 22:10:56 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,8 @@ void			DDA(t_base *base)
         	base->game.side = 1;
 			base->game.tex_side = base->game.stepY < 0 ? 3 : 1;
     	}
-    	if (TWOD[base->game.mapY][base->game.mapX] > 0 && TWOD[base->game.mapY][base->game.mapX] != '+')
+    	//if (TWOD[base->game.mapY][base->game.mapX] > 0 && TWOD[base->game.mapY][base->game.mapX] != '+')
+		if (TWOD[base->game.mapY][base->game.mapX] == '1')
 			hit = 1;
 	}
 }
@@ -344,10 +345,10 @@ int				loop(t_base *base)
 	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
 	if (base->game.update)
 		move(base);
-	floor_ceiling_smooth(base);
-	//floor_ceiling_texture(base);
+	//floor_ceiling_smooth(base);
+	floor_ceiling_texture(base);
 	raycasting(base);
-	//sprite(base);
+	sprite(base);
 	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
 	//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);
 	base->game.update = 0;

@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/15 10:53:03 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/15 12:43:33 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/15 14:36:53 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void			print_list(t_base *base)
 	current = base->head;
     while (current != NULL) 
 	{
-        printf("y[%f]x[%f] - distance[%f]\n", current->y, current->x, current->distance);
+        printf("[%p] -- y[%f]x[%f] - distance[%f]\n", current, current->y, current->x, current->distance);
         current = current->next;
     }
-    printf("Nb_sprites: %d\n", base->read.nb_sprites);
+    //printf("Nb_sprites: %d\n", base->read.nb_sprites);
 }

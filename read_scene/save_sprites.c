@@ -6,11 +6,48 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/14 18:35:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/15 12:37:39 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/15 21:52:07 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+/*
+** Swapped the data content of the node. Not the whole node. So the node blocks don't move only the content.
+** Adresses of the nodes stay with the node. Seemed easier then switching the whole node!
+*/
+
+static void			swap(double *i, double *j)
+{
+	double 		tmp;
+	
+	tmp = *i;
+	*i = *j;
+	*j = tmp;
+}
+
+void				ll_sort_sprites_swap_data(t_base  *base)
+{
+	t_sprite	*i;
+	t_sprite	*j;
+
+	i = base->head;
+	while (i != NULL)
+	{
+		j = i->next;
+		while(j != NULL)
+		{
+			if (i->distance < j->distance)
+			{
+				swap(&i->x, &j->x);
+				swap(&i->y, &j->y);
+				swap(&i->distance, &j->distance);
+			}
+			j = j->next;
+		}
+		i = i->next;
+	}
+}
 
 /*
 ** Problem: how can I save the coordinates of an unknown number of sprites.
@@ -44,6 +81,8 @@ static t_sprite		*ll_create_node(t_base *base, double y, double x)
 {
 	t_sprite	*new_node;
 
+	x = x + 0.5;
+	y = y + 0.5;
 	new_node = (t_sprite*)malloc(sizeof(t_sprite));
 	if (!new_node)
 		return (NULL);
@@ -71,7 +110,7 @@ static int			ll_search(t_sprite *head, double y, double x)
 	current = head;
 	while (current != NULL)
 	{
-		if (current->x == x && current->y == y)
+		if (current->x == (x + 0.5) && current->y == (y + 0.5))
 			return (1);
 		current = current->next;
 	}
