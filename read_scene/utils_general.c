@@ -6,11 +6,13 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 15:25:07 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/08 11:16:25 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/15 11:05:38 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
+
+// Check of we sprites nog moeten freeeen.
 
 void			end_free(t_base *base)
 {
@@ -48,4 +50,7 @@ void			initialise(t_base *base)
 	base->read.pos = -1;
 	base->read.x_pos = -1;
 	base->read.y_pos = -1;
+	//
+	base->head = NULL;
+	//
 }

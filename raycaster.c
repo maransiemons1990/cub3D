@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/14 15:37:59 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/14 17:22:11 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,7 +347,8 @@ int				loop(t_base *base)
 	floor_ceiling_smooth(base);
 	//floor_ceiling_texture(base);
 	raycasting(base);
-	sprite(base);
+	//printf("nb_sprites = %d\n", base->read.nb_sprites);
+	//sprite(base);
 	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
 	//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);
 	base->game.update = 0;

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/14 15:08:49 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/15 11:04:45 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct	s_read {
 	char		pos;
 	int			x_pos;
 	int			y_pos;
+	int			nb_sprites; //
 }				t_read;
 
 typedef struct s_game {
@@ -141,12 +142,6 @@ typedef struct s_floor{
 	float		floorY;
 }				t_floor;
 
-typedef struct s_sprite{
-	double		x;
-	double		y;
-//	int			texture;
-}				t_sprite;
-
 typedef struct s_tex_co{
 	double		step;
 	double		texPos;
@@ -161,6 +156,18 @@ typedef struct s_wall{
 	double		perpWallDist;
 }				t_wall;
 
+// typedef struct s_sprite{
+// 	double		x;
+// 	double		y;
+// //	int			texture;
+// }				t_sprite;
+
+typedef struct s_sprite{
+	double				x;
+	double				y;
+	struct s_sprite		*next;
+}				t_sprite;
+
 typedef struct	s_base{
 	t_read		read;
 	t_mlx		mlx;
@@ -174,11 +181,14 @@ typedef struct	s_base{
 	t_tex		tex_c;
 	t_tex		tex_s;
 	t_floor		floor;
-	t_sprite	sprite;
 	
 	t_tex_co	tex_co;
 	t_wall		wall;
+	
 	double 		ZBuffer[1280]; //!
+	
+	//t_sprite	*sprites;
+	t_sprite	*head;
 }				t_base;
 
 
@@ -233,6 +243,8 @@ void            my_mlx_pixel_put(t_base *base, int x, int y, int color);
 //sprites
 void			zbuffer(t_base *base, int x);
 void            sprite(t_base *base);
+//
+void			save_sprite_coordinates(t_base *base, double y, double x);
 
 //Tutorial:
 // void		print_triangle(t_data *img, int x, int y, int radius);
@@ -243,5 +255,6 @@ void            sprite(t_base *base);
 //Overig
 void		twod_checker(char **array);
 void		valuechecker(t_base *base);
+void			print_list(t_sprite *head);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/09 13:36:12 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/14 15:17:42 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/14 17:04:43 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ void            sortSprites(int *order, double *dist, int amount)
   }
 }
 
+//  sprite[0].x = 29; //#0
+//   sprite[0].y = 16;
+//   sprite[1].x = 37; //#1
+//   sprite[1].y = 17;
+//   sprite[2].x = 29; //#2
+//   sprite[2].y = 18;
+  
 void            sprite(t_base *base)
 {
   int       i;
@@ -64,12 +71,7 @@ void            sprite(t_base *base)
   t_sprite  sprite[3];
 
   i = 0;
-  sprite[0].x = 29; //#0
-  sprite[0].y = 16;
-  sprite[1].x = 37; //#1
-  sprite[1].y = 17;
-  sprite[2].x = 29; //#2
-  sprite[2].y = 18;
+ 
   //SPRITE CASTING
   //sort sprites from far to close
   while (i < numSprites)
