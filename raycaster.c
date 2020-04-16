@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/15 22:10:56 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/16 12:40:34 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,7 @@ void			ray_position(t_base *base, int x)
 int				raycasting(t_base *base)
 {
 	int x;
+	base->ZBuffer = (double *)malloc(sizeof(double) * base->read.render_x); // --> LOCATION OF MALLOC MATTERS! //FREEEE
 
 	x = 0;
 	while(x < base->read.render_x)
@@ -348,6 +349,7 @@ int				loop(t_base *base)
 	//floor_ceiling_smooth(base);
 	floor_ceiling_texture(base);
 	raycasting(base);
+	//printf("Z[880] = %f\n", base->ZBuffer[880]);
 	sprite(base);
 	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
 	//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);

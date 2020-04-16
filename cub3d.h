@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/15 19:12:09 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/16 18:12:46 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,11 +156,19 @@ typedef struct s_wall{
 	double		perpWallDist;
 }				t_wall;
 
-// typedef struct s_sprite{
-// 	double		x;
-// 	double		y;
-// //	int			texture;
-// }				t_sprite;
+typedef struct s_sprite2{
+	double		transformy;
+	int			vmovescreen;
+	int			spritescreenx;
+	//
+	int			drawstartx;
+	int			drawendx;
+	int			drawstarty;
+	int			drawendy;
+	int			spriteheight;
+	int			spritewidth;
+	
+ }				t_sprite2;
 
 typedef struct s_sprite{
 	double				x;
@@ -186,9 +194,11 @@ typedef struct	s_base{
 	t_tex_co	tex_co;
 	t_wall		wall;
 	
-	double 		ZBuffer[1280]; //!
-	
 	t_sprite	*head;
+	t_sprite2	sprite;
+	
+	double		*ZBuffer;
+	
 }				t_base;
 
 
