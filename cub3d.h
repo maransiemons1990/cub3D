@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/16 18:12:46 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/21 16:36:12 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define X11_EVENT_KEY_PRESS		2
 # define X11_EVENT_KEY_RELEASE		3
 # define X11_EVENT_EXIT				17
+# define X11_EVENT_RESIZE			25
 
 # define KEY_ESC		53
 # define KEY_LEFT		123
@@ -198,7 +199,7 @@ typedef struct	s_base{
 	t_sprite2	sprite;
 	
 	double		*ZBuffer;
-	
+	int			save;
 }				t_base;
 
 
@@ -259,7 +260,8 @@ void            my_mlx_pixel_put(t_base *base, int x, int y, int color);
 void			zbuffer(t_base *base, int x);
 void            sprite(t_base *base);
 
-
+//
+void		save_first_image(t_base *base);
 //Tutorial:
 // void		print_triangle(t_data *img, int x, int y, int radius);
 // void		print_full_square(t_data *img, int x, int xsize, int y, int ysize);

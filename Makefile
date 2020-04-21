@@ -6,7 +6,7 @@
 #    By: msiemons <msiemons@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/03/04 17:11:26 by msiemons      #+#    #+#                  #
-#    Updated: 2020/04/15 12:39:50 by Maran         ########   odam.nl          #
+#    Updated: 2020/04/21 14:07:35 by Maran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,13 +18,15 @@ LIBFT = libft
 
 LIBMLX = libmlx.dylib
 
+BMP = screenshot.bmp
+
 SRC = main.c errormessages.c read_scene/gnl_cub3d.c read_scene/gnl_cub3d_utils.c\
 		read_scene/read_scene.c\
 		read_scene/utils_general.c read_scene/read_scene_utils.c\
 		read_scene/check_map.c read_scene/check_map_utils.c\
 		mlx.c raycaster.c keys.c floor_ceiling.c\
 		sprites.c read_scene/save_sprites.c\
-		print_list.c
+		save_first_image.c
 
 #twod_checker.c valuechecker.c\#
 OBJ = $(SRC:.c=.o)
@@ -54,7 +56,7 @@ lib_ft:
 #	gcc -I . -I libft/. -Wall -Wextra -Werror -c $< -o $@
 
 clean:
-		$(RM) $(OBJ) $(LIBMLX)
+		$(RM) $(OBJ) $(LIBMLX) $(BMP)
 		@make clean -C $(LIBFT)
 		@make clean -C $(MLX)
 

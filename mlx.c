@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/15 22:16:50 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/17 13:22:23 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,17 @@ void		texture(t_base *base)
 	base->tex_s.png_addr = mlx_get_data_addr(base->tex_s.png_img, &base->tex_s.png_bits_per_pixel, &base->tex_s.png_line_length, &base->tex_s.png_endian);
 }
 
+void			initialise_game(t_base *base)
+{
+	base->game.move_front = 0;
+	base->game.move_back = 0;
+	base->game.move_right = 0;
+	base->game.move_left = 0;
+	base->game.rotate_right = 0;
+	base->game.rotate_left = 0;
+	base->game.update = 0;
+}
+
 /*
 ** mlx_init: This will establish a connection to the correct graphical system
 ** and will return a void * which holds the location of our current MLX instance/ connection identifier.
@@ -87,17 +98,19 @@ void		texture(t_base *base)
 int				mlx(t_base *base)
 {
 	base->game.count = 0;
+	initialise_game(base);
 	orientation(base);
 	base->mlx.mlx = mlx_init();
-	base->mlx.mlx_win = mlx_new_window(base->mlx.mlx, base->read.render_x, base->read.render_y, "Hello world!");
+	base->mlx.mlx_win = mlx_new_window(base->mlx.mlx, base->read.render_x, base->read.render_y, "Wolfenstein 3D! | Maran Siemons");
 	//base->mlx.img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
 	//base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
 	texture(base);
 
 // /* ----------HOOKING EVENT-----------------*/ 
 	mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_PRESS, 1L<<0, &keypress, base);				//wel of geen & voor functie? // geen & voor base!
-	//mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_RELEASE, 1L<<1, &keyrelease, &base);
+	mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_RELEASE, 1L<<1, &keyrelease, base);
 	mlx_hook(base->mlx.mlx_win, X11_EVENT_EXIT, 1L<<17, &windowclose_x, base);
+	//mlx_hook(base->mlx.mlx_win, X11_EVENT_RESIZE, 1L<<18, &windowclose_x, base);
 	//loop(base);
 	mlx_loop_hook(base->mlx.mlx, &loop, base);
 	

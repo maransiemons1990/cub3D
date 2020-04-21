@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/15 19:15:28 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/17 13:22:17 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int			main(int argc, char **argv)
 	t_base		*base;
 	int			ret;
 
-	if (argc != 2)
+	if (argc != 2 && argc != 3)
 	{
 		perror("Error\nProgram expects one argument\n");
 		return (1);
@@ -26,6 +26,12 @@ int			main(int argc, char **argv)
 	base = getcubfile(argv[1]);
 	if (base == NULL)
 		return (1);
+	if (argc == 3)
+	{
+		base->save = (ft_strcmp(argv[2], "--save"));
+		if (base->save)
+			return (printf("Error\nDid you mean option --save as 2nd argument?\n"));
+	}
 	ret = read_scene_file(base);
 	if (ret > 0)
 		return (error_distribution(base));
