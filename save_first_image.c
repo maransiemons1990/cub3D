@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/17 13:26:51 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/22 14:31:56 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/22 16:22:35 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,32 @@ https://itnext.io/bits-to-bitmaps-a-simple-walkthrough-of-bmp-image-format-765dc
 #include "cub3d.h"
 #include "bmp.h"
 
+/*
+** Bitmapfileheader, 14 bytes:
+** Filetype         |2 bytes | "BM" or 0x4d42
+** Filesize         |4 bytes | entire file size in bytes
+** Reserved1        |2 bytes | reserved to be utilized by an image proc. app
+** Reserved2        |2 bytes | reserved to be utilized by an image proc. app
+** PixelDataOffset  |4 bytes | offset of actual pixel data in bytes
+** Bitmapinfoheader, 40 bytes:
+** HeaderSize       |4 bytes | size of the bitmapinfoheader in bytes
+** ImageWidth       |4 bytes | width of the final image in pixels
+** ImageHeight      |4 bytes | height of the final image in pixels
+** Planes           |2 bytes | number of color planes of the target device
+** BitsPerPixel     |2 bytes | number of bits (memory) a pixel takes (in pixel data) to represent a color
+** Compression      |4 bytes | 0 to represent no-compression
+** ImageSize        |4 bytes | final size of the (compressed) image
+** XpixelsPerMeter  |4 bytes | horizontal resolution of the target device
+** YpixelsPerMeter  |4 bytes | verical resolution of the target device 
+** TotalColors      |4 bytes | number of colors in the color pallet
+** ImportantColors  |4 bytes | number of important colors
+*/
+
 void            bmp_header(t_bitmap  *bmp, t_base *base)
 {
   bmp->fileheader.filetype = 0x4d42;
   bmp->fileheader.filesize = base->read.render_y * base->read.render_x * (base->mlx.bits_per_pixel / 8) + 54;
   bmp->fileheader.pixeldataoffset = sizeof(t_bitmap);
-
   bmp->infoheader.headersize = sizeof(t_bmp_infoheader);
   bmp->infoheader.imagewidth = base->read.render_x;
   bmp->infoheader.imageheight = base->read.render_y;
@@ -37,71 +57,79 @@ void            bmp_header(t_bitmap  *bmp, t_base *base)
   bmp->infoheader.xpixelspermeter = 0;
   bmp->infoheader.ypixelspermeter = 0;
   bmp->infoheader.totalcolor = 0;
-
 }
 
-// unsigned integer of length 8 bits //aka unsigned char
-void		save_first_image(t_base *base)
+/*
+** - Memory allocation: for pixelbuffer.
+**   * Pixelbuffer - Contains color values of each individual pixel.
+** - The coordinates of a BMP image start from the bottom-left corner.
+** So we loop through y starting at the bottom of the image.
+** Per y we loop through x and save the color of each individual pixel.
+*/
+
+int             *pixel_data(t_base *base, uint32_t imagesize)
 {
-    int         file;
-    int         ret;
-    t_bitmap    *bmp;
-    //uint8_t     *pixelbuffer;
     int         *pixelbuffer;
-
-    file = open("screenshot.bmp", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-    if (file == -1)
-         printf("FAIL TO OPEN FILE\n");
-  
+    int         y;
+    int         x;
+    int         i;
+    char        *dest;
     
-    bmp = (t_bitmap *)calloc(1, sizeof(t_bitmap));
-    bmp_header(bmp, base);
-    //pixelbuffer = (uint8_t*)malloc(bmp->fileheader.filesize);
-    pixelbuffer = (int *)malloc(bmp->infoheader.imagesize);
-   
-	ret = write(file, bmp, sizeof(t_bitmap));
-    if (ret == -1)
-         printf("FAIL TO WRITE\n");
-    // // TEST
-    int y = base->read.render_y;
-    int x;
-    char *dest;
-    int color;
-    int padding;
-    int i = 0;
-
+    i = 0;
+    y = base->read.render_y;
+    pixelbuffer = (int *)malloc(imagesize);
+    if (pixelbuffer == NULL)
+        return (NULL);
     while (y > 0)
     {
         x = 0;
         while (x < base->read.render_x)
         {
             dest = base->mlx.addr + (y * base->mlx.line_length + x * (base->mlx.bits_per_pixel / 8));
-			color = *(unsigned int*)dest;
             pixelbuffer[i] = *(unsigned int*)dest;
             i++;
             x++;
         }
-        padding = ((bmp->infoheader.bitsperpixel/8) * bmp->infoheader.imagewidth) % 4;
-        printf("bpp: %d | imagewidth = %d | padding = %d\n", bmp->infoheader.bitsperpixel, bmp->infoheader.imagewidth, padding);
-        if (padding > 0)
-        {
-            while ((4 - padding) > 0)
-            {
-                pixelbuffer[i] = 0;
-                printf("Paddind [%i] - %d\n", i, pixelbuffer[i]);
-                i++;
-                padding++;
-            }
-        }
          y--;
     }
+    return (pixelbuffer);
+}
+
+/*
+** - Open file: O_WRONLY - writing only, O_CREAT - create is non existant
+** ,S_IRUSR - Read rights owner, S_IWUSR -  write rights owner.
+** - Memory allocation: for both bitmap headers, fileheader and infoheader.
+    * Bitmapfileheader - information about BMP file.
+    * Bitmapinfoheader - information about BMP image.
+** - Initialise both BMP headers with values.
+** - Write: bmp headers to newly opened file.
+** - Pixelbuffer - Contains color values of each individual pixel.
+** - Write: pixelbuffer to file.
+** - Close: deletes the file descriptor.
+*/
+
+void		    save_first_image_bmp(t_base *base)
+{
+    int         file;
+    int         ret;
+    int         *pixelbuffer;
+    t_bitmap    *bmp;
+
+    file = open("screenshot.bmp", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+    if (file == -1)
+         printf("FAIL TO OPEN FILE\n");
+    bmp = (t_bitmap *)calloc(1, sizeof(t_bitmap));
+    if (bmp == NULL)
+        printf("FAIL TO CALLOC\n");
+    bmp_header(bmp, base);
+	ret = write(file, bmp, sizeof(t_bitmap));
+    if (ret == -1)
+         printf("FAIL TO WRITE\n");
+    pixelbuffer = pixel_data(base, bmp->infoheader.imagesize);
     ret = write(file, pixelbuffer, bmp->infoheader.imagesize);
     if (ret == -1)
         printf("FAIL TO WRITE\n");
 	close(file);
-    // free(bmp);
-    // free(pixelbuffer);
+    free(bmp);
+    free(pixelbuffer);
 }
-
-
-    //ft_memset(pixelbuffer, 0XFF, bmp->infoheader.imagesize);

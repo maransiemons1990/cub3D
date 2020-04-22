@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:35:56 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/21 18:25:42 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/22 16:04:00 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,34 +52,37 @@
 ** --> sizeof(test) = 1 * 6
 **
 ** Downside: it's slower!
+**-----------------------------------
+** uint16, uint32:
+** - unsigned integer of length 16 or 32 bits
 */
 
-typedef struct s_bmp_fileheader{
-	uint16_t	filetype;
-	uint32_t	filesize;
-	uint16_t	reserved1;
-	uint16_t	reserved2;
-	uint32_t	pixeldataoffset;	
-}				t_bmp_fileheader;
+typedef struct			s_bmp_fileheader{
+	uint16_t			filetype;
+	uint32_t			filesize;
+	uint16_t			reserved1;
+	uint16_t			reserved2;
+	uint32_t			pixeldataoffset;	
+}						t_bmp_fileheader;
 
-typedef struct s_bmp_infoheader{
-	uint32_t	headersize;
-	uint32_t	imagewidth;
-	uint32_t	imageheight;
-	uint16_t	planes;
-	uint16_t	bitsperpixel;
-	uint32_t	compression;
-	uint32_t	imagesize;
-	uint32_t	xpixelspermeter;
-	uint32_t	ypixelspermeter;
-	uint32_t	totalcolor;
-	uint32_t	importantcolor;
-}			t_bmp_infoheader;
+typedef struct			s_bmp_infoheader{
+	uint32_t			headersize;
+	uint32_t			imagewidth;
+	uint32_t			imageheight;
+	uint16_t			planes;
+	uint16_t			bitsperpixel;
+	uint32_t			compression;
+	uint32_t			imagesize;
+	uint32_t			xpixelspermeter;
+	uint32_t			ypixelspermeter;
+	uint32_t			totalcolor;
+	uint32_t			importantcolor;
+}						t_bmp_infoheader;
 
-typedef struct	s_bitmap{
-    t_bmp_fileheader fileheader;
-    t_bmp_infoheader infoheader;
-} 				t_bitmap;
+typedef struct			s_bitmap{
+    t_bmp_fileheader	fileheader;
+    t_bmp_infoheader	infoheader;
+} 						t_bitmap;
 
 #pragma pack(pop)
 #endif

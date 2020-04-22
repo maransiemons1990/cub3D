@@ -6,12 +6,16 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/17 13:22:17 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/22 16:21:58 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "cub3d.h"
+
+/*
+** Option: --save to make a screenshot of the first image and save as bmp
+*/
 
 int			main(int argc, char **argv)
 {	

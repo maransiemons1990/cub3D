@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/21 21:38:07 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/22 16:22:45 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int				mlx(t_base *base)
 	if (base->save == 0)
 	{
 		loop(base);
-		save_first_image(base);
+		save_first_image_bmp(base);
 		return (0);
 	}
 	mlx_loop_hook(base->mlx.mlx, &loop, base);
