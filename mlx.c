@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/17 13:22:23 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/21 21:38:07 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,13 @@ int				mlx(t_base *base)
 	mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_RELEASE, 1L<<1, &keyrelease, base);
 	mlx_hook(base->mlx.mlx_win, X11_EVENT_EXIT, 1L<<17, &windowclose_x, base);
 	//mlx_hook(base->mlx.mlx_win, X11_EVENT_RESIZE, 1L<<18, &windowclose_x, base);
-	//loop(base);
+	if (base->save == 0)
+	{
+		loop(base);
+		save_first_image(base);
+		return (0);
+	}
 	mlx_loop_hook(base->mlx.mlx, &loop, base);
-	
 // // /*----------------------------------------------*/
  	mlx_loop(base->mlx.mlx);
 	//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);
