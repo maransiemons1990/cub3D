@@ -1,4 +1,4 @@
-R 1240 800                    
+R 5120 2880                    
 NO ./path_to_the_north_texture
 S ./path_to_the_sprite_texture
 SO ./path_to_the_south_texture

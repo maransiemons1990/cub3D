@@ -6,12 +6,28 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/22 16:21:58 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/23 16:23:16 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "cub3d.h"
+
+void			displayresolution(t_base *base)
+{
+	int		maindisplayid;
+	int		pixelswidth;
+	int		pixelsheight;
+	
+	maindisplayid = CGMainDisplayID();
+    pixelswidth = CGDisplayPixelsWide(maindisplayid);
+    pixelsheight = CGDisplayPixelsHigh(maindisplayid);
+	if (base->read.render_x > pixelswidth)
+		base->read.render_x = pixelswidth;
+	if (base->read.render_y > pixelsheight)
+		base->read.render_y = pixelsheight;
+}
+
 
 /*
 ** Option: --save to make a screenshot of the first image and save as bmp
@@ -39,6 +55,7 @@ int			main(int argc, char **argv)
 	ret = read_scene_file(base);
 	if (ret > 0)
 		return (error_distribution(base));
+	displayresolution(base);
 	//------------------DELETE LATER------------------------------------
 	//printf("----after---\n");
 	//print_list(base);

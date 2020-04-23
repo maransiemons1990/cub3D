@@ -6,7 +6,7 @@
 #    By: msiemons <msiemons@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/03/04 17:11:26 by msiemons      #+#    #+#                  #
-#    Updated: 2020/04/21 14:07:35 by Maran         ########   odam.nl          #
+#    Updated: 2020/04/23 16:03:51 by Maran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,11 +36,13 @@ FLAGS = -Wall -Wextra -Werror
 # You may also need to specify the path to the  MiniLibX  library,  using the -L flag.
 LINKING = -lmlx -framework OpenGL -framework AppKit
 
+LINK_DISPLAY = -framework CoreGraphics
+
 all: $(NAME)
 
 $(NAME): $(LIBMLX) lib_ft $(OBJ)
 	@ar rcs $(NAME) $(OBJ)
-	gcc $(FLAGS) -I $(MLX) -L $(MLX) $(LINKING) $(NAME)
+	gcc $(FLAGS) -I $(MLX) -L $(MLX) $(LINKING) $(LINK_DISPLAY) $(NAME)
 #	./a.out	example.cub
 
 $(LIBMLX):

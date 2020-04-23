@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/22 16:22:38 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/23 15:53:08 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 
 # include "mlx/mlx.h" 
 # include "libft/libft.h"
+
+//get resolution
+#include <CoreGraphics/CGDirectDisplay.h>
 
 //Delete?:
 # include <stdio.h>
