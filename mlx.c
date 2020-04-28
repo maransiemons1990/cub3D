@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/28 09:21:22 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 14:21:42 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void		texture(t_base *base)
 	base->game.texHeight = 64;
 	path_no = ft_strjoin(base->read.no, "/dark-green.png"); //free
 	path_so = ft_strjoin(base->read.so, "/redbrick.png");
-	path_we = ft_strjoin(base->read.we, "/zebra.png");
-	path_ea = ft_strjoin(base->read.ea, "/diamonds.png");
+	path_we = ft_strjoin(base->read.we, "/bluestone.png");
+	path_ea = ft_strjoin(base->read.ea, "/bluestone.png");
 	path_s = ft_strjoin(base->read.sprite, "/barrel.png");
 	base->tex_no.png_img = mlx_png_file_to_image(base->mlx.mlx, path_no, &base->game.texWidth, &base->game.texHeight);
 	base->tex_no.png_addr = mlx_get_data_addr(base->tex_no.png_img, &base->tex_no.png_bits_per_pixel, &base->tex_no.png_line_length, &base->tex_no.png_endian);
@@ -78,6 +78,7 @@ void			initialise_game(t_base *base)
 	base->game.move_left = 0;
 	base->game.rotate_right = 0;
 	base->game.rotate_left = 0;
+	base->game.rotate = 0;
 	base->game.update = 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/28 11:05:15 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 14:22:31 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,13 +225,17 @@ void			initial_step_sidedist(t_base *base)
 void			ray_position(t_base *base, int x)
 {
 	double	cameraX;
-	
-	base->game.planeX = (base->game.dirY == 0) ? 0 : 0.66;
-	base->game.planeY = (base->game.dirY == 0) ? 0.66 : 0;
+	//printf("rotateleft = %d, rotateright = %d\n", base->game.rotate_left, base->game.rotate_right);
+	if (base->game.rotate == 0) //NEW
+	{
+		base->game.planeX = (base->game.dirY == 0) ? 0 : 0.66;
+		base->game.planeY = (base->game.dirY == 0) ? 0.66 : 0;
+	}
     if (base->read.pos == 'W' || base->read.pos == 'S')
 		cameraX = (2 * x / (double)base->read.render_x - 1) * -1;
     else
 		cameraX = 2 * x / (double)base->read.render_x - 1;
+	//printf("Ray pos: dirX[%f], dirY [%f], planeX[%f], planeY[%f]\n", base->game.dirX, base->game.dirY, base->game.planeX, base->game.planeY);
 	base->game.rayDirX = base->game.dirX + base->game.planeX * cameraX;
     base->game.rayDirY = base->game.dirY + base->game.planeY * cameraX;
     base->game.mapX = (int)base->read.x_pos;
@@ -261,7 +265,7 @@ int				raycasting(t_base *base)
 	base->game.time = clock();
 	base->game.frametime = (base->game.time - base->game.oldtime) / CLOCKS_PER_SEC;
 	base->game.movespeed = base->game.frametime * 20.0;
-	base->game.rotspeed = base->game.frametime * 3.0;
+	base->game.rotspeed = base->game.frametime * 25.0;
 	return (0);
 }
 
@@ -279,7 +283,7 @@ void			rotate(t_base *base)
 		oldPlaneX = base->game.planeX;
 		base->game.planeX = base->game.planeX * cos(base->game.rotspeed) - base->game.planeY * sin(base->game.rotspeed);
 		base->game.planeY = oldPlaneX * sin(base->game.rotspeed) + base->game.planeY * cos(base->game.rotspeed);
-		printf("ROTATE RIGHT dirX[%f], dirY[%f], planeX[%f], planeY[%f]\n", base->game.dirX, base->game.dirY, base->game.planeX, base->game.planeY);
+		//printf("ROTATE RIGHT dirX[%f], dirY[%f], planeX[%f], planeY[%f]\n", base->game.dirX, base->game.dirY, base->game.planeX, base->game.planeY);
 	}
 	if (base->game.rotate_left == 1)
 	{
@@ -297,12 +301,13 @@ void			move(t_base *base)
 {
 	if (base->game.move_front == 1)
 	{
-		printf("dirx[%f], diry[%f], movespeed[%f]\n", base->game.dirX, base->game.dirY, base->game.movespeed);
+		//printf("dirx[%f], diry[%f], movespeed[%f]\n", base->game.dirX, base->game.dirY, base->game.movespeed);
 		if (TWOD[(int)base->read.y_pos][(int)(base->read.x_pos + base->game.dirX * base->game.movespeed)] == '+')
 			base->read.x_pos += base->game.dirX * base->game.movespeed;		//EW
 		if (TWOD[(int)(base->read.y_pos + base->game.dirY * base->game.movespeed)][(int)base->read.x_pos] == '+')
 			base->read.y_pos += base->game.dirY * base->game.movespeed;		//SN
 		printf("FRONT [%f][%f]\n", base->read.y_pos, base->read.x_pos);
+		printf("FRONT dirX[%f], dirY[%f], planeX[%f], planeY[%f]\n", base->game.dirX, base->game.dirY, base->game.planeX, base->game.planeY);
 	}
 	if (base->game.move_back == 1)
 	{
@@ -349,8 +354,8 @@ int				loop(t_base *base)
 	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
 	if (base->game.update)
 		move(base);
-	//floor_ceiling_smooth(base);
-	floor_ceiling_texture(base);
+	floor_ceiling_smooth(base);
+	//floor_ceiling_texture(base);
 	raycasting(base);
 	//printf("Z[880] = %f\n", base->ZBuffer[880]);
 	sprite(base);
