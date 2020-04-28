@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/28 14:22:31 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 14:57:07 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,11 +226,11 @@ void			ray_position(t_base *base, int x)
 {
 	double	cameraX;
 	//printf("rotateleft = %d, rotateright = %d\n", base->game.rotate_left, base->game.rotate_right);
-	if (base->game.rotate == 0) //NEW
-	{
-		base->game.planeX = (base->game.dirY == 0) ? 0 : 0.66;
-		base->game.planeY = (base->game.dirY == 0) ? 0.66 : 0;
-	}
+	// if (base->game.rotate == 0) //NEW
+	// {
+	// 	base->game.planeX = (base->game.dirY == 0) ? 0 : 0.66;
+	// 	base->game.planeY = (base->game.dirY == 0) ? 0.66 : 0;
+	// }
     if (base->read.pos == 'W' || base->read.pos == 'S')
 		cameraX = (2 * x / (double)base->read.render_x - 1) * -1;
     else

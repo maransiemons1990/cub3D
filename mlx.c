@@ -6,13 +6,22 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/28 14:21:42 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 14:50:17 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-//initial direction vector
+/*
+** Initial direction vector out of scene file: N, E, S, W.
+** - PLANE: the 2d raycaster version of camera plane.
+** Initial camera plane value. Value changes when rotating.
+** Done rotating, the updated value will be the new constant value
+** use to determine your rayposition.
+** if (base->game.dirY == 0) THEN planeX = 0, planeY 0.66 --> N and S
+** if (base->game.dirY == 1 || == -1) THEN planeX = 0.66 , planeY 0 --> E and W
+*/
+
 void			orientation(t_base *base)
 {
 	base->game.dirX = 0; 
@@ -25,6 +34,8 @@ void			orientation(t_base *base)
 		base->game.dirX = 1;	
 	if (base->read.pos == 'W')
 		base->game.dirX = -1;
+	base->game.planeX = (base->game.dirY == 0) ? 0 : 0.66;
+	base->game.planeY = (base->game.dirY == 0) ? 0.66 : 0;
 }
 
 /*
@@ -79,7 +90,7 @@ void			initialise_game(t_base *base)
 	base->game.rotate_right = 0;
 	base->game.rotate_left = 0;
 	base->game.rotate = 0;
-	base->game.update = 0;
+	//base->game.update = 0;
 }
 
 /*
