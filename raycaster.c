@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/21 21:31:57 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 10:17:03 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int				texture_pick_wallside(t_base *base, int texX, int texY)
 
 /*
 ** PERPWALLDIST: Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
+** Perpwallshoudn't be smaller then 1 otherwise you can look through the wall. So 1 is the smallest, then lineheight == total rendery.
 ** LINEHIGHT: Calculate height of line to draw on screen
 ** DRAWSTART/END: calculate lowest and highest pixel to fill in current stripe
 ** ------------Textured wall------------------------------------------
@@ -81,7 +82,8 @@ void			draw_calculations_wall(t_base *base)
 		base->wall.perpWallDist = (base->game.mapX - base->read.x_pos + (1 - base->game.stepX) / 2) / base->game.rayDirX;
 	else
 		base->wall.perpWallDist = (base->game.mapY - base->read.y_pos + (1 - base->game.stepY) / 2) / base->game.rayDirY;
-   	base->wall.lineHeight = (int)(base->read.render_y / base->wall.perpWallDist);
+	base->wall.perpWallDist = (base->wall.perpWallDist < 1) ? 1 : base->wall.perpWallDist;
+	base->wall.lineHeight = (int)(base->read.render_y / base->wall.perpWallDist);
 	base->wall.drawStart = -base->wall.lineHeight / 2 + base->read.render_y / 2;
 	if(base->wall.drawStart < 0)
 		base->wall.drawStart = 0;
@@ -176,7 +178,6 @@ void			DDA(t_base *base)
         	base->game.side = 1;
 			base->game.tex_side = base->game.stepY < 0 ? 3 : 1;
     	}
-    	//if (TWOD[base->game.mapY][base->game.mapX] > 0 && TWOD[base->game.mapY][base->game.mapX] != '+')
 		if (TWOD[base->game.mapY][base->game.mapX] == '1')
 			hit = 1;
 	}
@@ -235,6 +236,7 @@ void			ray_position(t_base *base, int x)
     base->game.rayDirY = base->game.dirY + base->game.planeY * cameraX;
     base->game.mapX = (int)base->read.x_pos;
 	base->game.mapY = (int)base->read.y_pos;
+	//printf("MapY = [%d]\n", base->game.mapY);
     base->game.deltaDistX = fabs(1 / base->game.rayDirX);
     base->game.deltaDistY = fabs(1 / base->game.rayDirY);
 }
@@ -258,7 +260,7 @@ int				raycasting(t_base *base)
 	base->game.oldtime = base->game.time;
 	base->game.time = clock();
 	base->game.frametime = (base->game.time - base->game.oldtime) / CLOCKS_PER_SEC;
-	base->game.movespeed = base->game.frametime * 5.0; //werkt nog niet lekker.
+	base->game.movespeed = base->game.frametime * 10.0; //werkt nog niet lekker.
 	base->game.rotspeed = base->game.frametime * 3.0;
 	return (0);
 }
@@ -296,10 +298,11 @@ void			move(t_base *base)
 {
 	if (base->game.move_front == 1)
 	{
-		if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirX)] == '+')
-			base->read.x_pos += base->game.dirX;		//EW
-		if (TWOD[(int)(base->read.y_pos + base->game.dirY)][base->read.x_pos] == '+')
-			base->read.y_pos += base->game.dirY;		//SN
+		printf("dirx[%f], diry[%f], movespeed[%f]\n", base->game.dirX, base->game.dirY, base->game.movespeed);
+		if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirX * base->game.movespeed)] == '+')
+			base->read.x_pos += base->game.dirX * base->game.movespeed;		//EW
+		if (TWOD[(int)(base->read.y_pos + base->game.dirY * base->game.movespeed)][base->read.x_pos] == '+')
+			base->read.y_pos += base->game.dirY * base->game.movespeed;		//SN
 		printf("FRONT [%d][%d]\n", base->read.y_pos, base->read.x_pos);
 	}
 	if (base->game.move_back == 1)
@@ -328,7 +331,7 @@ void			move(t_base *base)
 	}
 	if (base->game.rotate_left == 1 || base->game.rotate_right == 1)
 		rotate(base);
-	printf("IN MOVE:\nmove_front = %d\nmove_back = %d\n", base->game.move_front, base->game.move_back);
+	//printf("IN MOVE:\nmove_front = %d\nmove_back = %d\n", base->game.move_front, base->game.move_back);
 }
 
 /*
