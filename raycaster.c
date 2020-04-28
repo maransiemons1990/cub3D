@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/28 10:17:03 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 11:05:15 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,7 +260,7 @@ int				raycasting(t_base *base)
 	base->game.oldtime = base->game.time;
 	base->game.time = clock();
 	base->game.frametime = (base->game.time - base->game.oldtime) / CLOCKS_PER_SEC;
-	base->game.movespeed = base->game.frametime * 10.0; //werkt nog niet lekker.
+	base->game.movespeed = base->game.frametime * 20.0;
 	base->game.rotspeed = base->game.frametime * 3.0;
 	return (0);
 }
@@ -293,41 +293,40 @@ void			rotate(t_base *base)
 	}
 }
 
-//* base->game.movespeed; Overal uitgehaald. Want issues.
 void			move(t_base *base)
 {
 	if (base->game.move_front == 1)
 	{
 		printf("dirx[%f], diry[%f], movespeed[%f]\n", base->game.dirX, base->game.dirY, base->game.movespeed);
-		if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirX * base->game.movespeed)] == '+')
+		if (TWOD[(int)base->read.y_pos][(int)(base->read.x_pos + base->game.dirX * base->game.movespeed)] == '+')
 			base->read.x_pos += base->game.dirX * base->game.movespeed;		//EW
-		if (TWOD[(int)(base->read.y_pos + base->game.dirY * base->game.movespeed)][base->read.x_pos] == '+')
+		if (TWOD[(int)(base->read.y_pos + base->game.dirY * base->game.movespeed)][(int)base->read.x_pos] == '+')
 			base->read.y_pos += base->game.dirY * base->game.movespeed;		//SN
-		printf("FRONT [%d][%d]\n", base->read.y_pos, base->read.x_pos);
+		printf("FRONT [%f][%f]\n", base->read.y_pos, base->read.x_pos);
 	}
 	if (base->game.move_back == 1)
 	{
-		if (TWOD[base->read.y_pos][(int)(base->read.x_pos - base->game.dirX)] == '+')
-			base->read.x_pos -= base->game.dirX;
-		if (TWOD[(int)(base->read.y_pos - base->game.dirY)][base->read.x_pos] == '+')
-			base->read.y_pos -= base->game.dirY;
-		printf("BACK [%d][%d]\n", base->read.y_pos, base->read.x_pos);
+		if (TWOD[(int)base->read.y_pos][(int)(base->read.x_pos - base->game.dirX * base->game.movespeed)] == '+')
+			base->read.x_pos -= base->game.dirX * base->game.movespeed;
+		if (TWOD[(int)(base->read.y_pos - base->game.dirY * base->game.movespeed)][(int)base->read.x_pos] == '+')
+			base->read.y_pos -= base->game.dirY * base->game.movespeed;
+		printf("BACK [%f][%f]\n", base->read.y_pos, base->read.x_pos);
 	}
 	if (base->game.move_right == 1)
 	{
-		if (TWOD[base->read.y_pos][(int)(base->read.x_pos - base->game.dirY)] == '+')
-		 	base->read.x_pos -= base->game.dirY;		//S N
-		if (TWOD[(int)(base->read.y_pos + base->game.dirX)][base->read.x_pos] == '+')
-			base->read.y_pos += base->game.dirX;		//E W
-		printf("RIGHT [%d][%d]\n", base->read.y_pos, base->read.x_pos);
+		if (TWOD[(int)base->read.y_pos][(int)(base->read.x_pos - base->game.dirY * base->game.movespeed)] == '+')
+		 	base->read.x_pos -= base->game.dirY * base->game.movespeed;		//S N
+		if (TWOD[(int)(base->read.y_pos + base->game.dirX * base->game.movespeed)][(int)base->read.x_pos] == '+')
+			base->read.y_pos += base->game.dirX * base->game.movespeed;		//E W
+		printf("RIGHT [%f][%f]\n", base->read.y_pos, base->read.x_pos);
 	}
 	if (base->game.move_left == 1)
 	{
-		if (TWOD[base->read.y_pos][(int)(base->read.x_pos + base->game.dirY)] == '+')
-			base->read.x_pos += base->game.dirY;	//S N
-		if (TWOD[(int)(base->read.y_pos - base->game.dirX)][base->read.x_pos] == '+')
-			base->read.y_pos -= base->game.dirX;	//E W
-		printf("LEFT [%d][%d]\n", base->read.y_pos, base->read.x_pos);
+		if (TWOD[(int)base->read.y_pos][(int)(base->read.x_pos + base->game.dirY * base->game.movespeed)] == '+')
+			base->read.x_pos += base->game.dirY * base->game.movespeed;	//S N
+		if (TWOD[(int)(base->read.y_pos - base->game.dirX * base->game.movespeed)][(int)base->read.x_pos] == '+')
+			base->read.y_pos -= base->game.dirX * base->game.movespeed;	//E W
+		printf("LEFT [%f][%f]\n", base->read.y_pos, base->read.x_pos);
 	}
 	if (base->game.rotate_left == 1 || base->game.rotate_right == 1)
 		rotate(base);

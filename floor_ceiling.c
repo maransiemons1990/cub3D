@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/08 14:53:21 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/09 12:44:45 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 10:25:15 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static void		floor_ceiling_tex_y(t_base *base, int y)
     rowDistance = posZ / p;
     base->floor.floorStepX = rowDistance * (rayDirX1 - rayDirX0) / base->read.render_y;
     base->floor.floorStepY = rowDistance * (rayDirY1 - rayDirY0) / base->read.render_y;
-    base->floor.floorX = base->read.x_pos + rowDistance * rayDirX0;
+    base->floor.floorX = base->read.x_pos + rowDistance * rayDirX0; //changed double x_pos
     base->floor.floorY = base->read.y_pos + rowDistance * rayDirY0;
 }
 

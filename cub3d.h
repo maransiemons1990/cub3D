@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/23 15:53:08 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 10:23:47 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ typedef struct	s_read {
 	int			map_start;
 	int			map_end;
 	char		pos;
-	int			x_pos;
-	int			y_pos;
+	double		x_pos; //
+	double		y_pos; //
 	int			nb_sprites; //
 }				t_read;
 
