@@ -6,12 +6,17 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/23 16:23:16 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 22:22:24 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "cub3d.h"
+
+/*
+** Other option I could have used:
+** mlx_get_screen_size(base->mlx.mlx, &base->read.render_x, &base->read.render_y);
+*/
 
 void			displayresolution(t_base *base)
 {

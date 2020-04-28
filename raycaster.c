@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/28 18:53:02 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 22:45:23 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include <math.h>
 #include <string.h>
 
+#define MLX_SYNC_IMAGE_WRITABLE    1 
+#define MLX_SYNC_WIN_FLUSH_CMD     2
+#define MLX_SYNC_WIN_CMD_COMPLETED 3
 /*
 ** Pushing pixels to the window. we will have to buffer all of our pixels to a image
 ** which we will then push to the window.
@@ -354,10 +357,9 @@ int				loop(t_base *base)
 	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
 	if (base->game.update)
 		move(base);
-	//floor_ceiling_smooth(base);
-	floor_ceiling_texture(base);
+	floor_ceiling_smooth(base);
+	//floor_ceiling_texture(base);
 	raycasting(base);
-	//printf("Z[880] = %f\n", base->ZBuffer[880]);
 	sprite(base);
 	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
 	//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);
