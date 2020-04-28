@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/28 14:57:07 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 18:53:02 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,8 +264,8 @@ int				raycasting(t_base *base)
 	base->game.oldtime = base->game.time;
 	base->game.time = clock();
 	base->game.frametime = (base->game.time - base->game.oldtime) / CLOCKS_PER_SEC;
-	base->game.movespeed = base->game.frametime * 20.0;
-	base->game.rotspeed = base->game.frametime * 25.0;
+	base->game.movespeed = base->game.frametime * 25.0; 
+	base->game.rotspeed = base->game.frametime * 5.0;
 	return (0);
 }
 
@@ -276,14 +276,14 @@ void			rotate(t_base *base)
 	
 	if (base->game.rotate_right == 1)
 	{
-		//printf("ROTATE LEFT rotspeed[%f]", base->game.rotspeed);
+		//printf("ROTATE LEFT rotspeed[%f]\n", base->game.rotspeed);
 		oldDirX = base->game.dirX;
 		base->game.dirX = base->game.dirX * cos(base->game.rotspeed) - base->game.dirY * sin(base->game.rotspeed);
 		base->game.dirY = oldDirX * sin(base->game.rotspeed) + base->game.dirY * cos(base->game.rotspeed);
 		oldPlaneX = base->game.planeX;
 		base->game.planeX = base->game.planeX * cos(base->game.rotspeed) - base->game.planeY * sin(base->game.rotspeed);
 		base->game.planeY = oldPlaneX * sin(base->game.rotspeed) + base->game.planeY * cos(base->game.rotspeed);
-		//printf("ROTATE RIGHT dirX[%f], dirY[%f], planeX[%f], planeY[%f]\n", base->game.dirX, base->game.dirY, base->game.planeX, base->game.planeY);
+		printf("ROTATE RIGHT dirX[%f], dirY[%f], planeX[%f], planeY[%f]\n", base->game.dirX, base->game.dirY, base->game.planeX, base->game.planeY);
 	}
 	if (base->game.rotate_left == 1)
 	{
@@ -354,8 +354,8 @@ int				loop(t_base *base)
 	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
 	if (base->game.update)
 		move(base);
-	floor_ceiling_smooth(base);
-	//floor_ceiling_texture(base);
+	//floor_ceiling_smooth(base);
+	floor_ceiling_texture(base);
 	raycasting(base);
 	//printf("Z[880] = %f\n", base->ZBuffer[880]);
 	sprite(base);

@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/08 14:53:21 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/28 10:25:15 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 17:52:52 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,6 @@ void			floor_ceiling_texture(t_base *base)
 	int 	y;
 
 	y = base->read.render_y / 2 + 1;
-	base->game.planeX = (base->game.dirY == 0) ? 0 : 0.66;
-	base->game.planeY = (base->game.dirY == 0) ? 0.66 : 0;
 	while (y < base->read.render_y)
     {
 		floor_ceiling_tex_y(base, y);

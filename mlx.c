@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/28 14:50:17 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/28 18:49:00 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void			orientation(t_base *base)
 ** This information is needed to move from one line to another in the image.
 ** endian - tells you wether the pixel color in the image needs to be stored in
 ** little endian (== 0), or big endian (== 1).
+** https://opengameart.org/content/64x-textures-an-overlays
+** https://gamebanana.com/textures/download/4678
 */
 void		texture(t_base *base)
 {
@@ -58,10 +60,10 @@ void		texture(t_base *base)
 	
 	base->game.texWidth = 64;
 	base->game.texHeight = 64;
-	path_no = ft_strjoin(base->read.no, "/dark-green.png"); //free
-	path_so = ft_strjoin(base->read.so, "/redbrick.png");
-	path_we = ft_strjoin(base->read.we, "/bluestone.png");
-	path_ea = ft_strjoin(base->read.ea, "/bluestone.png");
+	path_no = ft_strjoin(base->read.no, "/wall_texture.png"); //free
+	path_so = ft_strjoin(base->read.so, "/ice.png");
+	path_we = ft_strjoin(base->read.we, "/bookshelf.png");
+	path_ea = ft_strjoin(base->read.ea, "/WoolSnow.png");
 	path_s = ft_strjoin(base->read.sprite, "/barrel.png");
 	base->tex_no.png_img = mlx_png_file_to_image(base->mlx.mlx, path_no, &base->game.texWidth, &base->game.texHeight);
 	base->tex_no.png_addr = mlx_get_data_addr(base->tex_no.png_img, &base->tex_no.png_bits_per_pixel, &base->tex_no.png_line_length, &base->tex_no.png_endian);
@@ -72,9 +74,9 @@ void		texture(t_base *base)
 	base->tex_we.png_img = mlx_png_file_to_image(base->mlx.mlx, path_we, &base->game.texWidth, &base->game.texHeight);
 	base->tex_we.png_addr = mlx_get_data_addr(base->tex_we.png_img, &base->tex_we.png_bits_per_pixel, &base->tex_we.png_line_length, &base->tex_we.png_endian);
 	
-	base->tex_f.png_img = mlx_png_file_to_image(base->mlx.mlx, "./Textures_png/greystone.png", &base->game.texWidth, &base->game.texHeight);
+	base->tex_f.png_img = mlx_png_file_to_image(base->mlx.mlx, "./64x/dirt.png", &base->game.texWidth, &base->game.texHeight);
 	base->tex_f.png_addr = mlx_get_data_addr(base->tex_f.png_img, &base->tex_f.png_bits_per_pixel, &base->tex_f.png_line_length, &base->tex_f.png_endian);
-	base->tex_c.png_img = mlx_png_file_to_image(base->mlx.mlx,"./Textures_png/bluestone.png", &base->game.texWidth, &base->game.texHeight);
+	base->tex_c.png_img = mlx_png_file_to_image(base->mlx.mlx,"./Textures_png/stars.png", &base->game.texWidth, &base->game.texHeight);
 	base->tex_c.png_addr = mlx_get_data_addr(base->tex_c.png_img, &base->tex_c.png_bits_per_pixel, &base->tex_c.png_line_length, &base->tex_c.png_endian);
 
 	base->tex_s.png_img = mlx_png_file_to_image(base->mlx.mlx, path_s, &base->game.texWidth, &base->game.texHeight);
