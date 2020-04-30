@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/28 22:45:23 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/30 09:28:28 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 #include <math.h>
 #include <string.h>
 
-#define MLX_SYNC_IMAGE_WRITABLE    1 
-#define MLX_SYNC_WIN_FLUSH_CMD     2
-#define MLX_SYNC_WIN_CMD_COMPLETED 3
 /*
 ** Pushing pixels to the window. we will have to buffer all of our pixels to a image
 ** which we will then push to the window.
 ** Instead of push the pixel instantly to the window (without waiting for the frame to be entirely rendered).
+** Locate postion of pixel: (y * size_line + x * (bits_per_pixel / 8));
+** Here we multiply size_line by y as we need to skip y lines (line size does not equal the amount of pixels in a line).
+** We then add the remaining x units multiplied by bits_per_pixl / 8 to align with the final location.
 */
 
 void            my_mlx_pixel_put(t_base *base, int x, int y, int color)

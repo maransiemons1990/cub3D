@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/28 14:21:22 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/30 15:20:29 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,12 +123,12 @@ typedef struct s_game {
 	double		rotspeed;
 
 	int			update;
-	int			count;
+//	int			count;
 
 	int			tex_side;
 	int			texWidth;
 	int			texHeight;
-
+	
 }				t_game;
 
 typedef struct	s_tex{
