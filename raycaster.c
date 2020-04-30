@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/30 09:28:28 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/30 21:01:51 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void            my_mlx_pixel_put(t_base *base, int x, int y, int color)
 ** Reversed my_mlx_pixel_put-dest formula.
 ** We got the addr of the texture. So we can get the pixel color of a certain
 ** texturecoordinate. Coordinate color = addr + coordinate.
+** tex[i] --> no 0, ea 1, so 2, we 3,
 */
 
 int				texture_pick_wallside(t_base *base, int texX, int texY)
@@ -44,23 +45,23 @@ int				texture_pick_wallside(t_base *base, int texX, int texY)
 	
 	if (base->game.tex_side == 1)
 	{
-		dest = base->tex_no.png_addr + (texY * base->tex_no.png_line_length + texX * (base->tex_no.png_bits_per_pixel / 8));
+		dest = base->tex[0].png_addr + (texY * base->tex[0].png_line_length + texX * (base->tex[0].png_bits_per_pixel / 8));
 		color = *(unsigned int*)dest;
 	}
 	else if (base->game.tex_side == 2)
 	{
-		dest = base->tex_ea.png_addr + (texY * base->tex_ea.png_line_length + texX * (base->tex_ea.png_bits_per_pixel / 8));
+		dest = base->tex[1].png_addr + (texY * base->tex[1].png_line_length + texX * (base->tex[1].png_bits_per_pixel / 8));
 		color = *(unsigned int*)dest;
 		color = (color >> 1) & 8355711;
 	}
 	else if (base->game.tex_side == 3)
 	{
-		dest = base->tex_so.png_addr + (texY * base->tex_so.png_line_length + texX * (base->tex_so.png_bits_per_pixel / 8));
+		dest = base->tex[2].png_addr + (texY * base->tex[2].png_line_length + texX * (base->tex[2].png_bits_per_pixel / 8));
 		color = *(unsigned int*)dest;
 	}
 	else
 	{
-		dest = base->tex_we.png_addr + (texY * base->tex_we.png_line_length + texX * (base->tex_we.png_bits_per_pixel / 8));
+		dest = base->tex[3].png_addr + (texY * base->tex[3].png_line_length + texX * (base->tex[3].png_bits_per_pixel / 8));
 		color = *(unsigned int*)dest;
 		color = (color >> 1) & 8355711;
 	

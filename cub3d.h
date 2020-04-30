@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/30 15:20:29 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/30 21:01:03 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ typedef struct s_game {
 typedef struct	s_tex{
 
 	void		*png_img;
-	void		*png_addr;
+	char		*png_addr; //was void
 	int			png_bits_per_pixel;
     int			png_line_length;
     int			png_endian;
@@ -187,13 +187,10 @@ typedef struct	s_base{
 	t_mlx		mlx;
 	t_game		game;
 
-	t_tex		tex_no;
-	t_tex		tex_so;
-	t_tex		tex_we;
-	t_tex		tex_ea;
+	t_tex		tex[5];
+	
 	t_tex		tex_f;
 	t_tex		tex_c;
-	t_tex		tex_s;
 	t_floor		floor;
 	
 	t_tex_co	tex_co;

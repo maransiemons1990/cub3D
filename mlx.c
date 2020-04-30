@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/30 15:55:53 by Maran         ########   odam.nl         */
+/*   Updated: 2020/04/30 21:00:39 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,33 +27,33 @@
 ** https://anyconv.com/png-to-xpm-converter/
 ** Tutorial states "mlx_png_file_to_image currently leaks memory".
 ** So changed all png functions to xpm.
+** no 0, ea 1, so 2, we 3, sprite 4
 */
 void		texture(t_base *base)
 {
-	char *path_no;
-	char *path_so;
-	char *path_we;
-	char *path_ea;
-	char *path_s;
+	char *path;
+	int		i;
 	
+	i = 0;
 	base->game.texWidth = 64;
 	base->game.texHeight = 64;
-	path_no = ft_strjoin(base->read.no, "/wall_texture.xpm"); //free
-	path_so = ft_strjoin(base->read.so, "/dirt.xpm");
-	path_we = ft_strjoin(base->read.we, "/OreVein.xpm");
-	path_ea = ft_strjoin(base->read.ea, "/CrateOver.xpm");
-	path_s = ft_strjoin(base->read.sprite, "/barrel.xpm");
-	base->tex_no.png_img = mlx_xpm_file_to_image(base->mlx.mlx, path_no, &base->game.texWidth, &base->game.texHeight);
-	base->tex_no.png_addr = mlx_get_data_addr(base->tex_no.png_img, &base->tex_no.png_bits_per_pixel, &base->tex_no.png_line_length, &base->tex_no.png_endian);
-	base->tex_so.png_img = mlx_xpm_file_to_image(base->mlx.mlx, path_so, &base->game.texWidth, &base->game.texHeight);
-	base->tex_so.png_addr = mlx_get_data_addr(base->tex_so.png_img, &base->tex_so.png_bits_per_pixel, &base->tex_so.png_line_length, &base->tex_so.png_endian);
-	base->tex_ea.png_img = mlx_xpm_file_to_image(base->mlx.mlx, path_ea, &base->game.texWidth, &base->game.texHeight);
-	base->tex_ea.png_addr = mlx_get_data_addr(base->tex_ea.png_img, &base->tex_ea.png_bits_per_pixel, &base->tex_ea.png_line_length, &base->tex_ea.png_endian);
-	base->tex_we.png_img = mlx_xpm_file_to_image(base->mlx.mlx, path_we, &base->game.texWidth, &base->game.texHeight);
-	base->tex_we.png_addr = mlx_get_data_addr(base->tex_we.png_img, &base->tex_we.png_bits_per_pixel, &base->tex_we.png_line_length, &base->tex_we.png_endian);
-
-	base->tex_s.png_img = mlx_xpm_file_to_image(base->mlx.mlx, path_s, &base->game.texWidth, &base->game.texHeight);
-	base->tex_s.png_addr = mlx_get_data_addr(base->tex_s.png_img, &base->tex_s.png_bits_per_pixel, &base->tex_s.png_line_length, &base->tex_s.png_endian);
+	while (i < 5)
+	{
+		if (i == 0)
+			path = ft_strjoin(base->read.no, "/wall_texture.xpm"); //free
+		else if (i == 1)
+			path = ft_strjoin(base->read.ea, "/CrateOver.xpm");
+		else if (i == 2)
+			path = ft_strjoin(base->read.so, "/dirt.xpm");
+		else if (i == 3)
+			path = ft_strjoin(base->read.we, "/OreVein.xpm");
+		else if (i == 4)	
+			path = ft_strjoin(base->read.sprite, "/barrel.xpm");
+		base->tex[i].png_img = mlx_xpm_file_to_image(base->mlx.mlx, path, &base->game.texWidth, &base->game.texHeight);
+		base->tex[i].png_addr = mlx_get_data_addr(base->tex[i].png_img, &base->tex[i].png_bits_per_pixel, &base->tex[i].png_line_length, &base->tex[i].png_endian);
+		free (path);
+		i++;
+	}
 }
 
 /*
@@ -62,8 +62,8 @@ void		texture(t_base *base)
 ** Initial camera plane value. Value changes when rotating.
 ** Done rotating, the updated value will be the new constant value
 ** use to determine your rayposition.
-** if (base->game.dirY == 0) THEN planeX = 0, planeY 0.66 --> N and S
-** if (base->game.dirY == 1 || == -1) THEN planeX = 0.66 , planeY 0 --> E and W
+** if (base->game.dirY == 0) THEN planeX = 0, planeY 0.66 --> N and S 
+** if (base->game.dirY == 1 || == -1) THEN planeX = 0.66 , planeY 0 --> E and W --> otherwise skewed wall
 */
 
 void			orientation(t_game *game, t_read *read)
