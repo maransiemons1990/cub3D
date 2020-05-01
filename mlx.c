@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/01 13:00:14 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 14:52:23 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void			orientation(t_game *game, t_read *read)
 }
 
 //wss new_window ook nog op NULL
+//win en img has to be set to NULL otherwise sefgault in exit_game
 void			initialise_game(t_game *game, t_mlx  *mlx, t_base *base)
 {
 	int i;
@@ -113,11 +114,13 @@ void			initialise_game(t_game *game, t_mlx  *mlx, t_base *base)
 	game->rotate = 0;
 	//base->game.update = 0;
 	mlx->img = NULL;
+	mlx->mlx_win = NULL;
 	while (i < 5)
 	{
 		base->tex[i].xpm_img = NULL;
 		i++;
 	}
+	base->ZBuffer = NULL;
 }
 
 /*
@@ -141,11 +144,13 @@ int				mlx(t_base *base)
 	initialise_game(&base->game, &base->mlx, base);
 	orientation(&base->game, &base->read);
 	base->mlx.mlx = mlx_init();
+	if (base->mlx.mlx == NULL)
+		exit_game(base, 1, 29);
 	base->mlx.mlx_win = mlx_new_window(base->mlx.mlx, base->read.render_x,
 		base->read.render_y, "Wolfenstein 3D! | Maran Siemons");
 	if (base->mlx.mlx_win == NULL)
 		exit_game(base, 1, 20);
-	load_texture(base); //tm hier error
+	load_texture(base); 
 	mlx_hook(base->mlx.mlx_win, 2, 1L<<0, &keypress, base);				//wel of geen & voor functie? // geen & voor base!
 	mlx_hook(base->mlx.mlx_win, 3, 1L<<1, &keyrelease, base);
 	mlx_hook(base->mlx.mlx_win, 17, 1L<<17, &windowclose_x, base);
@@ -157,6 +162,5 @@ int				mlx(t_base *base)
 	}
 	mlx_loop_hook(base->mlx.mlx, &loop, base);
  	mlx_loop(base->mlx.mlx);
-	//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);
 	return (0);
 }

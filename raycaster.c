@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/01 09:23:43 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 14:51:30 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,11 +249,13 @@ void			ray_position(t_base *base, int x)
     base->game.deltaDistY = fabs(1 / base->game.rayDirY);
 }
 
-int				raycasting(t_base *base)
+void				raycasting(t_base *base)
 {
 	int x;
-	base->ZBuffer = (double *)malloc(sizeof(double) * base->read.render_x); // --> LOCATION OF MALLOC MATTERS! //FREEEE
 
+	base->ZBuffer = (double *)malloc(sizeof(double) * base->read.render_x); // --> LOCATION OF MALLOC MATTERS! //FREEEE
+	if (base->ZBuffer == NULL)
+		exit_game(base, 1, 27);
 	x = 0;
 	while(x < base->read.render_x)
 	{
@@ -267,10 +269,11 @@ int				raycasting(t_base *base)
 	}
 	base->game.oldtime = base->game.time;
 	base->game.time = clock();
+	if (base->game.time == -1)
+		exit_game(base, 1, 28);
 	base->game.frametime = (base->game.time - base->game.oldtime) / CLOCKS_PER_SEC;
 	base->game.movespeed = base->game.frametime * 25.0; 
 	base->game.rotspeed = base->game.frametime * 5.0;
-	return (0);
 }
 
 void			rotate(t_base *base)
@@ -355,15 +358,15 @@ void			move(t_base *base)
 int				loop(t_base *base)
 {
 	base->mlx.img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
+	if (base->mlx.img == NULL)
+			exit_game(base, 1, 26);
 	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bits_per_pixel, &base->mlx.line_length, &base->mlx.endian);
 	if (base->game.update)
 		move(base);
 	floor_ceiling_smooth(base);
-	//floor_ceiling_texture(base);
-	raycasting(base);
+	raycasting(base); 
 	sprite(base);
 	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
-	//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);
 	base->game.update = 0;
 	return (0);
 }

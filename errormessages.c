@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 13:03:52 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/01 12:29:05 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 14:37:40 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,25 @@ static void		errormessages_20to(int	errornum)
 
 	str = NULL;
 	if (errornum == 20)
-		str = "Error\nmlx failed to create a new window\n";
+		str = "Error\nMlx failed to create a new window\n";
 	if (errornum == 21)
-		str = "Error\nfailed to create .xpm file path\n";
+		str = "Error\nFailed to create .xpm file path\n";
 	if (errornum == 22)
-		str = "Error\nmlx failed to create an image out of .xpm file\n";
+		str = "Error\nMlx failed to create an image out of .xpm file\n";
+	if (errornum == 23)
+		perror("Error\nFailed to open/create .bmp file --save");
+	if (errornum == 24)
+		perror("Error\nFailed to allocate memory for bitmap --save");
+	if (errornum == 25)
+		perror("Error\nFailed to write into bitmap file");
+	if (errornum == 26)
+		str = "Error\nMlx failed to create an image\n";
+	if (errornum == 27)
+		perror("Error\nFailed to allocate memory for Zbuffer");
+	if (errornum == 28)
+		str = "Error\nThe used processor time couldn't be established\n";
+	if (errornum == 29)
+		str = "Error\nMlx failed to set up the connection to the display\n";
 	if (str != NULL)
 		write(STDERR_FILENO, str, ft_strlen(str));
 }

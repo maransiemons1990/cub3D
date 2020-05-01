@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/17 13:26:51 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/22 16:22:35 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 14:00:20 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int             *pixel_data(t_base *base, uint32_t imagesize)
     
     i = 0;
     y = base->read.render_y;
-    pixelbuffer = (int *)malloc(imagesize);
+    pixelbuffer = (int *)malloc(imagesize); //mist hier iets?
     if (pixelbuffer == NULL)
         return (NULL);
     while (y > 0)
@@ -93,6 +93,16 @@ int             *pixel_data(t_base *base, uint32_t imagesize)
          y--;
     }
     return (pixelbuffer);
+}
+
+
+void           error_bmp(t_base *base, t_bitmap *bmp, int *pxlbuf, int code)
+{
+    if (bmp)
+        free(bmp);
+    if (pxlbuf)
+        free (pxlbuf);
+    exit_game(base, 1, code);
 }
 
 /*
@@ -117,18 +127,20 @@ void		    save_first_image_bmp(t_base *base)
 
     file = open("screenshot.bmp", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
     if (file == -1)
-         printf("FAIL TO OPEN FILE\n");
+        exit_game(base, 1, 23);
     bmp = (t_bitmap *)calloc(1, sizeof(t_bitmap));
     if (bmp == NULL)
-        printf("FAIL TO CALLOC\n");
+        exit_game(base, 1, 24);
     bmp_header(bmp, base);
 	ret = write(file, bmp, sizeof(t_bitmap));
     if (ret == -1)
-         printf("FAIL TO WRITE\n");
+        error_bmp(base, bmp, NULL, 25);
     pixelbuffer = pixel_data(base, bmp->infoheader.imagesize);
+    if (pixelbuffer == NULL)
+        error_bmp(base, bmp, NULL, 24);
     ret = write(file, pixelbuffer, bmp->infoheader.imagesize);
     if (ret == -1)
-        printf("FAIL TO WRITE\n");
+        error_bmp(base, bmp, pixelbuffer, 25);
 	close(file);
     free(bmp);
     free(pixelbuffer);

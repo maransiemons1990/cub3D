@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 17:27:15 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/01 12:59:25 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 14:47:19 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void			exit_game(t_base *base, int code, int error)
 	}
 	if (base->mlx.img)
 		mlx_destroy_image(base->mlx.mlx, base->mlx.img);
+	
 	end_free(base);
+	if (base->ZBuffer)
+		free (base->ZBuffer);
 	if (error > 0)
 		error_distr(error);
 	exit(code);

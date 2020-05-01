@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/01 11:39:07 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 14:31:50 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 # include <fcntl.h>
 //error
 # include <sys/errno.h>
-//TEST
+//clock
 # include <time.h>
 
 typedef struct	s_mlx {
@@ -238,7 +238,7 @@ int				mlx(t_base *base);
 int				loop(t_base *base);
 
 //Ray
-int				raycasting(t_base *base);
+void				raycasting(t_base *base);
 
 //Rayhooks
 int             keypress(int keycode, t_base *img);
