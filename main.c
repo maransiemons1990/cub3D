@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/28 22:22:24 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 10:42:18 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int			main(int argc, char **argv)
 		return (error_distribution(base));
 	displayresolution(base);
 	//------------------DELETE LATER------------------------------------
-	//printf("----after---\n");
 	//print_list(base);
 	//base->head = insertion_sort(base->head);
 	//sort(base);
@@ -71,6 +70,7 @@ int			main(int argc, char **argv)
 	//------------------------------------------------------------------
 	mlx(base);
 	//------------------------------------------------------------------
+	//printf("----after---\n");
 	end_free(base);
 	return (0);
 }

@@ -6,12 +6,32 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/30 21:00:39 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 13:00:14 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+
+char			*create_path(t_base *base, t_read read, int i)
+{
+	char 	*path;
+	
+	path = NULL;
+	if (i == 0)
+		path = ft_strjoin(read.no, "/wall_texture.xpm");
+	else if (i == 1)
+		path = ft_strjoin(read.ea, "/CrateOver.xpm");
+	else if (i == 2)
+		path = ft_strjoin(read.so, "/dirt.xpm");
+	else if (i == 3)
+		path = ft_strjoin(read.we, "/OreVein.xpm");
+	else if (i == 4)	
+		path = ft_strjoin(read.sprite, "/barrel.xpm");
+	if (path == NULL)
+		exit_game(base, 1, 21);
+	return (path);
+}
 
 /*
 ** 
@@ -29,9 +49,9 @@
 ** So changed all png functions to xpm.
 ** no 0, ea 1, so 2, we 3, sprite 4
 */
-void		texture(t_base *base)
+void		load_texture(t_base *base)
 {
-	char *path;
+	char 	*path;
 	int		i;
 	
 	i = 0;
@@ -39,19 +59,15 @@ void		texture(t_base *base)
 	base->game.texHeight = 64;
 	while (i < 5)
 	{
-		if (i == 0)
-			path = ft_strjoin(base->read.no, "/wall_texture.xpm"); //free
-		else if (i == 1)
-			path = ft_strjoin(base->read.ea, "/CrateOver.xpm");
-		else if (i == 2)
-			path = ft_strjoin(base->read.so, "/dirt.xpm");
-		else if (i == 3)
-			path = ft_strjoin(base->read.we, "/OreVein.xpm");
-		else if (i == 4)	
-			path = ft_strjoin(base->read.sprite, "/barrel.xpm");
-		base->tex[i].png_img = mlx_xpm_file_to_image(base->mlx.mlx, path, &base->game.texWidth, &base->game.texHeight);
-		base->tex[i].png_addr = mlx_get_data_addr(base->tex[i].png_img, &base->tex[i].png_bits_per_pixel, &base->tex[i].png_line_length, &base->tex[i].png_endian);
+		path = create_path(base, base->read, i);
+		base->tex[i].xpm_img = mlx_xpm_file_to_image(base->mlx.mlx, path,
+			&base->game.texWidth, &base->game.texHeight);
 		free (path);
+		if (base->tex[i].xpm_img == NULL)
+			exit_game(base, 1, 22);
+		base->tex[i].xpm_addr = mlx_get_data_addr(base->tex[i].xpm_img,
+			&base->tex[i].xpm_bpp, &base->tex[i].xpm_line_length,
+			&base->tex[i].xpm_endian);
 		i++;
 	}
 }
@@ -82,8 +98,12 @@ void			orientation(t_game *game, t_read *read)
 	game->planeY = (game->dirY == 0) ? 0.66 : 0;
 }
 
-void			initialise_game(t_game *game)
+//wss new_window ook nog op NULL
+void			initialise_game(t_game *game, t_mlx  *mlx, t_base *base)
 {
+	int i;
+	
+	i = 0;
 	game->move_front = 0;
 	game->move_back = 0;
 	game->move_right = 0;
@@ -92,6 +112,12 @@ void			initialise_game(t_game *game)
 	game->rotate_left = 0;
 	game->rotate = 0;
 	//base->game.update = 0;
+	mlx->img = NULL;
+	while (i < 5)
+	{
+		base->tex[i].xpm_img = NULL;
+		i++;
+	}
 }
 
 /*
@@ -107,29 +133,29 @@ void			initialise_game(t_game *game)
 ** mlx_get_data_addr: returns information about the created image, allowing a user to modify it later.
 ** returns a char * address that represents the begining of the memory area where the image is stored.
 ** We should ALWAYS calculate the memory offset using the line length set by mlx_get_data_addr.
-** TO DO: temporary image aanmaken. 
+** TO DO: temporary image aanmaken.
+** X11_EVENT_KEY_PRESS 2, X11_EVENT_KEY_RELEASE 3, X11_EVENT_EXIT 17
 */
 int				mlx(t_base *base)
 {
-	initialise_game(&base->game);
+	initialise_game(&base->game, &base->mlx, base);
 	orientation(&base->game, &base->read);
 	base->mlx.mlx = mlx_init();
-	base->mlx.mlx_win = mlx_new_window(base->mlx.mlx, base->read.render_x, base->read.render_y, "Wolfenstein 3D! | Maran Siemons");
-	texture(base);
-// /* ----------HOOKING EVENT-----------------*/ 
-	mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_PRESS, 1L<<0, &keypress, base);				//wel of geen & voor functie? // geen & voor base!
-	mlx_hook(base->mlx.mlx_win, X11_EVENT_KEY_RELEASE, 1L<<1, &keyrelease, base);
-	mlx_hook(base->mlx.mlx_win, X11_EVENT_EXIT, 1L<<17, &windowclose_x, base);
-	//mlx_hook(base->mlx.mlx_win, X11_EVENT_RESIZE, 1L<<18, &windowclose_x, base);
+	base->mlx.mlx_win = mlx_new_window(base->mlx.mlx, base->read.render_x,
+		base->read.render_y, "Wolfenstein 3D! | Maran Siemons");
+	if (base->mlx.mlx_win == NULL)
+		exit_game(base, 1, 20);
+	load_texture(base); //tm hier error
+	mlx_hook(base->mlx.mlx_win, 2, 1L<<0, &keypress, base);				//wel of geen & voor functie? // geen & voor base!
+	mlx_hook(base->mlx.mlx_win, 3, 1L<<1, &keyrelease, base);
+	mlx_hook(base->mlx.mlx_win, 17, 1L<<17, &windowclose_x, base);
 	if (base->save == 0)
 	{
 		loop(base);
 		save_first_image_bmp(base);
 		return (0);
 	}
-	//loop(base);
 	mlx_loop_hook(base->mlx.mlx, &loop, base);
-// // /*----------------------------------------------*/
  	mlx_loop(base->mlx.mlx);
 	//mlx_destroy_image(base->mlx.mlx, base->mlx.new_img);
 	return (0);

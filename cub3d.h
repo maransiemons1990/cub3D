@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/30 21:01:03 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 11:39:07 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 # define CUB3D_H
 # define TWOD base->read.array
 # define READ base->read
-
-# define X11_EVENT_KEY_PRESS		2
-# define X11_EVENT_KEY_RELEASE		3
-# define X11_EVENT_EXIT				17
-# define X11_EVENT_RESIZE			25
 
 # define KEY_ESC		53
 # define KEY_LEFT		123
@@ -133,11 +128,11 @@ typedef struct s_game {
 
 typedef struct	s_tex{
 
-	void		*png_img;
-	char		*png_addr; //was void
-	int			png_bits_per_pixel;
-    int			png_line_length;
-    int			png_endian;
+	void		*xpm_img;
+	char		*xpm_addr;
+	int			xpm_bpp;
+    int			xpm_line_length;
+    int			xpm_endian;
 }				t_tex;
 
 typedef struct s_floor{
@@ -249,6 +244,10 @@ int				raycasting(t_base *base);
 int             keypress(int keycode, t_base *img);
 int             keyrelease(int keycode, t_base *base);
 int				windowclose_x(t_base *img);
+
+//exit
+void			exit_game(t_base *base, int code, int error);
+void			error_distr(int errornum);
 
 //floor
 void			floor_ceiling_smooth(t_base *base);

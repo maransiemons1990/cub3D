@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/09 13:36:12 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/30 21:02:10 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 09:23:19 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void         draw_vertical_stripe_sprite(int texx, int stripe, t_base *ba
   {
     d = (y - base->sprite.vmovescreen) * 256 - base->read.render_y * 128 + base->sprite.spriteheight * 128; 
     texY = ((d * base->game.texHeight) / base->sprite.spriteheight) / 256;
-    dest = base->tex[4].png_addr + (texY * base->tex[4].png_line_length + texx * (base->tex[4].png_bits_per_pixel / 8));
+    dest = base->tex[4].xpm_addr + (texY * base->tex[4].xpm_line_length + texx * (base->tex[4].xpm_bpp / 8));
 		color = *(unsigned int*)dest;
     if ((color & 0x00FFFFFF) != 0)
       my_mlx_pixel_put(base, stripe, y, color);

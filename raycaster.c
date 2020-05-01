@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/30 21:01:51 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 09:23:43 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,23 @@ int				texture_pick_wallside(t_base *base, int texX, int texY)
 	
 	if (base->game.tex_side == 1)
 	{
-		dest = base->tex[0].png_addr + (texY * base->tex[0].png_line_length + texX * (base->tex[0].png_bits_per_pixel / 8));
+		dest = base->tex[0].xpm_addr + (texY * base->tex[0].xpm_line_length + texX * (base->tex[0].xpm_bpp / 8));
 		color = *(unsigned int*)dest;
 	}
 	else if (base->game.tex_side == 2)
 	{
-		dest = base->tex[1].png_addr + (texY * base->tex[1].png_line_length + texX * (base->tex[1].png_bits_per_pixel / 8));
+		dest = base->tex[1].xpm_addr + (texY * base->tex[1].xpm_line_length + texX * (base->tex[1].xpm_bpp / 8));
 		color = *(unsigned int*)dest;
 		color = (color >> 1) & 8355711;
 	}
 	else if (base->game.tex_side == 3)
 	{
-		dest = base->tex[2].png_addr + (texY * base->tex[2].png_line_length + texX * (base->tex[2].png_bits_per_pixel / 8));
+		dest = base->tex[2].xpm_addr + (texY * base->tex[2].xpm_line_length + texX * (base->tex[2].xpm_bpp / 8));
 		color = *(unsigned int*)dest;
 	}
 	else
 	{
-		dest = base->tex[3].png_addr + (texY * base->tex[3].png_line_length + texX * (base->tex[3].png_bits_per_pixel / 8));
+		dest = base->tex[3].xpm_addr + (texY * base->tex[3].xpm_line_length + texX * (base->tex[3].xpm_bpp / 8));
 		color = *(unsigned int*)dest;
 		color = (color >> 1) & 8355711;
 	
