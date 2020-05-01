@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/16 15:34:37 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/08 11:15:51 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 19:48:48 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ int				last_char_save_pos(int y, t_base *base)
 		if (TWOD[y][i] != '0' && TWOD[y][i] != '1' && TWOD[y][i] != '2'
 		&& TWOD[y][i] != ' ' && TWOD[y][i] != 'N' && TWOD[y][i] != 'S' &&
 		TWOD[y][i] != 'E' && TWOD[y][i] != 'W')
-			return (base->read.error = 10);
+			return (error_distr(base, 10));
 		if (TWOD[y][i] == 'N' || TWOD[y][i] == 'S' || TWOD[y][i] == 'E' ||
 		TWOD[y][i] =='W')
 		{
 			if (base->read.pos != -1 && y != base->read.y_pos &&
 			i != base->read.x_pos)
-				return (base->read.error = 11);
+				return (error_distr(base, 11));
 			base->read.pos = TWOD[y][i];
 			base->read.x_pos = i;
 			base->read.y_pos = y;
@@ -75,19 +75,19 @@ int				align_dif_back(int y, t_base *base)
 	count = 0;
 	back1 = last_char_save_pos(y, base);
 	back2 = last_char_save_pos(y + 1, base);
-	if (base->read.error != 0)
-		return (1);
+	// if (base->read.error != 0) //! kan niet aanpassne?
+	// 	return (1);
 	dif = back1 - back2;
 	while (dif > (count - 1))
 	{
 		if (TWOD[y][back1 - count] != '1' && TWOD[y][back1 - count] != ' ')
-			return (base->read.error = 12);
+			return (error_distr(base, 12));
 		count++;
 	}
 	while (dif < 1)
 	{
 		if (TWOD[y + 1][back2 + dif] != '1' && TWOD[y + 1][back2 + dif] != ' ')
-			return (base->read.error = 12);
+			return (error_distr(base, 12));
 		dif++;
 	}
 	return (0);

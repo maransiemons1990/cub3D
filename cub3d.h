@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/01 14:31:50 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 19:14:58 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct	s_mlx {
 
 typedef struct	s_read {
 	char		**array;
-	int			error;
+//	int			error;
 	int 		render_x;
 	int 		render_y;
 	int			c_color;
@@ -203,15 +203,15 @@ typedef struct	s_base{
 char			*gnl_strjoin(char *s1, char *s2);
 
 //ERRORMESSAGES
-int				error_distribution(t_base *base);
-void			*error_general(int error, char *line);
+//int				error_distribution(t_base *base);
+void			*error_gnl_cub(int error, char *line);
 //GET_cub
 t_base			*getcubfile(char *filename);
 
 //READ_SCENE_FILE
 int				read_scene_file(t_base *base);
 void			initialise(t_base *base);
-void			end_free(t_base *base);
+void			free_cub_base(t_base *base);
 
 //READ_SCENE_UTILS
 int				cfr_itoa(int y, int *i, t_base *base, int cf_blue_green);
@@ -247,7 +247,8 @@ int				windowclose_x(t_base *img);
 
 //exit
 void			exit_game(t_base *base, int code, int error);
-void			error_distr(int errornum);
+int				error_distr(t_base *base, int errornum);
+void			free_array(t_read *read);
 
 //floor
 void			floor_ceiling_smooth(t_base *base);

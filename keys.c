@@ -6,38 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 17:27:15 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/01 14:47:19 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 18:44:23 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-//exit 0 is success
-//exit(1) is failure
-void			exit_game(t_base *base, int code, int error)
-{
-	int i;
-	
-	i = 0;
-	if (base->mlx.mlx_win)
-		mlx_destroy_window(base->mlx.mlx, base->mlx.mlx_win);
-	while (i < 5)
-	{
-		if (base->tex[i].xpm_img)
-			mlx_destroy_image(base->mlx.mlx, base->tex[i].xpm_img);
-		i++;
-	}
-	if (base->mlx.img)
-		mlx_destroy_image(base->mlx.mlx, base->mlx.img);
-	
-	end_free(base);
-	if (base->ZBuffer)
-		free (base->ZBuffer);
-	if (error > 0)
-		error_distr(error);
-	exit(code);
-	//	printf("Waar segfault? error %d\n", error);
-}
 
 //Segfault met destroy window. Uitzoeken.
 int             keypress(int keycode, t_base *base)

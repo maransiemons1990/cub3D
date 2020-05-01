@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/15 21:39:14 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 19:49:18 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ static int		flood_fill(t_base *base, int y, int x)
 	//
 	if (TWOD[y][x]== '\0' || y <= base->read.map_start ||
 	y >= base->read.map_end)
-		return (base->read.error = 12);	
+		return (error_distr(base, 12));
 	if (TWOD[y][x] == ' ')
-		return (base->read.error = 13);
+		return (error_distr(base, 13));
     if (TWOD[y][x]!= '0' && TWOD[y][x] != base->read.pos)
-		return (base->read.error = 10);
+		return (error_distr(base, 10));
     TWOD[y][x] = '+';
     flood_fill(base, y - 1, x);
     flood_fill(base, y, x + 1);
@@ -59,14 +59,14 @@ static int		check_wall_edges(int *y, t_base *base)
 		back = 0;
 		front = align_dif_front(TWOD[*y], TWOD[*y + 1]);
 		if (front == 1)
-			return (base->read.error = 12);
+			return (error_distr(base, 12));
 		back = align_dif_back(*y, base);
 		if (back > 0)
 			return (1);
 		(*y)++;
 	}
 	if (base->read.pos == -1)
-		return (base->read.error = 15);
+		return (error_distr(base, 15));
 	return (0);
 }
 
@@ -83,8 +83,8 @@ static int		check_walls_first_last(int y, t_base *base)
 	
 	i = 0;
 	last = last_char_save_pos(y, base);
-	if (base->read.error > 0)
-		return (1);
+	// if (base->read.error > 0) //kan niet aanpassen?
+	// 	return (1);
 	while(TWOD[y][i] == ' ')
 			i++;
 	while (i <= last)
@@ -95,11 +95,11 @@ static int		check_walls_first_last(int y, t_base *base)
 		{
 			ret = space_in_wall(y, i, base);
 			if (ret == 1)
-				return (base->read.error = 12);
+				return (error_distr(base, 12));
 			i++;
 		}
 		else
-			return (base->read.error = 12);
+			return (error_distr(base, 12));
 	}
 	return (0);
 }
@@ -111,7 +111,7 @@ static int		check_elements_complete(t_base *base)
 	base->read.no == NULL || base->read.ea == NULL ||
 	base->read.so == NULL || base->read.we == NULL ||
 	base->read.sprite == NULL)
-		return (base->read.error = 14);
+		return (error_distr(base, 14));
 	return (0);
 }
 

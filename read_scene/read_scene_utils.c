@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:43:54 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/08 11:16:14 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 17:42:13 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ int				save_path_substr(int y, int i, char **identifier, t_base *base)
 	int ret;
 
 	if (*identifier != NULL)
-		return (base->read.error = 3);
+		return (error_distr(base, 3));
 	*identifier = ft_substr(TWOD[y], i, (ft_strlen(TWOD[y]) - i)); //m check (main)
 	ret = open(*identifier, O_RDONLY);
 	if (ret == -1)
-		return (base->read.error = 9);
+		return (error_distr(base, 9));
 	if (*identifier == NULL)
-		return (base->read.error = 6);
+		return (error_distr(base, 6));
 	return (0);
 }
 
@@ -34,7 +34,7 @@ int				check_pathstart(int y, int *i, t_base *base)
 	if (TWOD[y][*i] == '.' && TWOD[y][*i + 1] == '/')
 		return (0);
 	else
-		return (base->read.error = 5);
+		return (error_distr(base, 5));
 }
 
 int				cfr_endspaces(int y, int i, t_base *base)
@@ -44,7 +44,7 @@ int				cfr_endspaces(int y, int i, t_base *base)
 		if (TWOD[y][i] == ' ')
 			i++;
 		else
-			return (base->read.error = 4);
+			return (error_distr(base, 4));
 	}
 	return (0);
 }
@@ -54,14 +54,14 @@ int				create_trgb_colorcode(int y, int entry_i, t_base *base)
 	if (TWOD[y][entry_i] == 'C')
 	{
 		if (!(READ.c_color == -1))
-			return (base->read.error = 3);
+			return (error_distr(base, 3));
 		READ.c_color = (0 << 24 | base->read.red << 16 | base->read.green << 8
 		| base->read.blue);
 	}
 	if (TWOD[y][entry_i] == 'F')
 	{
 		if (!(READ.f_color == -1))
-			return (base->read.error = 3);
+			return (error_distr(base, 3));
 		READ.f_color = (0 << 24 | base->read.red << 16 | base->read.green << 8
 		| base->read.blue);
 	}

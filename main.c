@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/01 14:52:30 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 19:11:33 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,15 @@ void			displayresolution(t_base *base)
 ** Option: --save to make a screenshot of the first image and save as bmp
 */
 
+//save sprites nog naar kijken error
+
 int			main(int argc, char **argv)
 {	
 	t_base		*base;
 	int			ret;
 
 	if (argc != 2 && argc != 3)
-	{
-		perror("Error\nProgram expects one argument\n");
-		return (1);
-	}
+		return (error_distr(NULL, 30));
 	base = getcubfile(argv[1]);
 	if (base == NULL)
 		return (1);
@@ -55,22 +54,12 @@ int			main(int argc, char **argv)
 	{
 		base->save = (ft_strcmp(argv[2], "--save"));
 		if (base->save)
-			return (printf("Error\nDid you mean option --save as 2nd argument?\n"));
+			return (error_distr(base, 31));
 	}
 	ret = read_scene_file(base);
 	if (ret > 0)
-		return (error_distribution(base));
+		return (1);
 	displayresolution(base);
-	//------------------DELETE LATER------------------------------------
-	//print_list(base);
-	//base->head = insertion_sort(base->head);
-	//sort(base);
-	//valuechecker(base);
-	//twod_checker(base->read.array);
-	//------------------------------------------------------------------
 	mlx(base); //tm hier error
-	//------------------------------------------------------------------
-	//printf("----after---\n");
-	end_free(base);
 	return (0);
 }

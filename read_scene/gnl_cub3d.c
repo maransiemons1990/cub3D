@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/08 16:37:30 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/04/08 11:16:09 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/01 16:36:55 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,18 +82,18 @@ t_base			*getcubfile(char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (check_filetype(filename) || fd < 0)
-		return (error_general(2, NULL));
+		return (error_gnl_cub(2, NULL));
 	line = gnl_cub3d(fd);
 	if (line == NULL)
-		return (error_general(3, NULL));
+		return (error_gnl_cub(3, NULL));
 	new = (t_base *)malloc(sizeof(t_base));
 	if (new == NULL)
-		return (error_general(4, line));
+		return (error_gnl_cub(4, line));
 	new->read.array = ft_split(line, '\n');
 	if (new->read.array == NULL)
 	{
 		free(new);
-		return (error_general(4, line));
+		return (error_gnl_cub(4, line));
 	}
 	free(line);
 	return (new);
