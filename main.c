@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/01 19:11:33 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/04 12:49:18 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int			main(int argc, char **argv)
 			return (error_distr(base, 31));
 	}
 	ret = read_scene_file(base);
-	if (ret > 0)
-		return (1);
+	// if (ret > 0)
+	// 	return (1);
 	displayresolution(base);
 	mlx(base); //tm hier error
 	return (0);

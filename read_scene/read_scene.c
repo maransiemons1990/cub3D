@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/02 16:11:17 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/01 19:13:40 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/04 12:50:24 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,20 @@ static int		check_save_path(int y, int i, t_base *base)
 	if ((check_pathstart(y, &i, base)) == 0)
 	{
 		if (TWOD[y][i_entry - 2] == 'N' && TWOD[y][i_entry - 1] == 'O')
-			ret = save_path_substr(y, i, &base->read.no, base);
+			save_path_substr(y, i, &base->read.no, base);
 		else if (TWOD[y][i_entry - 2] == 'E' && TWOD[y][i_entry - 1] == 'A')
-			ret = save_path_substr(y, i, &base->read.ea, base);
+			save_path_substr(y, i, &base->read.ea, base);
 		else if (TWOD[y][i_entry - 2] == 'W' && TWOD[y][i_entry - 1] == 'E')
-			ret = save_path_substr(y, i, &base->read.we, base);
+			save_path_substr(y, i, &base->read.we, base);
 		else if (TWOD[y][i_entry - 2] == 'S' && TWOD[y][i_entry - 1] == 'O')
-			ret = save_path_substr(y, i, &base->read.so, base);
+			save_path_substr(y, i, &base->read.so, base);
 		else if (TWOD[y][i_entry - 1] == 'S')
-			ret = save_path_substr(y, i, &base->read.sprite, base);
+			save_path_substr(y, i, &base->read.sprite, base);
 	}
 	else
-		return (1);
-	if (ret > 0)
-		return (1);
+ 		return (1); //Kan weg want klapt er anders al uit
+	// if (ret > 0)
+	// 	return (1);
 	return (0);
 }
 
@@ -51,13 +51,14 @@ static int		check_save_resolution(int y, int i, t_base *base)
 		return (error_distr(base, 4));
 	if (base->read.render_x == 0 || base->read.render_y ==0)
 		return (error_distr(base, 7));
-	return (cfr_endspaces(y, i, base));
+	cfr_endspaces(y, i, base);
+	return (0);
 }
 
 static int		check_save_colors_cf(int y, int i, t_base *base)
 {
 	int entry_i;
-	int	ret;
+	//int	ret;
 	
 	entry_i = i - 1;
 	base->read.red = -1;
@@ -73,10 +74,9 @@ static int		check_save_colors_cf(int y, int i, t_base *base)
 	if (!((READ.red >= 0 &&  READ.red <= 255) && (READ.blue >= 0 &&
 	READ.blue <= 255) && (READ.green >= 0 &&  READ.green <= 255)))
 		return (error_distr(base, 8));
-	ret = create_trgb_colorcode(y, entry_i, base);
-	if (ret > 0)
-		return (1);
-	return (cfr_endspaces(y, i, base));
+	create_trgb_colorcode(y, entry_i, base);
+	cfr_endspaces(y, i, base);
+	return (0);
 }
 
 /*
@@ -87,42 +87,42 @@ static int		check_save_colors_cf(int y, int i, t_base *base)
 static int		check_scene_line(int *y, t_base *base)
 {
 	int		i;
-	int		ret;
+	//int		ret;
 
 	i = 0;
 	while (TWOD[*y][i] == ' ')
 		i++;
 	if (TWOD[*y][i] == 'C' || TWOD[*y][i] == 'F')
-		ret = check_save_colors_cf(*y, (i + 1), base);
+		check_save_colors_cf(*y, (i + 1), base);
 	else if (TWOD[*y][i] == 'R')
-		ret = check_save_resolution(*y, (i + 1), base);
+		check_save_resolution(*y, (i + 1), base);
 	else if ((TWOD[*y][i] == 'E' && TWOD[*y][i + 1] == 'A') || (TWOD[*y][i] == 'N'
 	&& TWOD[*y][i + 1] == 'O') || (TWOD[*y][i] == 'W' && TWOD[*y][i + 1] == 'E')
 	|| (TWOD[*y][i] == 'S' && (TWOD[*y][i + 1] == 'O')))
-		ret = check_save_path(*y, (i + 2), base);
+		check_save_path(*y, (i + 2), base);
 	else if (TWOD[*y][i] == 'S')
-		ret = check_save_path(*y, (i + 1), base);
+		check_save_path(*y, (i + 1), base);
 	else if (TWOD[*y][i] == '1')
-		ret = check_map(&(*y), base);
+		check_map(&(*y), base);
 	else
 		return (error_distr(base, 1));
-	if (ret > 0)
-		return (1);
+	// if (ret > 0)
+	// 	return (1);
 	return (0);
 }
 
 int				read_scene_file(t_base *base)
 {
 	int		y;
-	int		line;
+	//int		line;
 
 	y = 0;
 	initialise(base);
 	while (TWOD[y])
 	{
-		line = check_scene_line(&y, base);
-		if (line > 0)
-			return (1);
+		check_scene_line(&y, base);
+		// if (line > 0)
+		// 	return (1);
 		y++;
 	}
 	if (base->read.map_start == -1)

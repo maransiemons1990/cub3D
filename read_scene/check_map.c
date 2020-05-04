@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/01 19:49:18 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/04 12:42:17 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,18 @@ static int		flood_fill(t_base *base, int y, int x)
 
 static int		check_wall_edges(int *y, t_base *base)
 {
-	int 	back;
+	//int 	back;
 	int 	front;
 	while (*y != base->read.map_end)
 	{
 		front = 0;
-		back = 0;
+		//back = 0;
 		front = align_dif_front(TWOD[*y], TWOD[*y + 1]);
 		if (front == 1)
 			return (error_distr(base, 12));
-		back = align_dif_back(*y, base);
-		if (back > 0)
-			return (1);
+		align_dif_back(*y, base);
+		// if (back > 0)
+		// 	return (1);
 		(*y)++;
 	}
 	if (base->read.pos == -1)
@@ -83,7 +83,7 @@ static int		check_walls_first_last(int y, t_base *base)
 	
 	i = 0;
 	last = last_char_save_pos(y, base);
-	// if (base->read.error > 0) //kan niet aanpassen?
+	// if (base->read.error > 0) //kan niet aanpassen? //mag weg
 	// 	return (1);
 	while(TWOD[y][i] == ' ')
 			i++;
@@ -117,27 +117,27 @@ static int		check_elements_complete(t_base *base)
 
 int				check_map(int *y, t_base *base)
 {
-	int 	ret;
+	// int 	ret;
 
 	if (check_elements_complete(base) > 0)
-		return (1);
+		return (1); //kan misschien weg
 	base->read.map_start = *y;
 	while (base->read.array[*y])
 		(*y)++;
 	base->read.map_end = *y - 1;
 	*y = base->read.map_start;
-	ret = check_walls_first_last(*y, base);
-	if (ret > 0)
-		return (1);
-	ret = check_wall_edges(&(*y), base);
-	if (ret > 0)
-		return (1);
-	ret = check_walls_first_last(*y, base);
-	if (ret > 0)
-		return (1);
-	ret = flood_fill(base, base->read.y_pos, base->read.x_pos);
-	if (ret > 0)
-		return (1);
+	check_walls_first_last(*y, base);
+	// if (ret > 0)
+	// 	return (1);
+	check_wall_edges(&(*y), base);
+	// if (ret > 0)
+	// 	return (1);
+	check_walls_first_last(*y, base);
+	// if (ret > 0)
+	// 	return (1);
+	flood_fill(base, base->read.y_pos, base->read.x_pos);
+	// if (ret > 0)
+	// 	return (1);
 	ll_count_sprites(base);
 	ll_sort_sprites_swap_data(base);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 13:03:52 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/01 19:07:01 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/04 14:01:49 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,17 @@ static void		errormessages_10up(int errornum)
 	if (errornum == 10)
 		str = "Error\nInvalid character in the map\n";
 	if (errornum == 11)
-		perror("Error\nOnly 1 start position allowed in the map");
+		str = "Error\nOnly 1 start position allowed in the map\n";
 	if (errornum == 12)
-		perror("Error\nInvalid outside wall");
+		str = "Error\nInvalid outside wall\n";
 	if (errornum == 13)
-		perror("Error\nHole in the floor. Player may fall into black hole");
+		str = "Error\nHole in the floor. Player may fall into black hole\n";
 	if (errornum == 14)
-		perror("Error\nMissing identifier(s) and/or map isn't at bottom file");
+		str = "Error\nMissing identifier(s) and/or map isn't at bottom file\n";
 	if (errornum == 15)
-		perror("Error\nNo player’s start position found.");
+		str = "Error\nNo player’s start position found\n";
 	if (errornum == 16)
-		perror("Error\nMissing map");
-
+		str = "Error\nMissing map\n";
 	if (str != NULL)
 		write(STDERR_FILENO, str, ft_strlen(str));
 }
@@ -105,21 +104,21 @@ static void		errormessages_1to10(int errornum)
 
 	str = NULL;
 	if (errornum == 1)
-		perror("Error\nInvalid inputfile");
+		str = "Error\nInvalid inputfile\n";
 	if (errornum == 2)
-		str = "Error\nInvalid character(s)";
+		str = "Error\nInvalid character(s)\n";
 	if (errornum == 3)
-		perror("Error\nSeveral identical identifiers");
+		str = "Error\nSeveral identical identifiers\n";
 	if (errornum == 4)
-		perror("Error\nInvalid format of identifier(s)");
+		str = "Error\nInvalid format of identifier(s)";
 	if (errornum == 5)
-	 	perror("Error\nInvalid path(s)");
+	 	str = "Error\nInvalid path(s)\n";
 	if (errornum == 6)
 	 	perror("Error\nMalloc failed");
 	if (errornum == 7)
-	 	perror("Error\nResolution can't be 0");
+	 	str = "Error\nResolution can't be 0";
 	if (errornum == 8)
-	 	perror("Error\nColor values should be between 0 - 255");
+	 	str = "Error\nColor values should be between 0 - 255\n";
 	if (errornum == 9)
 	 	perror("Error\nThe path(s) could not be accessed");
 	if (str != NULL)
@@ -153,5 +152,6 @@ int				error_distr(t_base *base, int errornum)
 		free_cub_base(base);
 	if (errornum >= 30)
 	 	errormessages_30to(base, errornum);
+	exit(1); //
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/16 15:34:37 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/01 19:48:48 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/04 12:15:22 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int				align_dif_back(int y, t_base *base)
 	count = 0;
 	back1 = last_char_save_pos(y, base);
 	back2 = last_char_save_pos(y + 1, base);
-	// if (base->read.error != 0) //! kan niet aanpassne?
+	// if (base->read.error != 0) //! kan niet aanpassne? //mag weg
 	// 	return (1);
 	dif = back1 - back2;
 	while (dif > (count - 1))
