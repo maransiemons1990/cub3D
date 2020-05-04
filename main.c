@@ -6,10 +6,9 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/04 12:49:18 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/04 18:37:04 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "cub3d.h"
 
@@ -38,28 +37,21 @@ void			displayresolution(t_base *base)
 ** Option: --save to make a screenshot of the first image and save as bmp
 */
 
-//save sprites nog naar kijken error
-
 int			main(int argc, char **argv)
 {	
 	t_base		*base;
-	int			ret;
 
 	if (argc != 2 && argc != 3)
 		return (error_distr(NULL, 30));
 	base = getcubfile(argv[1]);
-	if (base == NULL)
-		return (1);
 	if (argc == 3)
 	{
 		base->save = (ft_strcmp(argv[2], "--save"));
 		if (base->save)
 			return (error_distr(base, 31));
 	}
-	ret = read_scene_file(base);
-	// if (ret > 0)
-	// 	return (1);
+	read_scene_file(base);
 	displayresolution(base);
-	mlx(base); //tm hier error
+	mlx(base);
 	return (0);
 }

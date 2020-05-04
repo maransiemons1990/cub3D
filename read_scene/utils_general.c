@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 15:25:07 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/01 19:16:13 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/04 17:51:08 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,19 @@ void			free_array(t_read *read)
 	free(read->array);
 }
 
+void			ll_freelist(t_sprite *head)
+{
+	t_sprite	*tmp;
+	
+	while (head != NULL)
+    {
+       tmp = head;
+       head = head->next;
+       free (tmp);
+    }
+	tmp = NULL;
+}
+
 void			free_cub_base(t_base *base)
 {
 	free_array(&base->read);
@@ -40,6 +53,8 @@ void			free_cub_base(t_base *base)
 		free(base->read.we);
 	if (base->read.sprite)
 		free(base->read.sprite);
+	if (base->head)
+		ll_freelist(base->head);
 	free (base);
 }
 
@@ -50,7 +65,6 @@ void			exit_game(t_base *base, int code, int error)
 	int i;
 	
 	i = 0;
-	
 	if (base->ZBuffer)
 		free (base->ZBuffer);
 	while (i < 5)
@@ -66,9 +80,10 @@ void			exit_game(t_base *base, int code, int error)
 	if (code == 1)
 		error_distr(base, error);
 	else
+	{
 		free_cub_base(base);
-	exit(code);
-	//	printf("Waar segfault? error %d\n", error);
+		exit(code);
+	}
 }
 
 void			initialise(t_base *base)

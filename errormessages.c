@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 13:03:52 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/04 14:01:49 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/04 18:46:35 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,6 @@
 
 //perror als er een bestaande message is. 
 // STDERR_FILENO write(STDOUT_FILENO, str, ft_strlen(str));
-
-
-
-// int				error_distribution(t_base *base)
-// {
-// 	if (base->read.error > 0 && base->read.error < 10)
-// 		errormessages_1to10(base);
-// 	if (base->read.error >= 10 && base->read.error <= 19)
-// 		errormessages_10up(base);
-// 	end_free(base); //Voor read scene nog nodig!
-// 	return (1);
-// }
-
 
 
 static void		errormessages_30to(t_base *base, int errornum)
@@ -42,6 +29,12 @@ static void		errormessages_30to(t_base *base, int errornum)
 		free_array(&base->read);
 		free(base);
 	}
+	if (errornum == 32)
+		perror("Error\nFailed to open .cub scenefile\n");
+	if (errornum == 33)
+		str = "Error\nAn error occurred during processing input file\n";
+	if (errornum == 34)
+	 	perror("Error\nFailed to allocate memory for struct");
 	if (str != NULL)
 		write(STDERR_FILENO, str, ft_strlen(str));
 }
@@ -125,21 +118,31 @@ static void		errormessages_1to10(int errornum)
 		write(STDERR_FILENO, str, ft_strlen(str));
 }
 
-void			*error_gnl_cub(int error, char *line)
-{
-	if (error == 2)
-		perror("Error\nFailed to open .cub scenefile\n");
-	if (error == 3)
-		perror("Error\nAn error occurred during processing input file\n");
-	if (error == 4)
-	{
-		perror("Error\nAn error occurred during processing input file\n");
-		free (line);
-	}
-	return (NULL);
-}
+// waar exit?
+// void			*error_gnl_cub(int error)
+// {
+// 	char *str;
+
+// 	str = NULL;
+// 	if (error == 2)
+// 		perror("Error\nFailed to open .cub scenefile\n");
+// 	if (error == 3)
+// 		str = "Error\nAn error occurred during processing input file\n";
+// 	if (error == 4)
+// 		perror("Error\nAn error occurred during processing input file\n");
+// 	if (str != NULL)
+// 		write(STDERR_FILENO, str, ft_strlen(str));
+// 	return (NULL);
+// }
 
 // return 1 to functions means error has happened
+
+/* 
+** Main and gnl_cub errors (errornum >= 30) are treated different because
+** depending on the location there may or may not be allocated memory yet.
+** So we don't have to free in every case.
+*/
+
 int				error_distr(t_base *base, int errornum)
 {
 	if (errornum >= 1 && errornum <= 9)
@@ -152,6 +155,6 @@ int				error_distr(t_base *base, int errornum)
 		free_cub_base(base);
 	if (errornum >= 30)
 	 	errormessages_30to(base, errornum);
-	exit(1); //
+	exit(1);
 	return (1);
 }

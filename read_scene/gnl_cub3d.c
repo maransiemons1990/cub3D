@@ -6,29 +6,31 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/08 16:37:30 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/01 16:36:55 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/04 18:46:05 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
-#define BUFFER_SIZE 128
 
+/*
+** Buffersize of 128
+*/
 
-static char		*gnl_cub3d_read(int fd, char *new_line)
+static char			*gnl_cub3d_read(int fd, char *new_line)
 {
-	char			*buf;
-	int				ret;
+	char	*buf;
+	int		ret;
 
 	ret = 1;
 	while (ret > 0)
 	{
-		buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		buf = (char *)malloc(sizeof(char) * (128 + 1));
 		if (buf == NULL)
 		{
 			free(new_line);
 			return (NULL);
 		}
-		ret = read(fd, buf, BUFFER_SIZE);
+		ret = read(fd, buf, 128);
 		if (ret == -1)
 		{
 			free(new_line);
@@ -43,7 +45,7 @@ static char		*gnl_cub3d_read(int fd, char *new_line)
 	return (new_line);
 }
 
-static char		*gnl_cub3d(int fd)
+static char			*gnl_cub3d(int fd)
 {
 	static char		*new_line;
 	char			*line;
@@ -61,7 +63,7 @@ static char		*gnl_cub3d(int fd)
 }
 
 
-static int		check_filetype(char *s)
+static int			check_filetype(char *s)
 {
 	int		i;
 
@@ -74,7 +76,7 @@ static int		check_filetype(char *s)
 	return (1);
 }
 
-t_base			*getcubfile(char *filename)
+t_base				*getcubfile(char *filename)
 {
 	t_base	*new;
 	char	*line;
@@ -82,18 +84,22 @@ t_base			*getcubfile(char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (check_filetype(filename) || fd < 0)
-		return (error_gnl_cub(2, NULL));
+		error_distr(NULL, 32);
 	line = gnl_cub3d(fd);
 	if (line == NULL)
-		return (error_gnl_cub(3, NULL));
+		error_distr(NULL, 33);
 	new = (t_base *)malloc(sizeof(t_base));
 	if (new == NULL)
-		return (error_gnl_cub(4, line));
+	{
+		free(line);
+		error_distr(NULL, 34);
+	}
 	new->read.array = ft_split(line, '\n');
 	if (new->read.array == NULL)
 	{
+		free(line);
 		free(new);
-		return (error_gnl_cub(4, line));
+		error_distr(NULL, 33);
 	}
 	free(line);
 	return (new);

@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/14 18:35:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/15 21:52:07 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/04 16:27:46 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ static t_sprite		*ll_create_node(t_base *base, double y, double x)
 
 	x = x + 0.5;
 	y = y + 0.5;
-	new_node = (t_sprite*)malloc(sizeof(t_sprite));
+	new_node = (t_sprite *)malloc(sizeof(t_sprite));
 	if (!new_node)
-		return (NULL);
+		error_distr(base, 6);
 	new_node->x = x;
 	new_node->y = y;
 	new_node->distance = ((base->read.x_pos - x) * (base->read.x_pos - x)

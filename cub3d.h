@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/01 19:14:58 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/04 17:55:41 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,14 +199,18 @@ typedef struct	s_base{
 }				t_base;
 
 
+
+int				error_distr(t_base *base, int errornum);
+t_base			*getcubfile(char *filename);
+
+
+
 //GNL_CUB3D
 char			*gnl_strjoin(char *s1, char *s2);
 
 //ERRORMESSAGES
 //int				error_distribution(t_base *base);
 void			*error_gnl_cub(int error, char *line);
-//GET_cub
-t_base			*getcubfile(char *filename);
 
 //READ_SCENE_FILE
 int				read_scene_file(t_base *base);
@@ -247,7 +251,6 @@ int				windowclose_x(t_base *img);
 
 //exit
 void			exit_game(t_base *base, int code, int error);
-int				error_distr(t_base *base, int errornum);
 void			free_array(t_read *read);
 
 //floor
