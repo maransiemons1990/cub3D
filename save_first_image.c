@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/17 13:26:51 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/01 14:00:20 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 09:33:27 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,22 @@ https://itnext.io/bits-to-bitmaps-a-simple-walkthrough-of-bmp-image-format-765dc
 ** ImportantColors  |4 bytes | number of important colors
 */
 
-void            bmp_header(t_bitmap  *bmp, t_base *base)
+static void     bmp_header(t_bitmap  *bmp, t_base *base)
 {
-  bmp->fileheader.filetype = 0x4d42;
-  bmp->fileheader.filesize = base->read.render_y * base->read.render_x * (base->mlx.bits_per_pixel / 8) + 54;
-  bmp->fileheader.pixeldataoffset = sizeof(t_bitmap);
-  bmp->infoheader.headersize = sizeof(t_bmp_infoheader);
-  bmp->infoheader.imagewidth = base->read.render_x;
-  bmp->infoheader.imageheight = base->read.render_y;
-  bmp->infoheader.planes = 1;
-  bmp->infoheader.bitsperpixel = base->mlx.bits_per_pixel;
-  bmp->infoheader.compression = 0;
-  bmp->infoheader.imagesize = bmp->fileheader.filesize - 54;
-  bmp->infoheader.xpixelspermeter = 0;
-  bmp->infoheader.ypixelspermeter = 0;
-  bmp->infoheader.totalcolor = 0;
+    bmp->fileheader.filetype = 0x4d42;
+    bmp->fileheader.filesize = base->read.render_y * 
+        base->read.render_x * (base->mlx.bpp / 8) + 54;
+    bmp->fileheader.pixeldataoffset = sizeof(t_bitmap);
+    bmp->infoheader.headersize = sizeof(t_bmp_infoheader);
+    bmp->infoheader.imagewidth = base->read.render_x;
+    bmp->infoheader.imageheight = base->read.render_y;
+    bmp->infoheader.planes = 1;
+    bmp->infoheader.bitsperpixel = base->mlx.bpp;
+    bmp->infoheader.compression = 0;
+    bmp->infoheader.imagesize = bmp->fileheader.filesize - 54;
+    bmp->infoheader.xpixelspermeter = 0;
+    bmp->infoheader.ypixelspermeter = 0;
+    bmp->infoheader.totalcolor = 0;
 }
 
 /*
@@ -67,7 +68,7 @@ void            bmp_header(t_bitmap  *bmp, t_base *base)
 ** Per y we loop through x and save the color of each individual pixel.
 */
 
-int             *pixel_data(t_base *base, uint32_t imagesize)
+static int      *pixel_data(t_base *base, t_mlx *mlx, uint32_t imagesize)
 {
     int         *pixelbuffer;
     int         y;
@@ -77,7 +78,7 @@ int             *pixel_data(t_base *base, uint32_t imagesize)
     
     i = 0;
     y = base->read.render_y;
-    pixelbuffer = (int *)malloc(imagesize); //mist hier iets?
+    pixelbuffer = (int *)malloc(imagesize);
     if (pixelbuffer == NULL)
         return (NULL);
     while (y > 0)
@@ -85,7 +86,7 @@ int             *pixel_data(t_base *base, uint32_t imagesize)
         x = 0;
         while (x < base->read.render_x)
         {
-            dest = base->mlx.addr + (y * base->mlx.line_length + x * (base->mlx.bits_per_pixel / 8));
+            dest = mlx->addr + (y * mlx->line_length + x * (mlx->bpp / 8));
             pixelbuffer[i] = *(unsigned int*)dest;
             i++;
             x++;
@@ -96,12 +97,12 @@ int             *pixel_data(t_base *base, uint32_t imagesize)
 }
 
 
-void           error_bmp(t_base *base, t_bitmap *bmp, int *pxlbuf, int code)
+static void     error_bmp(t_base *base, t_bitmap *bmp, int *pxlbuf, int code)
 {
     if (bmp)
         free(bmp);
     if (pxlbuf)
-        free (pxlbuf);
+        free(pxlbuf);
     exit_game(base, 1, code);
 }
 
@@ -118,7 +119,7 @@ void           error_bmp(t_base *base, t_bitmap *bmp, int *pxlbuf, int code)
 ** - Close: deletes the file descriptor.
 */
 
-void		    save_first_image_bmp(t_base *base)
+void            save_first_image_bmp(t_base *base)
 {
     int         file;
     int         ret;
@@ -135,7 +136,7 @@ void		    save_first_image_bmp(t_base *base)
 	ret = write(file, bmp, sizeof(t_bitmap));
     if (ret == -1)
         error_bmp(base, bmp, NULL, 25);
-    pixelbuffer = pixel_data(base, bmp->infoheader.imagesize);
+    pixelbuffer = pixel_data(base, &base->mlx, bmp->infoheader.imagesize);
     if (pixelbuffer == NULL)
         error_bmp(base, bmp, NULL, 24);
     ret = write(file, pixelbuffer, bmp->infoheader.imagesize);

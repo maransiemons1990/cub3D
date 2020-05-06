@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/01 14:52:23 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 09:39:32 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ void		load_texture(t_base *base)
 	int		i;
 	
 	i = 0;
-	base->game.texWidth = 64;
-	base->game.texHeight = 64;
+	base->game.texwidth = 64;
+	base->game.texheight = 64;
 	while (i < 5)
 	{
 		path = create_path(base, base->read, i);
 		base->tex[i].xpm_img = mlx_xpm_file_to_image(base->mlx.mlx, path,
-			&base->game.texWidth, &base->game.texHeight);
+			&base->game.texwidth, &base->game.texheight);
 		free (path);
 		if (base->tex[i].xpm_img == NULL)
 			exit_game(base, 1, 22);
@@ -78,24 +78,24 @@ void		load_texture(t_base *base)
 ** Initial camera plane value. Value changes when rotating.
 ** Done rotating, the updated value will be the new constant value
 ** use to determine your rayposition.
-** if (base->game.dirY == 0) THEN planeX = 0, planeY 0.66 --> N and S 
-** if (base->game.dirY == 1 || == -1) THEN planeX = 0.66 , planeY 0 --> E and W --> otherwise skewed wall
+** if (base->game.diry == 0) THEN planex = 0, planey 0.66 --> N and S 
+** if (base->game.diry == 1 || == -1) THEN planex = 0.66 , planey 0 --> E and W --> otherwise skewed wall
 */
 
 void			orientation(t_game *game, t_read *read)
 {
-	game->dirX = 0; 
-	game->dirY = 0; 
+	game->dirx = 0; 
+	game->diry = 0; 
 	if (read->pos == 'N')
-		game->dirY = -1;
+		game->diry = -1;
 	if (read->pos == 'S')
-		game->dirY = 1;
+		game->diry = 1;
 	if (read->pos == 'E')
-		game->dirX = 1;	
+		game->dirx = 1;	
 	if (read->pos == 'W')
-		game->dirX = -1;
-	game->planeX = (game->dirY == 0) ? 0 : 0.66;
-	game->planeY = (game->dirY == 0) ? 0.66 : 0;
+		game->dirx = -1;
+	game->planex = (game->diry == 0) ? 0 : 0.66;
+	game->planey = (game->diry == 0) ? 0.66 : 0;
 }
 
 //wss new_window ook nog op NULL
@@ -112,7 +112,6 @@ void			initialise_game(t_game *game, t_mlx  *mlx, t_base *base)
 	game->rotate_right = 0;
 	game->rotate_left = 0;
 	game->rotate = 0;
-	//base->game.update = 0;
 	mlx->img = NULL;
 	mlx->mlx_win = NULL;
 	while (i < 5)
@@ -120,7 +119,7 @@ void			initialise_game(t_game *game, t_mlx  *mlx, t_base *base)
 		base->tex[i].xpm_img = NULL;
 		i++;
 	}
-	base->ZBuffer = NULL;
+	base->zbuffer = NULL;
 }
 
 /*
@@ -151,7 +150,7 @@ int				mlx(t_base *base)
 	if (base->mlx.mlx_win == NULL)
 		exit_game(base, 1, 20);
 	load_texture(base); 
-	mlx_hook(base->mlx.mlx_win, 2, 1L<<0, &keypress, base);				//wel of geen & voor functie? // geen & voor base!
+	mlx_hook(base->mlx.mlx_win, 2, 1L<<0, &keypress, base);
 	mlx_hook(base->mlx.mlx_win, 3, 1L<<1, &keyrelease, base);
 	mlx_hook(base->mlx.mlx_win, 17, 1L<<17, &windowclose_x, base);
 	if (base->save == 0)

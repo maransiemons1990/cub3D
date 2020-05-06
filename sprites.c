@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/09 13:36:12 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/01 09:23:19 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 09:55:35 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 
 void            zbuffer(t_base *base, int x)
 {
-  base->ZBuffer[x] = base->wall.perpWallDist;
+  base->zbuffer[x] = base->wall.perpwalldist;
 }
 
 /*
@@ -71,7 +71,7 @@ static void         draw_vertical_stripe_sprite(int texx, int stripe, t_base *ba
   while (y < base->sprite.drawendy)
   {
     d = (y - base->sprite.vmovescreen) * 256 - base->read.render_y * 128 + base->sprite.spriteheight * 128; 
-    texY = ((d * base->game.texHeight) / base->sprite.spriteheight) / 256;
+    texY = ((d * base->game.texheight) / base->sprite.spriteheight) / 256;
     dest = base->tex[4].xpm_addr + (texY * base->tex[4].xpm_line_length + texx * (base->tex[4].xpm_bpp / 8));
 		color = *(unsigned int*)dest;
     if ((color & 0x00FFFFFF) != 0)
@@ -137,9 +137,9 @@ static void         project_sprite_on_cameraplane2d(t_sprite  *sprite, t_base *b
 
   spritex = sprite->x - base->read.x_pos; //
   spritey = sprite->y - base->read.y_pos;
-  invdet = 1.0 / (base->game.planeX * base->game.dirY - base->game.dirX * base->game.planeY);
-  transformx = invdet * (base->game.dirY * spritex - base->game.dirX * spritey);
-  base->sprite.transformy = invdet * (-base->game.planeY * spritex + base->game.planeX * spritey);
+  invdet = 1.0 / (base->game.planex * base->game.diry - base->game.dirx * base->game.planey);
+  transformx = invdet * (base->game.diry * spritex - base->game.dirx * spritey);
+  base->sprite.transformy = invdet * (-base->game.planey * spritex + base->game.planex * spritey);
   base->sprite.spritescreenx = (int)((base->read.render_x / 2) * (1 + transformx / base->sprite.transformy));
   base->sprite.vmovescreen = (int)(vMove / base->sprite.transformy);  //
 }
@@ -176,8 +176,8 @@ void            sprite(t_base *base)
     stripe = base->sprite.drawstartx;
     while (stripe < base->sprite.drawendx)
     {
-      texx = (int)(256 * (stripe - (-base->sprite.spritewidth / 2 + base->sprite.spritescreenx)) * base->game.texWidth / base->sprite.spritewidth) / 256;
-      if (base->sprite.transformy > 0 && stripe > 0 && stripe < base->read.render_x && base->sprite.transformy < base->ZBuffer[stripe])
+      texx = (int)(256 * (stripe - (-base->sprite.spritewidth / 2 + base->sprite.spritescreenx)) * base->game.texwidth / base->sprite.spritewidth) / 256;
+      if (base->sprite.transformy > 0 && stripe > 0 && stripe < base->read.render_x && base->sprite.transformy < base->zbuffer[stripe])
         draw_vertical_stripe_sprite(texx, stripe, base);
       stripe++;
     }

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/04 17:55:41 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 09:41:33 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct	s_mlx {
 	void    	*mlx_win;
 	void        *img;
 	char		*addr;
-	int			bits_per_pixel;
+	int			bpp;
     int			line_length;
     int			endian;
 }               t_mlx;
@@ -79,26 +79,26 @@ typedef struct	s_read {
 }				t_read;
 
 typedef struct s_game {
-	double		dirX;
-	double		dirY;
+	double		dirx;
+	double		diry;
 
-	int			mapX;
-	int 		mapY;
+	int			mapx;
+	int 		mapy;
 
-	int			stepX; //what direction to step in x or y-direction (either +1 or -1)
-    int 		stepY;
+	int			stepx; //what direction to step in x or y-direction (either +1 or -1)
+    int 		stepy;
 	
-	double		rayDirX;
-	double		rayDirY;
+	double		raydirx;
+	double		raydiry;
 	
-	double		sideDistX; //length of ray from current position to next x or y-side
-    double		sideDistY;
+	double		sidedistx; //length of ray from current position to next x or y-side
+    double		sidedisty;
 
-	double		deltaDistX;
-	double		deltaDistY;
+	double		deltadistx;
+	double		deltadisty;
 
-	double		planeX;
-	double		planeY;
+	double		planex;
+	double		planey;
 	
 	int			side; //was a NS or a EW wall hit?
 	
@@ -118,11 +118,10 @@ typedef struct s_game {
 	double		rotspeed;
 
 	int			update;
-//	int			count;
 
 	int			tex_side;
-	int			texWidth;
-	int			texHeight;
+	int			texwidth;
+	int			texheight;
 	
 }				t_game;
 
@@ -136,24 +135,24 @@ typedef struct	s_tex{
 }				t_tex;
 
 typedef struct s_floor{
-	float		floorStepX;
-	float		floorStepY;
-	float		floorX;
-	float		floorY;
+	float		floorstepx;
+	float		floorstepy;
+	float		floorx;
+	float		floory;
 }				t_floor;
 
 typedef struct s_tex_co{
 	double		step;
-	double		texPos;
-	int			texX;
+	double		texpos;
+	int			texx;
 }				t_tex_co;
 
 typedef struct s_wall{
-	int			lineHeight;
-	int			drawStart;
-	int			drawEnd;
-	double		wallX;
-	double		perpWallDist;
+	int			lineheight;
+	int			drawstart;
+	int			drawend;
+	double		wallx;
+	double		perpwalldist;
 }				t_wall;
 
 typedef struct s_sprite2{
@@ -194,7 +193,7 @@ typedef struct	s_base{
 	t_sprite	*head;
 	t_sprite2	sprite;
 	
-	double		*ZBuffer;
+	double		*zbuffer;
 	int			save;
 }				t_base;
 

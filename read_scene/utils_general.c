@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 15:25:07 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/04 17:51:08 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 09:58:21 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void			ll_freelist(t_sprite *head)
     {
        tmp = head;
        head = head->next;
-       free (tmp);
+       free(tmp);
     }
 	tmp = NULL;
 }
@@ -55,7 +55,7 @@ void			free_cub_base(t_base *base)
 		free(base->read.sprite);
 	if (base->head)
 		ll_freelist(base->head);
-	free (base);
+	free(base);
 }
 
 //exit 0 is success
@@ -65,8 +65,8 @@ void			exit_game(t_base *base, int code, int error)
 	int i;
 	
 	i = 0;
-	if (base->ZBuffer)
-		free (base->ZBuffer);
+	if (base->zbuffer)
+		free(base->zbuffer);
 	while (i < 5)
 	{
 		if (base->tex[i].xpm_img)
