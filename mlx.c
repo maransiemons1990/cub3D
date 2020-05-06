@@ -6,16 +6,16 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/06 09:39:32 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 16:51:22 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 
-char			*create_path(t_base *base, t_read read, int i)
+static char			*create_path(t_base *base, t_read read, int i)
 {
-	char 	*path;
+	char 		*path;
 	
 	path = NULL;
 	if (i == 0)
@@ -49,25 +49,25 @@ char			*create_path(t_base *base, t_read read, int i)
 ** So changed all png functions to xpm.
 ** no 0, ea 1, so 2, we 3, sprite 4
 */
-void		load_texture(t_base *base)
+static void			load_texture(t_base *base, t_tex *tex, t_game *game,
+								void *mlx)
 {
-	char 	*path;
-	int		i;
-	
+	char 		*path;
+	int			i;
+
 	i = 0;
-	base->game.texwidth = 64;
-	base->game.texheight = 64;
+	game->texwidth = 64;
+	game->texheight = 64;
 	while (i < 5)
 	{
 		path = create_path(base, base->read, i);
-		base->tex[i].xpm_img = mlx_xpm_file_to_image(base->mlx.mlx, path,
-			&base->game.texwidth, &base->game.texheight);
-		free (path);
-		if (base->tex[i].xpm_img == NULL)
+		tex[i].xpm_img = mlx_xpm_file_to_image(mlx, path, &game->texwidth,
+			&game->texheight);
+		free(path);
+		if (tex[i].xpm_img == NULL)
 			exit_game(base, 1, 22);
-		base->tex[i].xpm_addr = mlx_get_data_addr(base->tex[i].xpm_img,
-			&base->tex[i].xpm_bpp, &base->tex[i].xpm_line_length,
-			&base->tex[i].xpm_endian);
+		tex[i].xpm_addr = mlx_get_data_addr(tex[i].xpm_img, &tex[i].xpm_bpp,
+			&tex[i].xpm_line_length, &tex[i].xpm_endian);
 		i++;
 	}
 }
@@ -82,17 +82,17 @@ void		load_texture(t_base *base)
 ** if (base->game.diry == 1 || == -1) THEN planex = 0.66 , planey 0 --> E and W --> otherwise skewed wall
 */
 
-void			orientation(t_game *game, t_read *read)
+static void			orientation(t_game *game, char pos)
 {
 	game->dirx = 0; 
 	game->diry = 0; 
-	if (read->pos == 'N')
+	if (pos == 'N')
 		game->diry = -1;
-	if (read->pos == 'S')
+	if (pos == 'S')
 		game->diry = 1;
-	if (read->pos == 'E')
+	if (pos == 'E')
 		game->dirx = 1;	
-	if (read->pos == 'W')
+	if (pos == 'W')
 		game->dirx = -1;
 	game->planex = (game->diry == 0) ? 0 : 0.66;
 	game->planey = (game->diry == 0) ? 0.66 : 0;
@@ -100,9 +100,10 @@ void			orientation(t_game *game, t_read *read)
 
 //wss new_window ook nog op NULL
 //win en img has to be set to NULL otherwise sefgault in exit_game
-void			initialise_game(t_game *game, t_mlx  *mlx, t_base *base)
+static void			initialise_game(t_game *game, t_mlx *mlx, t_tex *tex,
+								 double *zbuffer)
 {
-	int i;
+	int 		i;
 	
 	i = 0;
 	game->move_front = 0;
@@ -116,10 +117,10 @@ void			initialise_game(t_game *game, t_mlx  *mlx, t_base *base)
 	mlx->mlx_win = NULL;
 	while (i < 5)
 	{
-		base->tex[i].xpm_img = NULL;
+		tex[i].xpm_img = NULL;
 		i++;
 	}
-	base->zbuffer = NULL;
+	zbuffer = NULL;
 }
 
 /*
@@ -140,8 +141,8 @@ void			initialise_game(t_game *game, t_mlx  *mlx, t_base *base)
 */
 int				mlx(t_base *base)
 {
-	initialise_game(&base->game, &base->mlx, base);
-	orientation(&base->game, &base->read);
+	initialise_game(&base->game, &base->mlx, base->tex, base->zbuffer);
+	orientation(&base->game, base->read.pos);
 	base->mlx.mlx = mlx_init();
 	if (base->mlx.mlx == NULL)
 		exit_game(base, 1, 29);
@@ -149,7 +150,7 @@ int				mlx(t_base *base)
 		base->read.render_y, "Wolfenstein 3D! | Maran Siemons");
 	if (base->mlx.mlx_win == NULL)
 		exit_game(base, 1, 20);
-	load_texture(base); 
+	load_texture(base, base->tex, &base->game, base->mlx.mlx);
 	mlx_hook(base->mlx.mlx_win, 2, 1L<<0, &keypress, base);
 	mlx_hook(base->mlx.mlx_win, 3, 1L<<1, &keyrelease, base);
 	mlx_hook(base->mlx.mlx_win, 17, 1L<<17, &windowclose_x, base);

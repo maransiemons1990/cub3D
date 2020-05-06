@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/06 11:27:01 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 18:47:14 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,6 @@
 #include <math.h>
 #include <string.h>
 
-/*
-** Pushing pixels to the window. we will have to buffer all of our pixels to a image
-** which we will then push to the window.
-** Instead of push the pixel instantly to the window (without waiting for the frame to be entirely rendered).
-** Locate postion of pixel: (y * size_line + x * (bits_per_pixel / 8));
-** Here we multiply size_line by y as we need to skip y lines (line size does not equal the amount of pixels in a line).
-** We then add the remaining x units multiplied by bits_per_pixl / 8 to align with the final location.
-*/
-
-void            my_mlx_pixel_put(t_base *base, int x, int y, int color)
-{
-    char    *dst;
-
-    dst = base->mlx.addr + (y * base->mlx.line_length + x * (base->mlx.bpp / 8));
-    *(unsigned int*)dst = color;
-}
 
 /*
 ** Reversed my_mlx_pixel_put-dest formula.
@@ -38,35 +22,40 @@ void            my_mlx_pixel_put(t_base *base, int x, int y, int color)
 ** tex[i] --> no 0, ea 1, so 2, we 3,
 */
 
-int				texture_pick_wallside(t_base *base, int texx, int texy)
+static int		texture_pick_wallside(t_tex *tex, int texx, int texy, int i)
 {
 	char	*dest;
 	int		color;
 	
-	if (base->game.tex_side == 1)
-	{
-		dest = base->tex[0].xpm_addr + (texy * base->tex[0].xpm_line_length + texx * (base->tex[0].xpm_bpp / 8));
-		color = *(unsigned int*)dest;
-	}
-	else if (base->game.tex_side == 2)
-	{
-		dest = base->tex[1].xpm_addr + (texy * base->tex[1].xpm_line_length + texx * (base->tex[1].xpm_bpp / 8));
-		color = *(unsigned int*)dest;
+	dest = tex[i].xpm_addr + (texy * tex[i].xpm_line_length + texx *
+		(tex[i].xpm_bpp / 8));
+	color = *(unsigned int*)dest;
+	if (i == 1 || i == 3)
 		color = (color >> 1) & 8355711;
-	}
-	else if (base->game.tex_side == 3)
-	{
-		dest = base->tex[2].xpm_addr + (texy * base->tex[2].xpm_line_length + texx * (base->tex[2].xpm_bpp / 8));
-		color = *(unsigned int*)dest;
-	}
-	else
-	{
-		dest = base->tex[3].xpm_addr + (texy * base->tex[3].xpm_line_length + texx * (base->tex[3].xpm_bpp / 8));
-		color = *(unsigned int*)dest;
-		color = (color >> 1) & 8355711;
-	
-	}
 	return (color);
+}
+
+/*
+** TEXx: x coordinate on the texture
+** This coordinate will remain the same, because we stay in the same vertical stripe of the screen.
+** STEP: How much to increase the texture coordinate (in floating point) per screen pixel, 
+** every pixel in vertical screen coordinates.
+** It then needs to cast the floating point value to integer to select the actual texture pixel.
+** = affine texture mapping
+** TEXpOS: Starting texture coordinate.
+*/
+
+static void		texture_coordinates_wall(t_tex_co *tex_co, t_wall *wall,
+											t_game *game, int render_y)
+{
+	tex_co->texx = wall->wallx * (double)game->texwidth; //(int)Wallx !!!! Hierna een texture!
+    if (game->side == 0 && game->raydirx > 0)
+		tex_co->texx = game->texwidth - tex_co->texx - 1;
+    if (game->side == 1 && game->raydiry < 0)
+		tex_co->texx = game->texwidth - tex_co->texx - 1;
+	tex_co->step = 1.0 * game->texheight / wall->lineheight;
+    tex_co->texpos = (wall->drawstart - render_y / 2 + wall->lineheight / 2)
+		* tex_co->step;
 }
 
 /*
@@ -80,46 +69,28 @@ int				texture_pick_wallside(t_base *base, int texx, int texy)
 ** Next substracting the integer value of the wall off it.
 */
 
-void			draw_calculations_wall(t_base *base)
+static void		draw_calculations_wall(t_read *read, t_game *game,
+											t_wall *wall)
 {
-    if (base->game.side == 0)
-		base->wall.perpwalldist = (base->game.mapx - base->read.x_pos + (1 - base->game.stepx) / 2) / base->game.raydirx;
+	if (game->side == 0)
+		wall->perpwalldist = (game->mapx -read->x_pos + (1 - game->stepx) / 2)
+			/ game->raydirx;
 	else
-		base->wall.perpwalldist = (base->game.mapy - base->read.y_pos + (1 - base->game.stepy) / 2) / base->game.raydiry;
-	base->wall.perpwalldist = (base->wall.perpwalldist < 1) ? 1 : base->wall.perpwalldist;
-	base->wall.lineheight = (int)(base->read.render_y / base->wall.perpwalldist);
-	base->wall.drawstart = -base->wall.lineheight / 2 + base->read.render_y / 2;
-	if(base->wall.drawstart < 0)
-		base->wall.drawstart = 0;
-	base->wall.drawend = base->wall.lineheight / 2 + base->read.render_y / 2;
-	if(base->wall.drawend >= base->read.render_y)
-		base->wall.drawend = base->read.render_y - 1;
-    if (base->game.side == 0)
- 	 	base->wall.wallx = base->read.y_pos + base->wall.perpwalldist * base->game.raydiry;
+		wall->perpwalldist = (game->mapy - read->y_pos + (1 - game->stepy) / 2)
+			/ game->raydiry;
+	wall->perpwalldist = (wall->perpwalldist < 1) ? 1 : wall->perpwalldist;
+	wall->lineheight = (int)(read->render_y / wall->perpwalldist);
+	wall->drawstart = -wall->lineheight / 2 + read->render_y / 2;
+	if(wall->drawstart < 0)
+		wall->drawstart = 0;
+	wall->drawend = wall->lineheight / 2 + read->render_y / 2;
+	if(wall->drawend >= read->render_y)
+		wall->drawend = read->render_y - 1;
+    if (game->side == 0)
+ 	 	wall->wallx = read->y_pos + wall->perpwalldist * game->raydiry;
     else
-		base->wall.wallx = base->read.x_pos + base->wall.perpwalldist * base->game.raydirx;
-    base->wall.wallx -= (int)base->wall.wallx;
-}
-
-/*
-** TEXx: x coordinate on the texture
-** This coordinate will remain the same, because we stay in the same vertical stripe of the screen.
-** STEP: How much to increase the texture coordinate (in floating point) per screen pixel, 
-** every pixel in vertical screen coordinates.
-** It then needs to cast the floating point value to integer to select the actual texture pixel.
-** = affine texture mapping
-** TEXpOS: Starting texture coordinate.
-*/
-
-void			texture_coordinates_wall(t_base *base)
-{
-	base->tex_co.texx = base->wall.wallx * (double)base->game.texwidth; //(int)Wallx !!!! Hierna een texture!
-    if (base->game.side == 0 && base->game.raydirx > 0)
-		base->tex_co.texx = base->game.texwidth - base->tex_co.texx - 1;
-    if (base->game.side == 1 && base->game.raydiry < 0)
-		base->tex_co.texx = base->game.texwidth - base->tex_co.texx - 1;
-	base->tex_co.step = 1.0 * base->game.texheight / base->wall.lineheight;
-    base->tex_co.texpos = (base->wall.drawstart - base->read.render_y / 2 + base->wall.lineheight / 2) * base->tex_co.step;
+		wall->wallx = read->x_pos + wall->perpwalldist * game->raydirx;
+    wall->wallx -= (int)wall->wallx;
 }
 
 /*
@@ -133,21 +104,23 @@ void			texture_coordinates_wall(t_base *base)
 ** my_mlx: set wall coordinate to new color.
 */
 
-void			verLine(t_base *base, int x)
+static void		verLine(t_base *base, t_tex_co *tex_co, int x)
 {
-	int		texy;
-	int		color;
-	int		y;
+	int			texy;
+	int			color;
+	int			y;
 
-	draw_calculations_wall(base);
-	texture_coordinates_wall(base);
+	draw_calculations_wall(&base->read, &base->game, &base->wall);
+	texture_coordinates_wall(tex_co, &base->wall, &base->game,
+		base->read.render_y);
     y = base->wall.drawstart;
 	while (y < base->wall.drawend)
     {
         texy = (int)base->tex_co.texpos & (base->game.texheight - 1);
-        base->tex_co.texpos += base->tex_co.step;
-		color = texture_pick_wallside(base, base->tex_co.texx, texy);
-		my_mlx_pixel_put(base, x, y, color);
+        tex_co->texpos += tex_co->step;
+		color = texture_pick_wallside(base->tex, tex_co->texx, texy,
+			base->game.tex_side);
+		my_mlx_pixel_put(&base->mlx, x, y, color);
 		y++;
     }
 }
@@ -161,28 +134,28 @@ void			verLine(t_base *base, int x)
 ** Check if ray has hit a wall
 */
 
-void			DDA(t_base *base)
+static void		DDA(t_game *game, char **array)
 {
-    int		hit;
+    int			hit;
 	
 	hit = 0;
    	while (hit == 0)
 	{
-    	if (base->game.sidedistx < base->game.sidedisty)
+    	if (game->sidedistx < game->sidedisty)
     	{
-    		base->game.sidedistx += base->game.deltadistx;
-    		base->game.mapx += base->game.stepx;
-    		base->game.side = 0;
-			base->game.tex_side = base->game.stepx < 0 ? 2 : 4;
+    		game->sidedistx += game->deltadistx;
+    		game->mapx += game->stepx;
+    		game->side = 0;
+			game->tex_side = game->stepx < 0 ? 1 : 3;
     	}
     	else
     	{
-        	base->game.sidedisty += base->game.deltadisty;
-        	base->game.mapy += base->game.stepy;
-        	base->game.side = 1;
-			base->game.tex_side = base->game.stepy < 0 ? 3 : 1;
+        	game->sidedisty += game->deltadisty;
+        	game->mapy += game->stepy;
+        	game->side = 1;
+			game->tex_side = game->stepy < 0 ? 2 : 0;
     	}
-		if (TWOD[base->game.mapy][base->game.mapx] == '1')
+		if (array[game->mapy][game->mapx] == '1')
 			hit = 1;
 	}
 }
@@ -191,27 +164,27 @@ void			DDA(t_base *base)
 ** Calculate step and initial sideDist
 */
 
-void			initial_step_sidedist(t_base *base)
+static void			initial_step_sidedist(t_read *read, t_game *game)
 {
-    if(base->game.raydirx < 0)
+    if(game->raydirx < 0)
     {
-    	base->game.stepx = -1;
-    	base->game.sidedistx = (base->read.x_pos - base->game.mapx) * base->game.deltadistx;
+    	game->stepx = -1;
+    	game->sidedistx = (read->x_pos - game->mapx) * game->deltadistx;
     }
     else
     {
-		base->game.stepx = 1;
-    	base->game.sidedistx = (base->game.mapx + 1.0 - base->read.x_pos) * base->game.deltadistx;
+		game->stepx = 1;
+    	game->sidedistx = (game->mapx + 1.0 - read->x_pos) * game->deltadistx;
     }
-    if(base->game.raydiry < 0)
+    if(game->raydiry < 0)
     {
-		base->game.stepy = -1;
-		base->game.sidedisty = (base->read.y_pos - base->game.mapy) * base->game.deltadisty;
+		game->stepy = -1;
+		game->sidedisty = (read->y_pos - game->mapy) * game->deltadisty;
     }
     else
     {
-    	base->game.stepy = 1;
-    	base->game.sidedisty = (base->game.mapy + 1.0 - base->read.y_pos) * base->game.deltadisty;
+    	game->stepy = 1;
+    	game->sidedisty = (game->mapy + 1.0 - read->y_pos) * game->deltadisty;
     }
 }
 
@@ -226,54 +199,49 @@ void			initial_step_sidedist(t_base *base)
 ** -DELTADIST: length of ray from one x or y-side to next x or y-side
 */
 
-void			ray_position(t_base *base, int x)
+static void			ray_position(t_read *read, t_game *game, int x)
 {
-	double	cameraX;
-	//printf("rotateleft = %d, rotateright = %d\n", base->game.rotate_left, base->game.rotate_right);
-	// if (base->game.rotate == 0) //NEW
-	// {
-	// 	base->game.planex = (base->game.diry == 0) ? 0 : 0.66;
-	// 	base->game.plyneY = (base->game.diry == 0) ? 0.66 : 0;
-	// }
-    if (base->read.pos == 'W' || base->read.pos == 'S')
-		cameraX = (2 * x / (double)base->read.render_x - 1) * -1;
+	double		cameraX;
+
+    if (read->pos == 'W' || read->pos == 'S')
+		cameraX = (2 * x / (double)read->render_x - 1) * -1;
     else
-		cameraX = 2 * x / (double)base->read.render_x - 1;
-	//printf("Ray pos: dirx[%f], diry [%f], planex[%f], planey[%f]\n", basy->game.dirx, base->game.dirY, base->game.planex, base->game.planey);
-	base->game.raydirx = base->game.dirx + base->game.planex * cameraX;
-    base->game.raydiry = base->game.diry + base->game.planey * cameraX;
-    base->game.mapx = (int)base->read.x_pos;
-	base->game.mapy = (int)base->read.y_pos;
-	//printf("Mapy = [%d]\n", base->game.mapy);
-    base->game.deltadistx = fabs(1 / base->game.raydirx);
-    base->game.deltadisty = fabs(1 / base->game.raydiry);
+		cameraX = 2 * x / (double)read->render_x - 1;
+	game->raydirx = game->dirx + game->planex * cameraX;
+    game->raydiry = game->diry + game->planey * cameraX;
+    game->mapx = (int)read->x_pos;
+	game->mapy = (int)read->y_pos;
+    game->deltadistx = fabs(1 / game->raydirx);
+    game->deltadisty = fabs(1 / game->raydiry);
 }
 
 //draw the pixels of the stripe as a vertical line //and calculate first
-void				raycasting(t_base *base)
+static void		raycasting(t_base *base, t_game *game, t_read *read)
 {
-	int x;
+	int			x;
+	double		frametime;
+	double		oldtime;
 
-	base->zbuffer = (double *)malloc(sizeof(double) * base->read.render_x); // --> LOCATION OF MALLOC MATTERS! //FREEEE
+	base->zbuffer = (double *)malloc(sizeof(double) * read->render_x);
 	if (base->zbuffer == NULL)
 		exit_game(base, 1, 27);
 	x = 0;
-	while(x < base->read.render_x)
+	while(x < read->render_x)
 	{
-		ray_position(base, x);
-		initial_step_sidedist(base);
-		DDA(base);
-		verLine(base, x);
-		zbuffer(base, x);
+		ray_position(read, game, x);
+		initial_step_sidedist(read, game);
+		DDA(game, read->array);
+		verLine(base, &base->tex_co, x);
+		base->zbuffer[x] = base->wall.perpwalldist;
 	  	x++;
 	}
-	base->game.oldtime = base->game.time;
-	base->game.time = clock();
-	if (base->game.time == -1)
+	oldtime = game->time;
+	game->time = clock();
+	if (game->time == -1)
 		exit_game(base, 1, 28);
-	base->game.frametime = (base->game.time - base->game.oldtime) / CLOCKS_PER_SEC;
-	base->game.movespeed = base->game.frametime * 25.0; 
-	base->game.rotspeed = base->game.frametime * 5.0;
+	frametime = (game->time - oldtime) / CLOCKS_PER_SEC;
+	game->movespeed = frametime * 25.0; 
+	game->rotspeed = frametime * 5.0;
 }
 
 static void		rotate(t_game *game)
@@ -354,7 +322,7 @@ int				loop(t_base *base)
 	if (base->game.update)
 		move(base, &base->game);
 	floor_ceiling_smooth(base, &base->read);
-	raycasting(base);
+	raycasting(base, &base->game, &base->read);
 	sprite(base, &base->sprite);
 	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
 	base->game.update = 0;

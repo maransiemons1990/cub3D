@@ -6,14 +6,13 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 17:27:15 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/01 18:44:23 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 16:55:42 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-//Segfault met destroy window. Uitzoeken.
-int             keypress(int keycode, t_base *base)
+int					keypress(int keycode, t_base *base)
 {
 	if (keycode == KEY_ESC)
 		exit_game(base, 0, 0);
@@ -29,8 +28,6 @@ int             keypress(int keycode, t_base *base)
 			base->game.move_right = 1;
 		if (keycode == KEY_A)
 			base->game.move_left = 1;
-		// if (keycode == KEY_LEFT || keycode == KEY_RIGHT)
-		// 	base->game.rotate = 1;
 		if (keycode == KEY_LEFT)
 			base->game.rotate_left = 1;
 		if (keycode == KEY_RIGHT)
@@ -39,7 +36,7 @@ int             keypress(int keycode, t_base *base)
     return (0);
 }
 
-int             keyrelease(int keycode, t_base *base)
+int					keyrelease(int keycode, t_base *base)
 {	
 	if (keycode == KEY_W)
 		base->game.move_front = 0;
@@ -56,7 +53,7 @@ int             keyrelease(int keycode, t_base *base)
     return (0);
 }
 
-int			windowclose_x(t_base *base)
+int					windowclose_x(t_base *base)
 {	
 	exit_game(base, 0, 0);
 	return (0);

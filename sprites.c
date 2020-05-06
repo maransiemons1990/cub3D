@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/09 13:36:12 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/06 11:30:17 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 18:37:00 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@
 ** the ones closer to you will be drawn last, so they're drawn over the further away ones.
 */
 
-void            zbuffer(t_base *base, int x)
-{
-  base->zbuffer[x] = base->wall.perpwalldist;
-}
+// void            zbuffer(t_base *base, int x)
+// {
+//   base->zbuffer[x] = base->wall.perpwalldist;
+// }
 
 /*
 ** - 3rd while: for every pixel of the current stripe.
@@ -75,7 +75,7 @@ static void         draw_vertical_stripe_sprite(int texx, int stripe, t_base *ba
     dest = base->tex[4].xpm_addr + (texY * base->tex[4].xpm_line_length + texx * (base->tex[4].xpm_bpp / 8));
 		color = *(unsigned int*)dest;
     if ((color & 0x00FFFFFF) != 0)
-      my_mlx_pixel_put(base, stripe, y, color);
+      my_mlx_pixel_put(&base->mlx, stripe, y, color);
     y++;
   }
 }

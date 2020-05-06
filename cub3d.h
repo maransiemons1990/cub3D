@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/06 15:13:44 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 18:43:59 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,6 @@ typedef struct			s_game {
 	int					rotate_right;
 	int					rotate;
 	double				time;
-	double				oldtime;
-	double				frametime;
 	double				movespeed;
 	double				rotspeed;
 	int					update;
@@ -191,6 +189,12 @@ void			floor_ceiling_smooth(t_base *base, t_read *read);
 
 void            sprite(t_base *base, t_sprite *sprite);
 
+int             keypress(int keycode, t_base *base);
+int             keyrelease(int keycode, t_base *base);
+int				windowclose_x(t_base *img);
+
+void            my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
+
 
 
 //GNL_CUB3D
@@ -228,12 +232,9 @@ int				mlx(t_base *base);
 int				loop(t_base *base);
 
 //Ray
-void				raycasting(t_base *base);
+//void				raycasting(t_base *base);
 
 //Rayhooks
-int             keypress(int keycode, t_base *img);
-int             keyrelease(int keycode, t_base *base);
-int				windowclose_x(t_base *img);
 
 //exit
 void			exit_game(t_base *base, int code, int error);
@@ -242,7 +243,6 @@ void			free_array(t_read *read);
 void			floor_ceiling_texture(t_base *base); //extra
 
 //
-void            my_mlx_pixel_put(t_base *base, int x, int y, int color);
 
 //sprites
 void			zbuffer(t_base *base, int x);
@@ -254,10 +254,5 @@ void		save_first_image_bmp(t_base *base);
 // void		print_full_square(t_data *img, int x, int xsize, int y, int ysize);
 // void		print_square(t_data *img, int x, int xsize, int y, int ysize);
 //void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
-
-//Overig
-void		twod_checker(char **array);
-void		valuechecker(t_base *base);
-void		print_list(t_base *base);
 
 #endif
