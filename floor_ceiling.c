@@ -6,30 +6,30 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/08 14:53:21 by Maran         #+#    #+#                 */
-/*   Updated: 2020/04/30 14:12:55 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 10:24:18 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	floor_ceiling_smooth(t_base *base)
+void			floor_ceiling_smooth(t_base *base, t_read *read)
 {
-	int y;
-	int x;
-	int color;
+	int 	y;
+	int 	x;
+	int 	color;
 
-	y = base->read.render_y / 2 + 1;
-	while (y < base->read.render_y)
+	y = read->render_y / 2 + 1;
+	while (y < read->render_y)
     {
 		x = 0;
-		while (x < base->read.render_x)
+		while (x < read->render_x)
       	{
-			color = base->read.f_color;
+			color = read->f_color;
         	//color = (color >> 1) & 8355711; // make a bit darker
 			my_mlx_pixel_put(base, x, y, color);
-        	color = base->read.c_color;
+        	color = read->c_color;
         	//color = (color >> 1) & 8355711; // make a bit darker
-			my_mlx_pixel_put(base, x, (base->read.render_y - y - 1), color);
+			my_mlx_pixel_put(base, x, (read->render_y - y - 1), color);
 			x++;
       	}
 	  y++;

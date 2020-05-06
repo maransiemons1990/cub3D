@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/16 15:34:37 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/04 12:15:22 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 15:15:57 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,30 +30,31 @@ static int		first_char(char *y)
 ** Looks for last character in line except spaces. Returns position.
 */
 
-int				last_char_save_pos(int y, t_base *base)
+int				last_char_save_pos(int y, t_base *base, t_read *read,
+									char **array)
 {
 	int 	i;
 
 	i = 0;
-	while(TWOD[y][i])
+	while(array[y][i])
 	{
-		if (TWOD[y][i] != '0' && TWOD[y][i] != '1' && TWOD[y][i] != '2'
-		&& TWOD[y][i] != ' ' && TWOD[y][i] != 'N' && TWOD[y][i] != 'S' &&
-		TWOD[y][i] != 'E' && TWOD[y][i] != 'W')
+		if (array[y][i] != '0' && array[y][i] != '1' && array[y][i] != '2'
+			&& array[y][i] != ' ' && array[y][i] != 'N' && array[y][i] != 'S'
+			&& array[y][i] != 'E' && array[y][i] != 'W')
 			return (error_distr(base, 10));
-		if (TWOD[y][i] == 'N' || TWOD[y][i] == 'S' || TWOD[y][i] == 'E' ||
-		TWOD[y][i] =='W')
+		if (array[y][i] == 'N' || array[y][i] == 'S' || array[y][i] == 'E' ||
+		array[y][i] =='W')
 		{
-			if (base->read.pos != -1 && y != base->read.y_pos &&
-			i != base->read.x_pos)
+			if (read->pos != -1 && y != read->y_pos &&
+			i != read->x_pos)
 				return (error_distr(base, 11));
-			base->read.pos = TWOD[y][i];
-			base->read.x_pos = i;
-			base->read.y_pos = y;
+			read->pos = array[y][i];
+			read->x_pos = i;
+			read->y_pos = y;
 		}
 		i++;
 	}
-	while(TWOD[y][i] == ' ' || TWOD[y][i] == '\0')
+	while(array[y][i] == ' ' || array[y][i] == '\0')
 		i--;
 	return (i);
 }
@@ -65,7 +66,7 @@ int				last_char_save_pos(int y, t_base *base)
 ** 00001
 */
 
-int				align_dif_back(int y, t_base *base)
+int				align_dif_back(int y, t_base *base, t_read *read)
 {
 	int 	back1;
 	int 	back2;
@@ -73,20 +74,20 @@ int				align_dif_back(int y, t_base *base)
 	int 	count;
 
 	count = 0;
-	back1 = last_char_save_pos(y, base);
-	back2 = last_char_save_pos(y + 1, base);
-	// if (base->read.error != 0) //! kan niet aanpassne? //mag weg
-	// 	return (1);
+	back1 = last_char_save_pos(y, base, read, read->array);
+	back2 = last_char_save_pos(y + 1, base, read, read->array);
 	dif = back1 - back2;
 	while (dif > (count - 1))
 	{
-		if (TWOD[y][back1 - count] != '1' && TWOD[y][back1 - count] != ' ')
+		if (read->array[y][back1 - count] != '1' &&
+			read->array[y][back1 - count] != ' ')
 			return (error_distr(base, 12));
 		count++;
 	}
 	while (dif < 1)
 	{
-		if (TWOD[y + 1][back2 + dif] != '1' && TWOD[y + 1][back2 + dif] != ' ')
+		if (read->array[y + 1][back2 + dif] != '1' &&
+			read->array[y + 1][back2 + dif] != ' ')
 			return (error_distr(base, 12));
 		dif++;
 	}
@@ -131,28 +132,28 @@ int				align_dif_front(char *s1, char *s2)
 ** the adjacent elements can only consist of 1's and spaces.
 */
 
-int 			space_in_wall(int y, int i, t_base *base)
+int 			space_in_wall(int y, int i, char **array, t_read *read)
 {
-	if (TWOD[y][i - 1] != '1' && TWOD[y][i - 1] != ' ')
+	if (array[y][i - 1] != '1' && array[y][i - 1] != ' ')
 		return (1);
-	if (TWOD[y][i + 1] != '1' && TWOD[y][i + 1] != ' ')
+	if (array[y][i + 1] != '1' && array[y][i + 1] != ' ')
 		return (1);
-	if (y == base->read.map_start)
+	if (y == read->map_start)
 	{
-		if (TWOD[y + 1][i] != '1' && TWOD[y + 1][i] != ' ')
+		if (array[y + 1][i] != '1' && array[y + 1][i] != ' ')
 			return (1);
-		if (TWOD[y + 1][i - 1] != '1' && TWOD[y + 1][i - 1] != ' ')
+		if (array[y + 1][i - 1] != '1' && array[y + 1][i - 1] != ' ')
 			return (1);
-		if (TWOD[y + 1][i + 1] != '1' && TWOD[y + 1][i + 1] != ' ')
+		if (array[y + 1][i + 1] != '1' && array[y + 1][i + 1] != ' ')
 			return (1);
 	}
-	if (y == base->read.map_end)
+	if (y == read->map_end)
 	{
-		if (TWOD[y - 1][i] != '1' && TWOD[y - 1][i] != ' ')
+		if (array[y - 1][i] != '1' && array[y - 1][i] != ' ')
 			return (1);
-		if (TWOD[y - 1][i - 1] != '1' && TWOD[y - 1][i - 1] != ' ')
+		if (array[y - 1][i - 1] != '1' && array[y - 1][i - 1] != ' ')
 			return (1);
-		if (TWOD[y - 1][i + 1] != '1' && TWOD[y - 1][i + 1] != ' ')
+		if (array[y - 1][i + 1] != '1' && array[y - 1][i + 1] != ' ')
 			return (1);
 	}	
 	return (0);

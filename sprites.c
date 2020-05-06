@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/09 13:36:12 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/06 09:55:35 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 11:30:17 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,22 +90,22 @@ static void         draw_vertical_stripe_sprite(int texx, int stripe, t_base *ba
 ** - SpriteWidth: calculate width of the sprite.
 */
 
-void            calculate_size_sprite_screen(t_base *base)
+void            calculate_size_sprite_screen(t_base *base, t_sprite *sprite)
 {
-  base->sprite.spriteheight = abs((int)(base->read.render_y / (base->sprite.transformy)))/ vDiv; 
-  base->sprite.drawstarty = -base->sprite.spriteheight / 2 + base->read.render_y/ 2 + base->sprite.vmovescreen;
-  if (base->sprite.drawstarty < 0)
-    base->sprite.drawstarty = 0;
-  base->sprite.drawendy = base->sprite.spriteheight / 2 + base->read.render_y / 2 + base->sprite.vmovescreen;
-  if (base->sprite.drawendy >= base->read.render_y)
-    base->sprite.drawendy = base->read.render_y - 1;
-  base->sprite.spritewidth = abs( (int)(base->read.render_y / (base->sprite.transformy))) / uDiv;
-  base->sprite.drawstartx = -base->sprite.spritewidth / 2 + base->sprite.spritescreenx;
-  if (base->sprite.drawstartx < 0)
-    base->sprite.drawstartx = 0;
-  base->sprite.drawendx = base->sprite.spritewidth / 2 + base->sprite.spritescreenx;
-  if (base->sprite.drawendx >= base->read.render_x)
-    base->sprite.drawendx = base->read.render_y - 1;
+  sprite->spriteheight = abs((int)(base->read.render_y / (sprite->transformy)))/ vDiv;
+  sprite->drawstarty = -sprite->spriteheight / 2 + base->read.render_y/ 2 + sprite->vmovescreen;
+  if (sprite->drawstarty < 0)
+    sprite->drawstarty = 0;
+  sprite->drawendy = sprite->spriteheight / 2 + base->read.render_y / 2 + sprite->vmovescreen;
+  if (sprite->drawendy >= base->read.render_y)
+    sprite->drawendy = base->read.render_y - 1;
+  sprite->spritewidth = abs( (int)(base->read.render_y / (sprite->transformy))) / uDiv;
+  sprite->drawstartx = -sprite->spritewidth / 2 + sprite->spritescreenx;
+  if (sprite->drawstartx < 0)
+    sprite->drawstartx = 0;
+  sprite->drawendx = sprite->spritewidth / 2 + sprite->spritescreenx;
+  if (sprite->drawendx >= base->read.render_x)
+    sprite->drawendx = base->read.render_y - 1;
 }
 
 /*
@@ -128,20 +128,20 @@ void            calculate_size_sprite_screen(t_base *base)
 **      or up if it has to hang on the ceiling.
 */
 
-static void         project_sprite_on_cameraplane2d(t_sprite  *sprite, t_base *base)
+static void         project_sprite_on_cameraplane2d(t_sprite  *sprite, t_ll_sprite *ll_sprite, t_base *base)
 {
   double    spritex;
   double    spritey;
   double    invdet;
   double    transformx;
 
-  spritex = sprite->x - base->read.x_pos; //
-  spritey = sprite->y - base->read.y_pos;
+  spritex = ll_sprite->x - base->read.x_pos; //
+  spritey = ll_sprite->y - base->read.y_pos;
   invdet = 1.0 / (base->game.planex * base->game.diry - base->game.dirx * base->game.planey);
   transformx = invdet * (base->game.diry * spritex - base->game.dirx * spritey);
-  base->sprite.transformy = invdet * (-base->game.planey * spritex + base->game.planex * spritey);
-  base->sprite.spritescreenx = (int)((base->read.render_x / 2) * (1 + transformx / base->sprite.transformy));
-  base->sprite.vmovescreen = (int)(vMove / base->sprite.transformy);  //
+  sprite->transformy = invdet * (-base->game.planey * spritex + base->game.planex * spritey);
+  sprite->spritescreenx = (int)((base->read.render_x / 2) * (1 + transformx / sprite->transformy));
+  sprite->vmovescreen = (int)(vMove / sprite->transformy);  //
 }
 
 /*
@@ -160,28 +160,28 @@ static void         project_sprite_on_cameraplane2d(t_sprite  *sprite, t_base *b
 **  4) Distance is smaller than the 1D ZBuffer(with perpendicular distance) of the walls of the current stripe
 */
 
-void            sprite(t_base *base)
+void            sprite(t_base *base, t_sprite *sprite)
 {
-  int       i;
-  int       texx;
-  int       stripe;
-  t_sprite  *sprite;
+  int           i;
+  int           texx;
+  int           stripe;
+  t_ll_sprite   *ll_sprite;
 
   i = 0;
-  sprite = base->head;
+  ll_sprite = base->head;
   while (i < base->read.nb_sprites)
   {
-    project_sprite_on_cameraplane2d(sprite, base);
-    calculate_size_sprite_screen(base);
+    project_sprite_on_cameraplane2d(sprite, ll_sprite, base);
+    calculate_size_sprite_screen(base, sprite);
     stripe = base->sprite.drawstartx;
-    while (stripe < base->sprite.drawendx)
+    while (stripe < sprite->drawendx)
     {
-      texx = (int)(256 * (stripe - (-base->sprite.spritewidth / 2 + base->sprite.spritescreenx)) * base->game.texwidth / base->sprite.spritewidth) / 256;
-      if (base->sprite.transformy > 0 && stripe > 0 && stripe < base->read.render_x && base->sprite.transformy < base->zbuffer[stripe])
+      texx = (int)(256 * (stripe - (-sprite->spritewidth / 2 + sprite->spritescreenx)) * base->game.texwidth / sprite->spritewidth) / 256;
+      if (sprite->transformy > 0 && stripe > 0 && stripe < base->read.render_x && sprite->transformy < base->zbuffer[stripe])
         draw_vertical_stripe_sprite(texx, stripe, base);
       stripe++;
     }
     i++;
-    sprite = sprite->next;
+    ll_sprite = ll_sprite->next;
   }
 }

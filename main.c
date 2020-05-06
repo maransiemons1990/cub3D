@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/04 18:37:04 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 14:34:11 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int			main(int argc, char **argv)
 		if (base->save)
 			return (error_distr(base, 31));
 	}
-	read_scene_file(base);
+	read_scene_file(base, &base->read);
 	displayresolution(base);
 	mlx(base);
 	return (0);

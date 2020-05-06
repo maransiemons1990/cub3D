@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/06 09:41:33 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 15:13:44 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,162 +45,151 @@
 //clock
 # include <time.h>
 
-typedef struct	s_mlx {
-    void		*mlx;
-	void    	*mlx_win;
-	void        *img;
-	char		*addr;
-	int			bpp;
-    int			line_length;
-    int			endian;
-}               t_mlx;
+typedef struct			s_mlx {
+    void				*mlx;
+	void    			*mlx_win;
+	void        		*img;
+	char				*addr;
+	int					bpp;
+    int					line_length;
+    int					endian;
+}               		t_mlx;
 
-typedef struct	s_read {
-	char		**array;
-//	int			error;
-	int 		render_x;
-	int 		render_y;
-	int			c_color;
-	int			f_color;
-	int			red;
-	int 		blue;
-	int			green;
-	char 		*no;
-	char 		*ea;
-	char 		*so;
-	char 		*we;
-	char 		*sprite;
-	int			map_start;
-	int			map_end;
-	char		pos;
-	double		x_pos; //
-	double		y_pos; //
-	int			nb_sprites; //
-}				t_read;
+typedef struct			s_read {
+	char				**array;
+	int 				render_x;
+	int 				render_y;
+	int					c_color;
+	int					f_color;
+	int					red;
+	int 				blue;
+	int					green;
+	char 				*no;
+	char 				*ea;
+	char 				*so;
+	char 				*we;
+	char 				*sprite;
+	int					map_start;
+	int					map_end;
+	char				pos;
+	double				x_pos;
+	double				y_pos;
+	int					nb_sprites;
+}						t_read;
 
-typedef struct s_game {
-	double		dirx;
-	double		diry;
+//stepx y what direction to step in x or y-direction (either +1 or -1)
+//sidedist: length of ray from current position to next x or y-side
+// side: was a NS or a EW wall hit?
 
-	int			mapx;
-	int 		mapy;
+typedef struct			s_game {
+	double				dirx;
+	double				diry;
+	int					mapx;
+	int 				mapy;
+	int					stepx;
+    int 				stepy;
+	double				raydirx;
+	double				raydiry;
+	double				sidedistx;
+    double				sidedisty;
+	double				deltadistx;
+	double				deltadisty;
+	double				planex;
+	double				planey;
+	int					side;
+	int					move_front;
+	int					move_back;
+	int					move_right;
+	int					move_left;
+	int 				rotate_left;
+	int					rotate_right;
+	int					rotate;
+	double				time;
+	double				oldtime;
+	double				frametime;
+	double				movespeed;
+	double				rotspeed;
+	int					update;
+	int					tex_side;
+	int					texwidth;
+	int					texheight;
+}						t_game;
 
-	int			stepx; //what direction to step in x or y-direction (either +1 or -1)
-    int 		stepy;
-	
-	double		raydirx;
-	double		raydiry;
-	
-	double		sidedistx; //length of ray from current position to next x or y-side
-    double		sidedisty;
+typedef struct			s_tex{
+	void				*xpm_img;
+	char				*xpm_addr;
+	int					xpm_bpp;
+    int					xpm_line_length;
+    int					xpm_endian;
+}						t_tex;
 
-	double		deltadistx;
-	double		deltadisty;
+typedef struct 			s_floor{
+	float				floorstepx;
+	float				floorstepy;
+	float				floorx;
+	float				floory;
+}						t_floor;
 
-	double		planex;
-	double		planey;
-	
-	int			side; //was a NS or a EW wall hit?
-	
-	int			move_front;
-	int			move_back;
-	int			move_right;
-	int			move_left;
-	
-	int 		rotate_left;
-	int			rotate_right;
-	int			rotate;
+typedef struct 			s_tex_co{
+	double				step;
+	double				texpos;
+	int					texx;
+}						t_tex_co;
 
-	double		time;
-	double		oldtime;
-	double		frametime;
-	double		movespeed;
-	double		rotspeed;
+typedef struct 			s_wall{
+	int					lineheight;
+	int					drawstart;
+	int					drawend;
+	double				wallx;
+	double				perpwalldist;
+}						t_wall;
 
-	int			update;
+typedef struct 			s_sprite{
+	double				transformy;
+	int					vmovescreen;
+	int					spritescreenx;
+	int					drawstartx;
+	int					drawendx;
+	int					drawstarty;
+	int					drawendy;
+	int					spriteheight;
+	int					spritewidth;
+ }						t_sprite;
 
-	int			tex_side;
-	int			texwidth;
-	int			texheight;
-	
-}				t_game;
-
-typedef struct	s_tex{
-
-	void		*xpm_img;
-	char		*xpm_addr;
-	int			xpm_bpp;
-    int			xpm_line_length;
-    int			xpm_endian;
-}				t_tex;
-
-typedef struct s_floor{
-	float		floorstepx;
-	float		floorstepy;
-	float		floorx;
-	float		floory;
-}				t_floor;
-
-typedef struct s_tex_co{
-	double		step;
-	double		texpos;
-	int			texx;
-}				t_tex_co;
-
-typedef struct s_wall{
-	int			lineheight;
-	int			drawstart;
-	int			drawend;
-	double		wallx;
-	double		perpwalldist;
-}				t_wall;
-
-typedef struct s_sprite2{
-	double		transformy;
-	int			vmovescreen;
-	int			spritescreenx;
-	//
-	int			drawstartx;
-	int			drawendx;
-	int			drawstarty;
-	int			drawendy;
-	int			spriteheight;
-	int			spritewidth;
-	
- }				t_sprite2;
-
-typedef struct s_sprite{
+typedef struct			s_ll_sprite{
 	double				x;
 	double				y;
 	double				distance;
-	struct s_sprite		*next;
-}				t_sprite;
+	struct s_ll_sprite	*next;
+}						t_ll_sprite;
 
-typedef struct	s_base{
-	t_read		read;
-	t_mlx		mlx;
-	t_game		game;
-
-	t_tex		tex[5];
-	
-	t_tex		tex_f;
-	t_tex		tex_c;
-	t_floor		floor;
-	
-	t_tex_co	tex_co;
-	t_wall		wall;
-	
-	t_sprite	*head;
-	t_sprite2	sprite;
-	
-	double		*zbuffer;
-	int			save;
-}				t_base;
+typedef struct			s_base{
+	t_read				read;
+	t_mlx				mlx;
+	t_game				game;
+	t_tex				tex[5];
+	t_tex				tex_f;
+	t_tex				tex_c;
+	t_floor				floor;
+	t_tex_co			tex_co;
+	t_wall				wall;
+	t_ll_sprite			*head;
+	t_sprite			sprite;
+	double				*zbuffer;
+	int					save;
+}						t_base;
 
 
 
 int				error_distr(t_base *base, int errornum);
 t_base			*getcubfile(char *filename);
+
+int				read_scene_file(t_base *base, t_read *read);
+void			initialise(t_read *read, t_ll_sprite **head);
+
+void			floor_ceiling_smooth(t_base *base, t_read *read);
+
+void            sprite(t_base *base, t_sprite *sprite);
 
 
 
@@ -212,23 +201,21 @@ char			*gnl_strjoin(char *s1, char *s2);
 void			*error_gnl_cub(int error, char *line);
 
 //READ_SCENE_FILE
-int				read_scene_file(t_base *base);
-void			initialise(t_base *base);
 void			free_cub_base(t_base *base);
 
 //READ_SCENE_UTILS
-int				cfr_itoa(int y, int *i, t_base *base, int cf_blue_green);
-int				create_trgb_colorcode(int y, int entry_i, t_base *base);
-int				cfr_endspaces(int y, int i, t_base *base);
-int				check_pathstart(int y, int *i, t_base *base);
+int				cfr_itoa(int y, int *i, char **array, int cf_blue_green);
+int				create_trgb_colorcode(int y, int entry_i, t_base *base, t_read *read);
+int				cfr_endspaces(int y, int i, t_base *base, t_read *read);
+int				check_pathstart(int y, int *i, char **array);
 int				save_path_substr(int y, int i, char **identifier, t_base *base);
 
 //Check_map_UTILS
-int				check_map(int *y, t_base *base);
-int				last_char_save_pos(int y, t_base *base);
-int 			space_in_wall(int y, int i, t_base *base);
+int				check_map(int *y, t_base *base, t_read *read);
+int				last_char_save_pos(int y, t_base *base, t_read *read, char **array);
+int 			space_in_wall(int y, int i, char **array, t_read *read);
 int				align_dif_front(char *s1, char *s2);
-int				align_dif_back(int y, t_base *base);
+int				align_dif_back(int y, t_base *base, t_read *read);
 
 //SAVE_SPRITES
 void			save_sprite_coordinates(t_base *base, double y, double x);
@@ -252,8 +239,6 @@ int				windowclose_x(t_base *img);
 void			exit_game(t_base *base, int code, int error);
 void			free_array(t_read *read);
 
-//floor
-void			floor_ceiling_smooth(t_base *base);
 void			floor_ceiling_texture(t_base *base); //extra
 
 //
@@ -261,7 +246,6 @@ void            my_mlx_pixel_put(t_base *base, int x, int y, int color);
 
 //sprites
 void			zbuffer(t_base *base, int x);
-void            sprite(t_base *base);
 
 //
 void		save_first_image_bmp(t_base *base);

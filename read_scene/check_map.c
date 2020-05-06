@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/04 12:42:17 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 15:13:17 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,27 @@
 ** Flood fill checks if player can reach a space (' ').
 */
 
-static int		flood_fill(t_base *base, int y, int x)
+static int		flood_fill(t_base *base, int y, int x, char **array)
 {
-	if (TWOD[y][x] == '+' || TWOD[y][x] == '1') //|| TWOD[y][x] == '2'
+	if (array[y][x] == '+' || array[y][x] == '1')
 		return (0);
-	//NEW:
-	if (TWOD[y][x] == '2')
+	if (array[y][x] == '2')
 	{
 		save_sprite_coordinates(base, y, x);
 		return (0);
 	}
-	//
-	if (TWOD[y][x]== '\0' || y <= base->read.map_start ||
+	if (array[y][x]== '\0' || y <= base->read.map_start ||
 	y >= base->read.map_end)
 		return (error_distr(base, 12));
-	if (TWOD[y][x] == ' ')
+	if (array[y][x] == ' ')
 		return (error_distr(base, 13));
-    if (TWOD[y][x]!= '0' && TWOD[y][x] != base->read.pos)
+    if (array[y][x]!= '0' && array[y][x] != base->read.pos)
 		return (error_distr(base, 10));
-    TWOD[y][x] = '+';
-    flood_fill(base, y - 1, x);
-    flood_fill(base, y, x + 1);
-    flood_fill(base, y + 1, x);
-    flood_fill(base, y, x - 1);
+    array[y][x] = '+';
+    flood_fill(base, y - 1, x, array);
+    flood_fill(base, y, x + 1, array);
+    flood_fill(base, y + 1, x, array);
+    flood_fill(base, y, x - 1, array);
     return (0);
 }
 
@@ -49,23 +47,19 @@ static int		flood_fill(t_base *base, int y, int x)
 ** Check if all characters who touch empty space (' ') consist of 1's.
 */
 
-static int		check_wall_edges(int *y, t_base *base)
+static int		check_wall_edges(int *y, t_base *base, t_read *read)
 {
-	//int 	back;
 	int 	front;
-	while (*y != base->read.map_end)
+	while (*y != read->map_end)
 	{
 		front = 0;
-		//back = 0;
-		front = align_dif_front(TWOD[*y], TWOD[*y + 1]);
+		front = align_dif_front(read->array[*y], read->array[*y + 1]);
 		if (front == 1)
 			return (error_distr(base, 12));
-		align_dif_back(*y, base);
-		// if (back > 0)
-		// 	return (1);
+		align_dif_back(*y, base, read);
 		(*y)++;
 	}
-	if (base->read.pos == -1)
+	if (read->pos == -1)
 		return (error_distr(base, 15));
 	return (0);
 }
@@ -75,25 +69,23 @@ static int		check_wall_edges(int *y, t_base *base)
 ** Spaces in walls are allowed when they don't touch empty floor space ('0'). 
 */
 
-static int		check_walls_first_last(int y, t_base *base)
+static int		check_walls_first_last(int y, t_base *base, t_read *read)
 {
 	int 	i;
 	int		last;
 	int 	ret;
 	
 	i = 0;
-	last = last_char_save_pos(y, base);
-	// if (base->read.error > 0) //kan niet aanpassen? //mag weg
-	// 	return (1);
-	while(TWOD[y][i] == ' ')
+	last = last_char_save_pos(y, base, read, read->array);
+	while(read->array[y][i] == ' ')
 			i++;
 	while (i <= last)
 	{
-		if (TWOD[y][i] == '1')
+		if (read->array[y][i] == '1')
 			i++;
-		else if (TWOD[y][i] == ' ')
+		else if (read->array[y][i] == ' ')
 		{
-			ret = space_in_wall(y, i, base);
+			ret = space_in_wall(y, i, read->array, read);
 			if (ret == 1)
 				return (error_distr(base, 12));
 			i++;
@@ -104,40 +96,29 @@ static int		check_walls_first_last(int y, t_base *base)
 	return (0);
 }
 
-static int		check_elements_complete(t_base *base)
+static int		check_elements_complete(t_base *base, t_read *read)
 {
-	if ( base->read.render_x == -1 || base->read.render_y == -1 ||
-	base->read.c_color == -1 || base->read.f_color == -1 ||
-	base->read.no == NULL || base->read.ea == NULL ||
-	base->read.so == NULL || base->read.we == NULL ||
-	base->read.sprite == NULL)
+	if (read->render_x == -1 || read->render_y == -1 ||
+	read->c_color == -1 || read->f_color == -1 ||
+	read->no == NULL || read->ea == NULL ||
+	read->so == NULL || read->we == NULL ||
+	read->sprite == NULL)
 		return (error_distr(base, 14));
 	return (0);
 }
 
-int				check_map(int *y, t_base *base)
+int				check_map(int *y, t_base *base, t_read *read)
 {
-	// int 	ret;
-
-	if (check_elements_complete(base) > 0)
-		return (1); //kan misschien weg
-	base->read.map_start = *y;
-	while (base->read.array[*y])
+	check_elements_complete(base, read);
+	read->map_start = *y;
+	while (read->array[*y])
 		(*y)++;
-	base->read.map_end = *y - 1;
-	*y = base->read.map_start;
-	check_walls_first_last(*y, base);
-	// if (ret > 0)
-	// 	return (1);
-	check_wall_edges(&(*y), base);
-	// if (ret > 0)
-	// 	return (1);
-	check_walls_first_last(*y, base);
-	// if (ret > 0)
-	// 	return (1);
-	flood_fill(base, base->read.y_pos, base->read.x_pos);
-	// if (ret > 0)
-	// 	return (1);
+	read->map_end = *y - 1;
+	*y = read->map_start;
+	check_walls_first_last(*y, base, read);
+	check_wall_edges(&(*y), base, read);
+	check_walls_first_last(*y, base, read);
+	flood_fill(base, read->y_pos, read->x_pos, read->array);
 	ll_count_sprites(base);
 	ll_sort_sprites_swap_data(base);
 	return (0);

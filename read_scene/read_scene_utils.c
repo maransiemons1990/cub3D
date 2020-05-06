@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:43:54 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/01 17:42:13 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 14:54:45 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int				save_path_substr(int y, int i, char **identifier, t_base *base)
 
 	if (*identifier != NULL)
 		return (error_distr(base, 3));
-	*identifier = ft_substr(TWOD[y], i, (ft_strlen(TWOD[y]) - i)); //m check (main)
+	*identifier = ft_substr(base->read.array[y], i,
+		(ft_strlen(base->read.array[y]) - i));
 	ret = open(*identifier, O_RDONLY);
 	if (ret == -1)
 		return (error_distr(base, 9));
@@ -27,21 +28,23 @@ int				save_path_substr(int y, int i, char **identifier, t_base *base)
 	return (0);
 }
 
-int				check_pathstart(int y, int *i, t_base *base)
+
+
+int				check_pathstart(int y, int *i, char **array)
 {
-	while (TWOD[y][*i] == ' ')
+	while (array[y][*i] == ' ')
 		(*i)++;
-	if (TWOD[y][*i] == '.' && TWOD[y][*i + 1] == '/')
+	if (array[y][*i] == '.' && array[y][*i + 1] == '/')
 		return (0);
 	else
-		return (error_distr(base, 5));
+		return (1);
 }
 
-int				cfr_endspaces(int y, int i, t_base *base)
+int				cfr_endspaces(int y, int i, t_base *base, t_read *read)
 {
-	while (TWOD[y][i])
+	while (read->array[y][i])
 	{
-		if (TWOD[y][i] == ' ')
+		if (read->array[y][i] == ' ')
 			i++;
 		else
 			return (error_distr(base, 4));
@@ -49,46 +52,47 @@ int				cfr_endspaces(int y, int i, t_base *base)
 	return (0);
 }
 
-int				create_trgb_colorcode(int y, int entry_i, t_base *base)
+int				create_trgb_colorcode(int y, int entry_i, t_base *base,
+										t_read *read)
 {
-	if (TWOD[y][entry_i] == 'C')
+	if (read->array[y][entry_i] == 'C')
 	{
-		if (!(READ.c_color == -1))
+		if (!(read->c_color == -1))
 			return (error_distr(base, 3));
-		READ.c_color = (0 << 24 | base->read.red << 16 | base->read.green << 8
-		| base->read.blue);
+		read->c_color = (0 << 24 | read->red << 16 | read->green << 8
+		| read->blue);
 	}
-	if (TWOD[y][entry_i] == 'F')
+	if (read->array[y][entry_i] == 'F')
 	{
-		if (!(READ.f_color == -1))
+		if (!(read->f_color == -1))
 			return (error_distr(base, 3));
-		READ.f_color = (0 << 24 | base->read.red << 16 | base->read.green << 8
-		| base->read.blue);
+		read->f_color = (0 << 24 | read->red << 16 | read->green << 8
+		| read->blue);
 	}
 	return (0);
 }
 
-int				cfr_itoa(int y, int *i, t_base *base, int cf_blue_green)
+int				cfr_itoa(int y, int *i, char **array, int cf_blue_green)
 {
 	int number;
 	int nb_present;
 
 	number = 0;
 	nb_present = 0;
-	while (TWOD[y][*i] == ' ')
+	while (array[y][*i] == ' ')
 		(*i)++;
 	if (cf_blue_green)
 	{
-		if (TWOD[y][*i] == ',')
+		if (array[y][*i] == ',')
 			(*i)++;
 		else
 			return (-1);
-		while (TWOD[y][*i] == ' ')
+		while (array[y][*i] == ' ')
 			(*i)++;
 	}
-	while (TWOD[y][*i] >= '0' && TWOD[y][*i] <= '9')
+	while (array[y][*i] >= '0' && array[y][*i] <= '9')
 	{
-		number = (number * 10) + TWOD[y][*i] - '0';
+		number = (number * 10) + array[y][*i] - '0';
 		(*i)++;
 		nb_present = 1;
 	}

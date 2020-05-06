@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/14 18:35:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/04 16:27:46 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 11:17:50 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static void			swap(double *i, double *j)
 
 void				ll_sort_sprites_swap_data(t_base  *base)
 {
-	t_sprite	*i;
-	t_sprite	*j;
+	t_ll_sprite	*i;
+	t_ll_sprite	*j;
 
 	i = base->head;
 	while (i != NULL)
@@ -65,7 +65,7 @@ void				ll_sort_sprites_swap_data(t_base  *base)
 
 void				ll_count_sprites(t_base *base)
 {
-	t_sprite 	*current;
+	t_ll_sprite 	*current;
 	
 	base->read.nb_sprites = 0;
 	current = base->head;
@@ -77,13 +77,13 @@ void				ll_count_sprites(t_base *base)
 	
 }
 
-static t_sprite		*ll_create_node(t_base *base, double y, double x)
+static t_ll_sprite		*ll_create_node(t_base *base, double y, double x)
 {
-	t_sprite	*new_node;
+	t_ll_sprite	*new_node;
 
 	x = x + 0.5;
 	y = y + 0.5;
-	new_node = (t_sprite *)malloc(sizeof(t_sprite));
+	new_node = (t_ll_sprite *)malloc(sizeof(t_ll_sprite));
 	if (!new_node)
 		error_distr(base, 6);
 	new_node->x = x;
@@ -94,18 +94,18 @@ static t_sprite		*ll_create_node(t_base *base, double y, double x)
 	return (new_node);
 }
 
-static t_sprite		*ll_add_new_front(t_base *base, double y, double x)
+static t_ll_sprite		*ll_add_new_front(t_base *base, double y, double x)
 {
-	t_sprite	*new_node;
+	t_ll_sprite	*new_node;
 
 	new_node = ll_create_node(base, y, x);
 	base->head = new_node;
 	return (base->head);
 }
 
-static int			ll_search(t_sprite *head, double y, double x)
+static int			ll_search(t_ll_sprite *head, double y, double x)
 {
-	t_sprite	*current;
+	t_ll_sprite	*current;
 	
 	current = head;
 	while (current != NULL)

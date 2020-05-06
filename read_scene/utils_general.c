@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 15:25:07 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/06 09:58:21 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 14:32:40 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void			free_array(t_read *read)
 	free(read->array);
 }
 
-void			ll_freelist(t_sprite *head)
+void			ll_freelist(t_ll_sprite *head)
 {
-	t_sprite	*tmp;
+	t_ll_sprite	*tmp;
 	
 	while (head != NULL)
     {
@@ -86,23 +86,21 @@ void			exit_game(t_base *base, int code, int error)
 	}
 }
 
-void			initialise(t_base *base)
+void			initialise(t_read *read, t_ll_sprite **head)
 {
-	base->read.render_x = -1;
-	base->read.render_y = -1;
-	base->read.c_color = -1;
-	base->read.f_color = -1;
-	base->read.no = NULL;
-	base->read.ea = NULL;
-	base->read.so = NULL;
-	base->read.we = NULL;
-	base->read.sprite = NULL;
-	base->read.map_start = -1;
-	base->read.map_end = -1;
-	base->read.pos = -1;
-	base->read.x_pos = -1;
-	base->read.y_pos = -1;
-	//
-	base->head = NULL;
-	//
+	read->render_x = -1;
+	read->render_y = -1;
+	read->c_color = -1;
+	read->f_color = -1;
+	read->no = NULL;
+	read->ea = NULL;
+	read->so = NULL;
+	read->we = NULL;
+	read->sprite = NULL;
+	read->map_start = -1;
+	read->map_end = -1;
+	read->pos = -1;
+	read->x_pos = -1;
+	read->y_pos = -1;
+	*head = NULL;
 }
