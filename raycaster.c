@@ -6,14 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/06 18:47:14 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 22:09:50 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <math.h>
-#include <string.h>
-
 
 /*
 ** Reversed my_mlx_pixel_put-dest formula.
@@ -244,63 +241,20 @@ static void		raycasting(t_base *base, t_game *game, t_read *read)
 	game->rotspeed = frametime * 5.0;
 }
 
-static void		rotate(t_game *game)
-{
-	double		olddirx;
-	double		oldplanex;
-	
-	if (game->rotate_right == 1)
-	{
-		olddirx = game->dirx;
-		game->dirx = game->dirx * cos(game->rotspeed) - game->diry * sin(game->rotspeed);
-		game->diry = olddirx * sin(game->rotspeed) + game->diry * cos(game->rotspeed);
-		oldplanex = game->planex;
-		game->planex = game->planex * cos(game->rotspeed) - game->planey * sin(game->rotspeed);
-		game->planey = oldplanex * sin(game->rotspeed) + game->planey * cos(game->rotspeed);
-	}
-	if (game->rotate_left == 1)
-	{
-		olddirx = game->dirx;
-		game->dirx = game->dirx * cos(-game->rotspeed) - game->diry * sin(-game->rotspeed);
-		game->diry = olddirx * sin(-game->rotspeed) + game->diry * cos(-game->rotspeed);
-		oldplanex = game->planex;
-		game->planex = game->planex * cos(-game->rotspeed) - game->planey * sin(-game->rotspeed);
-		game->planey = oldplanex * sin(-game->rotspeed) + game->planey * cos(-game->rotspeed);
-	}
-}
-
-void			move(t_base *base, t_game *game)
+static void			move_rotate(t_game *game, t_read *read, char **array)
 {
 	if (game->move_front == 1)
-	{
-		if (TWOD[(int)base->read.y_pos][(int)(base->read.x_pos + game->dirx * game->movespeed)] == '+')
-			base->read.x_pos += game->dirx * game->movespeed;		//EW
-		if (TWOD[(int)(base->read.y_pos + game->diry * game->movespeed)][(int)base->read.x_pos] == '+')
-			base->read.y_pos += game->diry * game->movespeed;		//SN
-	}
+		move_front(game, read, array);
 	if (game->move_back == 1)
-	{
-		if (TWOD[(int)base->read.y_pos][(int)(base->read.x_pos - game->dirx * game->movespeed)] == '+')
-			base->read.x_pos -= game->dirx * game->movespeed;
-		if (TWOD[(int)(base->read.y_pos - game->diry * game->movespeed)][(int)base->read.x_pos] == '+')
-			base->read.y_pos -= game->diry * game->movespeed;
-	}
+		move_back(game, read, array);
 	if (game->move_right == 1)
-	{
-		if (TWOD[(int)base->read.y_pos][(int)(base->read.x_pos - game->diry * game->movespeed)] == '+')
-			base->read.x_pos -= game->diry * game->movespeed;		//S N
-		if (TWOD[(int)(base->read.y_pos + base->game.dirx * game->movespeed)][(int)base->read.x_pos] == '+')
-			base->read.y_pos += game->dirx * game->movespeed;		//E W
-	}
-	if (base->game.move_left == 1)
-	{
-		if (TWOD[(int)base->read.y_pos][(int)(base->read.x_pos + game->diry * game->movespeed)] == '+')
-			base->read.x_pos += game->diry * game->movespeed;	//S N
-		if (TWOD[(int)(base->read.y_pos - game->dirx * game->movespeed)][(int)base->read.x_pos] == '+')
-			base->read.y_pos -= game->dirx * game->movespeed;	//E W
-	}
-	if (game->rotate_left == 1 || game->rotate_right == 1)
-		rotate(game);
+		move_right(game, read, array);
+	if (game->move_left == 1)
+		move_left(game, read, array);
+	if (game->rotate_right == 1)
+		rotate_right(game);
+	if (game->rotate_left == 1)
+		rotate_left(game);
 }
 
 /*
@@ -317,13 +271,13 @@ int				loop(t_base *base)
 {
 	base->mlx.img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
 	if (base->mlx.img == NULL)
-			exit_game(base, 1, 26);
+		exit_game(base, 1, 26);
 	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bpp, &base->mlx.line_length, &base->mlx.endian);
 	if (base->game.update)
-		move(base, &base->game);
-	floor_ceiling_smooth(base, &base->read);
+		move_rotate(&base->game, &base->read, base->read.array);
+	floor_ceiling_smooth(&base->mlx, &base->read);
 	raycasting(base, &base->game, &base->read);
-	sprite(base, &base->sprite);
+	sprite(base, &base->sprite, &base->game, &base->read);
 	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
 	base->game.update = 0;
 	return (0);

@@ -6,7 +6,7 @@
 #    By: msiemons <msiemons@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/03/04 17:11:26 by msiemons      #+#    #+#                  #
-#    Updated: 2020/05/06 18:33:42 by Maran         ########   odam.nl          #
+#    Updated: 2020/05/06 21:13:59 by Maran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ SRC = main.c errormessages.c read_scene/gnl_cub3d.c read_scene/gnl_cub3d_utils.c
 		read_scene/read_scene.c\
 		read_scene/utils_general.c read_scene/read_scene_utils.c\
 		read_scene/check_map.c read_scene/check_map_utils.c\
-		mlx.c raycaster.c raycaster_utils.c keys.c floor_ceiling.c\
+		mlx.c raycaster.c raycaster_utils.c move.c rotate.c keys.c floor_ceiling.c\
 		sprites.c read_scene/save_sprites.c\
 		save_first_image.c
 

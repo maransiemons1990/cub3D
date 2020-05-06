@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/06 18:32:30 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/06 18:33:24 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 20:46:43 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,3 +28,5 @@ void				my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color)
 	dst = mlx->addr + (y * mlx->line_length + x * (mlx->bpp / 8));
 	*(unsigned int*)dst = color;
 }
+
+

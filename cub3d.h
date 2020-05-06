@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/06 18:43:59 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/06 22:10:43 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@
 # include <sys/errno.h>
 //clock
 # include <time.h>
+
+//sin cos
+#include <math.h>
+
+//#include "string.h"
 
 typedef struct			s_mlx {
     void				*mlx;
@@ -145,13 +150,13 @@ typedef struct 			s_wall{
 typedef struct 			s_sprite{
 	double				transformy;
 	int					vmovescreen;
-	int					spritescreenx;
+	int					spr_screenx;
 	int					drawstartx;
 	int					drawendx;
 	int					drawstarty;
 	int					drawendy;
-	int					spriteheight;
-	int					spritewidth;
+	int					spr_height;
+	int					spr_width;
  }						t_sprite;
 
 typedef struct			s_ll_sprite{
@@ -179,23 +184,29 @@ typedef struct			s_base{
 
 
 
-int				error_distr(t_base *base, int errornum);
-t_base			*getcubfile(char *filename);
+int						error_distr(t_base *base, int errornum);
+t_base					*getcubfile(char *filename);
 
-int				read_scene_file(t_base *base, t_read *read);
-void			initialise(t_read *read, t_ll_sprite **head);
+int						read_scene_file(t_base *base, t_read *read);
+void					initialise(t_read *read, t_ll_sprite **head);
 
-void			floor_ceiling_smooth(t_base *base, t_read *read);
+void					floor_ceiling_smooth(t_mlx *mlx, t_read *read);
 
-void            sprite(t_base *base, t_sprite *sprite);
+void            		sprite(t_base *base, t_sprite *sprite, t_game *game, t_read *read);
 
-int             keypress(int keycode, t_base *base);
-int             keyrelease(int keycode, t_base *base);
-int				windowclose_x(t_base *img);
+int             		keypress(int keycode, t_base *base);
+int             		keyrelease(int keycode, t_base *base);
+int						windowclose_x(t_base *img);
 
-void            my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
+void            		my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
 
+void					move_front(t_game *game, t_read *read, char **array);
+void					move_back(t_game *game, t_read *read, char **array);
+void					move_right(t_game *game, t_read *read, char **array);
+void					move_left(t_game *game, t_read *read, char **array);
 
+void					rotate_right(t_game *game);
+void					rotate_left(t_game *game);
 
 //GNL_CUB3D
 char			*gnl_strjoin(char *s1, char *s2);
