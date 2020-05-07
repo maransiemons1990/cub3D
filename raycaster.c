@@ -6,89 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/06 22:09:50 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/07 12:34:45 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-/*
-** Reversed my_mlx_pixel_put-dest formula.
-** We got the addr of the texture. So we can get the pixel color of a certain
-** texturecoordinate. Coordinate color = addr + coordinate.
-** tex[i] --> no 0, ea 1, so 2, we 3,
-*/
-
-static int		texture_pick_wallside(t_tex *tex, int texx, int texy, int i)
-{
-	char	*dest;
-	int		color;
-	
-	dest = tex[i].xpm_addr + (texy * tex[i].xpm_line_length + texx *
-		(tex[i].xpm_bpp / 8));
-	color = *(unsigned int*)dest;
-	if (i == 1 || i == 3)
-		color = (color >> 1) & 8355711;
-	return (color);
-}
-
-/*
-** TEXx: x coordinate on the texture
-** This coordinate will remain the same, because we stay in the same vertical stripe of the screen.
-** STEP: How much to increase the texture coordinate (in floating point) per screen pixel, 
-** every pixel in vertical screen coordinates.
-** It then needs to cast the floating point value to integer to select the actual texture pixel.
-** = affine texture mapping
-** TEXpOS: Starting texture coordinate.
-*/
-
-static void		texture_coordinates_wall(t_tex_co *tex_co, t_wall *wall,
-											t_game *game, int render_y)
-{
-	tex_co->texx = wall->wallx * (double)game->texwidth; //(int)Wallx !!!! Hierna een texture!
-    if (game->side == 0 && game->raydirx > 0)
-		tex_co->texx = game->texwidth - tex_co->texx - 1;
-    if (game->side == 1 && game->raydiry < 0)
-		tex_co->texx = game->texwidth - tex_co->texx - 1;
-	tex_co->step = 1.0 * game->texheight / wall->lineheight;
-    tex_co->texpos = (wall->drawstart - render_y / 2 + wall->lineheight / 2)
-		* tex_co->step;
-}
-
-/*
-** PERPwALLdIST: Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
-** Perpwallshoudn't be smaller then 1 otherwise you can look through the wall. So 1 is the smallest, then lineheight == total rendery.
-** LINEHIGHT: Calculate height of line to draw on screen
-** DRAWsTART/END: calculate lowest and highest pixel to fill in current stripe
-** ------------Textured wall------------------------------------------
-** WALLx: calculate value of wallx (The value wallx represents the exact value where the wall was hit)
-** the exact x or y coordinate in the world.
-** Next substracting the integer value of the wall off it.
-*/
-
-static void		draw_calculations_wall(t_read *read, t_game *game,
-											t_wall *wall)
-{
-	if (game->side == 0)
-		wall->perpwalldist = (game->mapx -read->x_pos + (1 - game->stepx) / 2)
-			/ game->raydirx;
-	else
-		wall->perpwalldist = (game->mapy - read->y_pos + (1 - game->stepy) / 2)
-			/ game->raydiry;
-	wall->perpwalldist = (wall->perpwalldist < 1) ? 1 : wall->perpwalldist;
-	wall->lineheight = (int)(read->render_y / wall->perpwalldist);
-	wall->drawstart = -wall->lineheight / 2 + read->render_y / 2;
-	if(wall->drawstart < 0)
-		wall->drawstart = 0;
-	wall->drawend = wall->lineheight / 2 + read->render_y / 2;
-	if(wall->drawend >= read->render_y)
-		wall->drawend = read->render_y - 1;
-    if (game->side == 0)
- 	 	wall->wallx = read->y_pos + wall->perpwalldist * game->raydiry;
-    else
-		wall->wallx = read->x_pos + wall->perpwalldist * game->raydirx;
-    wall->wallx -= (int)wall->wallx;
-}
 
 /*
 ** TEXy: Cast the texture coordinate to integer, and mask with (texheight - 1) in case of overflow. 
@@ -213,7 +135,7 @@ static void			ray_position(t_read *read, t_game *game, int x)
 }
 
 //draw the pixels of the stripe as a vertical line //and calculate first
-static void		raycasting(t_base *base, t_game *game, t_read *read)
+void		raycasting(t_base *base, t_game *game, t_read *read)
 {
 	int			x;
 	double		frametime;
@@ -239,46 +161,4 @@ static void		raycasting(t_base *base, t_game *game, t_read *read)
 	frametime = (game->time - oldtime) / CLOCKS_PER_SEC;
 	game->movespeed = frametime * 25.0; 
 	game->rotspeed = frametime * 5.0;
-}
-
-static void			move_rotate(t_game *game, t_read *read, char **array)
-{
-	if (game->move_front == 1)
-		move_front(game, read, array);
-	if (game->move_back == 1)
-		move_back(game, read, array);
-	if (game->move_right == 1)
-		move_right(game, read, array);
-	if (game->move_left == 1)
-		move_left(game, read, array);
-	if (game->rotate_right == 1)
-		rotate_right(game);
-	if (game->rotate_left == 1)
-		rotate_left(game);
-}
-
-/*
-** 
-** img_ptr - specifies the image to use. 
-** bits_per_pixel - the number of bits needed to represent a pixel color
-** (also called the depth of the image).
-** size_line - the number of bytes used to store one line of the image in memory.
-** This information is needed to move from one line to another in the image.
-** endian - tells you wether the pixel color in the image needs to be stored in
-** little endian (== 0), or big endian (== 1).
-*/
-int				loop(t_base *base)
-{
-	base->mlx.img = mlx_new_image(base->mlx.mlx, base->read.render_x, base->read.render_y);
-	if (base->mlx.img == NULL)
-		exit_game(base, 1, 26);
-	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bpp, &base->mlx.line_length, &base->mlx.endian);
-	if (base->game.update)
-		move_rotate(&base->game, &base->read, base->read.array);
-	floor_ceiling_smooth(&base->mlx, &base->read);
-	raycasting(base, &base->game, &base->read);
-	sprite(base, &base->sprite, &base->game, &base->read);
-	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win, base->mlx.img, 0, 0);
-	base->game.update = 0;
-	return (0);
 }

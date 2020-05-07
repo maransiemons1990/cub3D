@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/06 22:10:43 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/07 12:35:22 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,15 +198,24 @@ int             		keypress(int keycode, t_base *base);
 int             		keyrelease(int keycode, t_base *base);
 int						windowclose_x(t_base *img);
 
+void		raycasting(t_base *base, t_game *game, t_read *read);
+
 void            		my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
 
-void					move_front(t_game *game, t_read *read, char **array);
-void					move_back(t_game *game, t_read *read, char **array);
-void					move_right(t_game *game, t_read *read, char **array);
-void					move_left(t_game *game, t_read *read, char **array);
+void					move_rotate(t_game *game, t_read *read, char **array);
 
 void					rotate_right(t_game *game);
 void					rotate_left(t_game *game);
+
+void		draw_calculations_wall(t_read *read, t_game *game, t_wall *wall);
+void		texture_coordinates_wall(t_tex_co *tex_co, t_wall *wall, t_game *game, int render_y);
+int			texture_pick_wallside(t_tex *tex, int texx, int texy, int i);
+
+void			initialise_game(t_game *game, t_mlx *mlx, t_tex *tex, double *zbuffer);
+void			orientation(t_game *game, char pos);
+void			load_texture(t_base *base, t_tex *tex, t_game *game, void *mlx);
+
+
 
 //GNL_CUB3D
 char			*gnl_strjoin(char *s1, char *s2);
@@ -240,7 +249,7 @@ void			ll_sort_sprites_swap_data(t_base  *base);
 
 //MLX
 int				mlx(t_base *base);
-int				loop(t_base *base);
+// int				loop(t_base *base);
 
 //Ray
 //void				raycasting(t_base *base);

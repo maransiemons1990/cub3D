@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/09 13:36:12 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/06 22:17:33 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/07 12:03:13 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,6 @@
 ** You don't have to update the ZBuffer while drawing the stripes: since they're sorted, 
 ** the ones closer to you will be drawn last, so they're drawn over the further away ones.
 */
-
-// void            zbuffer(t_base *base, int x)
-// {
-//   base->zbuffer[x] = base->wall.perpwalldist;
-// }
 
 /*
 ** - 3rd while: for every pixel of the current stripe.
