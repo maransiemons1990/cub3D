@@ -6,52 +6,31 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/08 12:58:53 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/08 15:47:29 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
-# define TWOD base->read.array
-# define READ base->read
-
-# define KEY_ESC		53
-# define KEY_LEFT		123
-# define KEY_RIGHT		124
-# define KEY_W			13
-# define KEY_A			0
-# define KEY_S			1
-# define KEY_D			2
-#define uDiv 1
-#define vDiv 1
-#define vMove 0.0
+# define KEY_ESC	53
+# define KEY_LEFT	123
+# define KEY_RIGHT	124
+# define KEY_W		13
+# define KEY_A		0
+# define KEY_S		1
+# define KEY_D		2
+# define uDiv		1
+# define vDiv 		1
+# define vMove		0.0
 
 # include "mlx/mlx.h" 
 # include "libft/libft.h"
-
-//get resolution
-#include <CoreGraphics/CGDirectDisplay.h>
-
-//Delete?:
+# include <CoreGraphics/CGDirectDisplay.h>
 # include <stdio.h>
-# include <stdlib.h>
-
-//GNL
-# include <sys/types.h>
-# include <sys/uio.h>
-# include <unistd.h>
-# include <stdlib.h>
-// Open
-# include <fcntl.h>
-//error
-# include <sys/errno.h>
-//clock
+# include <math.h>
 # include <time.h>
-
-//sin cos
-#include <math.h>
-
-//#include "string.h"
+# include <fcntl.h>
+# include <unistd.h>
 
 typedef struct			s_mlx {
     void				*mlx;
@@ -65,6 +44,13 @@ typedef struct			s_mlx {
 
 typedef struct			s_read {
 	char				**array;
+	char 				*no;
+	char 				*ea;
+	char 				*so;
+	char 				*we;
+	char 				*sprite;
+	double				x_pos;
+	double				y_pos;
 	int 				render_x;
 	int 				render_y;
 	int					c_color;
@@ -72,30 +58,19 @@ typedef struct			s_read {
 	int					red;
 	int 				blue;
 	int					green;
-	char 				*no;
-	char 				*ea;
-	char 				*so;
-	char 				*we;
-	char 				*sprite;
 	int					map_start;
 	int					map_end;
-	char				pos;
-	double				x_pos;
-	double				y_pos;
 	int					nb_sprites;
+	char				pos;
 }						t_read;
 
 //stepx y what direction to step in x or y-direction (either +1 or -1)
 //sidedist: length of ray from current position to next x or y-side
 // side: was a NS or a EW wall hit?
 
-typedef struct			s_game {
+typedef struct			s_game{
 	double				dirx;
 	double				diry;
-	int					mapx;
-	int 				mapy;
-	int					stepx;
-    int 				stepy;
 	double				raydirx;
 	double				raydiry;
 	double				sidedistx;
@@ -104,22 +79,29 @@ typedef struct			s_game {
 	double				deltadisty;
 	double				planex;
 	double				planey;
+	double				time;
+	double				movespeed;
+	double				rotspeed;
+	int					mapx;
+	int 				mapy;
+	int					stepx;
+    int 				stepy;
 	int					side;
+	int					update;
+	int					tex_side;
+	int					texwidth;
+	int					texheight;
+}						t_game;
+
+typedef struct			s_move{
 	int					move_front;
 	int					move_back;
 	int					move_right;
 	int					move_left;
 	int 				rotate_left;
 	int					rotate_right;
-	int					rotate;
-	double				time;
-	double				movespeed;
-	double				rotspeed;
-	int					update;
-	int					tex_side;
-	int					texwidth;
-	int					texheight;
-}						t_game;
+}						t_move;
+
 
 typedef struct			s_tex{
 	void				*xpm_img;
@@ -143,11 +125,11 @@ typedef struct 			s_tex_co{
 }						t_tex_co;
 
 typedef struct 			s_wall{
+	double				wallx;
+	double				perpwalldist;
 	int					lineheight;
 	int					drawstart;
 	int					drawend;
-	double				wallx;
-	double				perpwalldist;
 }						t_wall;
 
 typedef struct 			s_sprite{
@@ -173,6 +155,7 @@ typedef struct			s_base{
 	t_read				read;
 	t_mlx				mlx;
 	t_game				game;
+	t_move				move;
 	t_tex				tex[5];
 	t_tex				tex_f;
 	t_tex				tex_c;
@@ -209,7 +192,7 @@ void					save_sprite_coordinates(t_base *base, double y,
 void					ll_count_sprites(t_base *base);
 void					ll_sort_sprites_swap_data(t_base  *base);
 int						game_mlx(t_base *base);
-void					initialise_game(t_game *game, t_mlx *mlx, t_tex *tex,
+void					initialise_game(t_move *move, t_mlx *mlx, t_tex *tex,
 							double *zbuffer);
 void					orientation(t_game *game, char pos);
 void					load_texture(t_base *base, t_tex *tex, t_game *game,
@@ -218,7 +201,8 @@ int						keypress(int keycode, t_base *base);
 int						keyrelease(int keycode, t_base *base);
 int						windowclose_x(t_base *img);
 void					save_first_image_bmp(t_base *base);
-void					move_rotate(t_game *game, t_read *read, char **array);
+void					move_rotate(t_game *game, t_read *read, t_move *move,
+							char **array);
 void					rotate_right(t_game *game);
 void					rotate_left(t_game *game);
 void					floor_ceiling_smooth(t_mlx *mlx, t_read *read);

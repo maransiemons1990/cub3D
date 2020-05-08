@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/07 12:28:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 12:26:44 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/08 14:49:33 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,19 +98,18 @@ void			orientation(t_game *game, char pos)
 
 //wss new_window ook nog op NULL
 //win en img has to be set to NULL otherwise sefgault in exit_game
-void			initialise_game(t_game *game, t_mlx *mlx, t_tex *tex,
+void			initialise_game(t_move *move, t_mlx *mlx, t_tex *tex,
 									double *zbuffer)
 {
 	int 	i;
 	
 	i = 0;
-	game->move_front = 0;
-	game->move_back = 0;
-	game->move_right = 0;
-	game->move_left = 0;
-	game->rotate_right = 0;
-	game->rotate_left = 0;
-	game->rotate = 0;
+	move->move_front = 0;
+	move->move_back = 0;
+	move->move_right = 0;
+	move->move_left = 0;
+	move->rotate_right = 0;
+	move->rotate_left = 0;
 	mlx->img = NULL;
 	mlx->mlx_win = NULL;
 	while (i < 5)

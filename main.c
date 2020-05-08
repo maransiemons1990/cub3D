@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/08 12:06:05 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/08 16:52:13 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,9 @@ int					main(int argc, char **argv)
 	read_scene_file(base, &base->read);
 	display_resolution(base);
 	game_mlx(base);
+	while (1)
+	{
+		
+	}
 	return (0);
 }

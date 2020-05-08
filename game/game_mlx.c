@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 12:25:28 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/08 14:48:22 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int			loop(t_base *base)
 		exit_game(base, 1, 26);
 	base->mlx.addr = mlx_get_data_addr(base->mlx.img, &base->mlx.bpp, &base->mlx.line_length, &base->mlx.endian);
 	if (base->game.update)
-		move_rotate(&base->game, &base->read, base->read.array);
+		move_rotate(&base->game, &base->read, &base->move, base->read.array);
 	floor_ceiling_smooth(&base->mlx, &base->read);
 	raycasting(base, &base->game, &base->read);
 	sprite(base, &base->sprite, &base->game, &base->read);
@@ -56,7 +56,7 @@ static int			loop(t_base *base)
 */
 int					game_mlx(t_base *base)
 {
-	initialise_game(&base->game, &base->mlx, base->tex, base->zbuffer);
+	initialise_game(&base->move, &base->mlx, base->tex, base->zbuffer);
 	orientation(&base->game, base->read.pos);
 	base->mlx.mlx = mlx_init();
 	if (base->mlx.mlx == NULL)
