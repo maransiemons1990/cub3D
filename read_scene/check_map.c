@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/06 15:13:17 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/08 12:18:15 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** Flood fill checks if player can reach a space (' ').
 */
 
-static int		flood_fill(t_base *base, int y, int x, char **array)
+static int			flood_fill(t_base *base, int y, int x, char **array)
 {
 	if (array[y][x] == '+' || array[y][x] == '1')
 		return (0);
@@ -47,9 +47,10 @@ static int		flood_fill(t_base *base, int y, int x, char **array)
 ** Check if all characters who touch empty space (' ') consist of 1's.
 */
 
-static int		check_wall_edges(int *y, t_base *base, t_read *read)
+static int			check_wall_edges(int *y, t_base *base, t_read *read)
 {
 	int 	front;
+
 	while (*y != read->map_end)
 	{
 		front = 0;
@@ -69,7 +70,7 @@ static int		check_wall_edges(int *y, t_base *base, t_read *read)
 ** Spaces in walls are allowed when they don't touch empty floor space ('0'). 
 */
 
-static int		check_walls_first_last(int y, t_base *base, t_read *read)
+static int			check_walls_first_last(int y, t_base *base, t_read *read)
 {
 	int 	i;
 	int		last;
@@ -96,7 +97,7 @@ static int		check_walls_first_last(int y, t_base *base, t_read *read)
 	return (0);
 }
 
-static int		check_elements_complete(t_base *base, t_read *read)
+static int			check_elements_complete(t_base *base, t_read *read)
 {
 	if (read->render_x == -1 || read->render_y == -1 ||
 	read->c_color == -1 || read->f_color == -1 ||
@@ -107,7 +108,7 @@ static int		check_elements_complete(t_base *base, t_read *read)
 	return (0);
 }
 
-int				check_map(int *y, t_base *base, t_read *read)
+int					check_map(int *y, t_base *base, t_read *read)
 {
 	check_elements_complete(base, read);
 	read->map_start = *y;

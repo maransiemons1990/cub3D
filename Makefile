@@ -6,7 +6,7 @@
 #    By: msiemons <msiemons@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/03/04 17:11:26 by msiemons      #+#    #+#                  #
-#    Updated: 2020/05/07 12:33:16 by Maran         ########   odam.nl          #
+#    Updated: 2020/05/08 12:02:24 by Maran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,13 +20,28 @@ LIBMLX = libmlx.dylib
 
 BMP = screenshot.bmp
 
-SRC = main.c errormessages.c read_scene/gnl_cub3d.c read_scene/gnl_cub3d_utils.c\
+SRC = main.c\
+		errormessages.c\
+		exit_game.c\
+		get_cub/gnl_cub3d.c\
+		get_cub/gnl_cub3d_utils.c\
 		read_scene/read_scene.c\
-		read_scene/utils_general.c read_scene/read_scene_utils.c\
-		read_scene/check_map.c read_scene/check_map_utils.c\
-		mlx.c initialise_game.c raycaster.c raycaster_utils.c move.c rotate.c keys.c floor_ceiling.c\
-		sprites.c read_scene/save_sprites.c\
-		save_first_image.c
+		read_scene/initialise_read_scene.c\
+		read_scene/read_scene_utils.c\
+		read_scene/check_map.c\
+		read_scene/check_map_utils.c\
+		read_scene/save_sprites.c\
+		read_scene/organise_sprites.c\
+		game/game_mlx.c\
+		game/initialise_game.c\
+		game/save_first_image.c\
+		game/keys.c\
+		game/raycaster.c\
+		game/raycaster_utils.c\
+		game/move.c\
+		game/rotate.c\
+		game/floor_ceiling.c\
+		game/sprites.c 
 
 #twod_checker.c valuechecker.c\#
 OBJ = $(SRC:.c=.o)

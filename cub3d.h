@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/07 12:35:22 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/08 12:58:53 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # define KEY_A			0
 # define KEY_S			1
 # define KEY_D			2
+#define uDiv 1
+#define vDiv 1
+#define vMove 0.0
 
 # include "mlx/mlx.h" 
 # include "libft/libft.h"
@@ -183,96 +186,53 @@ typedef struct			s_base{
 }						t_base;
 
 
-
-int						error_distr(t_base *base, int errornum);
-t_base					*getcubfile(char *filename);
-
+t_base					*get_cub_file(char *filename);
+char					*gnl_strjoin(char *s1, char *s2);
 int						read_scene_file(t_base *base, t_read *read);
-void					initialise(t_read *read, t_ll_sprite **head);
-
-void					floor_ceiling_smooth(t_mlx *mlx, t_read *read);
-
-void            		sprite(t_base *base, t_sprite *sprite, t_game *game, t_read *read);
-
-int             		keypress(int keycode, t_base *base);
-int             		keyrelease(int keycode, t_base *base);
+void					initialise_read_scene(t_read *read, t_ll_sprite **head);
+int						cfr_itoa(int y, int *i, char **array,
+							int cf_blue_green);
+int						create_trgb_colorcode(int y, int entry_i, t_base *base,
+							t_read *read);
+int						cfr_endspaces(int y, int i, t_base *base, t_read *read);
+int						check_pathstart(int y, int *i, char **array);
+int						save_path_substr(int y, int i, char **identifier,
+							t_base *base);
+int						check_map(int *y, t_base *base, t_read *read);
+int						last_char_save_pos(int y, t_base *base, t_read *read,
+							char **array);
+int 					space_in_wall(int y, int i, char **array, t_read *read);
+int						align_dif_front(char *s1, char *s2);
+int						align_dif_back(int y, t_base *base, t_read *read);
+void					save_sprite_coordinates(t_base *base, double y,
+							double x);
+void					ll_count_sprites(t_base *base);
+void					ll_sort_sprites_swap_data(t_base  *base);
+int						game_mlx(t_base *base);
+void					initialise_game(t_game *game, t_mlx *mlx, t_tex *tex,
+							double *zbuffer);
+void					orientation(t_game *game, char pos);
+void					load_texture(t_base *base, t_tex *tex, t_game *game,
+							void *mlx);
+int						keypress(int keycode, t_base *base);
+int						keyrelease(int keycode, t_base *base);
 int						windowclose_x(t_base *img);
-
-void		raycasting(t_base *base, t_game *game, t_read *read);
-
-void            		my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
-
+void					save_first_image_bmp(t_base *base);
 void					move_rotate(t_game *game, t_read *read, char **array);
-
 void					rotate_right(t_game *game);
 void					rotate_left(t_game *game);
-
-void		draw_calculations_wall(t_read *read, t_game *game, t_wall *wall);
-void		texture_coordinates_wall(t_tex_co *tex_co, t_wall *wall, t_game *game, int render_y);
-int			texture_pick_wallside(t_tex *tex, int texx, int texy, int i);
-
-void			initialise_game(t_game *game, t_mlx *mlx, t_tex *tex, double *zbuffer);
-void			orientation(t_game *game, char pos);
-void			load_texture(t_base *base, t_tex *tex, t_game *game, void *mlx);
-
-
-
-//GNL_CUB3D
-char			*gnl_strjoin(char *s1, char *s2);
-
-//ERRORMESSAGES
-//int				error_distribution(t_base *base);
-void			*error_gnl_cub(int error, char *line);
-
-//READ_SCENE_FILE
-void			free_cub_base(t_base *base);
-
-//READ_SCENE_UTILS
-int				cfr_itoa(int y, int *i, char **array, int cf_blue_green);
-int				create_trgb_colorcode(int y, int entry_i, t_base *base, t_read *read);
-int				cfr_endspaces(int y, int i, t_base *base, t_read *read);
-int				check_pathstart(int y, int *i, char **array);
-int				save_path_substr(int y, int i, char **identifier, t_base *base);
-
-//Check_map_UTILS
-int				check_map(int *y, t_base *base, t_read *read);
-int				last_char_save_pos(int y, t_base *base, t_read *read, char **array);
-int 			space_in_wall(int y, int i, char **array, t_read *read);
-int				align_dif_front(char *s1, char *s2);
-int				align_dif_back(int y, t_base *base, t_read *read);
-
-//SAVE_SPRITES
-void			save_sprite_coordinates(t_base *base, double y, double x);
-void			ll_count_sprites(t_base *base);
-void			ll_sort_sprites_swap_data(t_base  *base);
-
-
-//MLX
-int				mlx(t_base *base);
-// int				loop(t_base *base);
-
-//Ray
-//void				raycasting(t_base *base);
-
-//Rayhooks
-
-//exit
-void			exit_game(t_base *base, int code, int error);
-void			free_array(t_read *read);
-
-void			floor_ceiling_texture(t_base *base); //extra
-
-//
-
-//sprites
-void			zbuffer(t_base *base, int x);
-
-//
-void		save_first_image_bmp(t_base *base);
-//Tutorial:
-// void		print_triangle(t_data *img, int x, int y, int radius);
-// void		print_full_square(t_data *img, int x, int xsize, int y, int ysize);
-// void		print_square(t_data *img, int x, int xsize, int y, int ysize);
-//void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void					floor_ceiling_smooth(t_mlx *mlx, t_read *read);
+void					raycasting(t_base *base, t_game *game, t_read *read);
+void					draw_calculations_wall(t_read *read, t_game *game,
+							t_wall *wall);
+void					texture_coordinates_wall(t_tex_co *tex_co,
+							t_wall *wall, t_game *game, int render_y);
+int						texture_pick_wallside(t_tex *tex, int texx, int texy, int i);
+void            		my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
+void            		sprite(t_base *base, t_sprite *sprite, t_game *game, t_read *read);
+int						error_distr(t_base *base, int errornum);
+void					exit_game(t_base *base, int code, int error);
+void					free_cub_base(t_base *base);
+void					free_array(t_read *read);
 
 #endif

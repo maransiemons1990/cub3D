@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 13:03:52 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/04 18:46:35 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/08 12:47:29 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // STDERR_FILENO write(STDOUT_FILENO, str, ft_strlen(str));
 
 
-static void		errormessages_30to(t_base *base, int errornum)
+static void			errormessages_30to(t_base *base, int errornum)
 {
 	char *str;
 
@@ -39,9 +39,9 @@ static void		errormessages_30to(t_base *base, int errornum)
 		write(STDERR_FILENO, str, ft_strlen(str));
 }
 
-static void		errormessages_20to(int	errornum)
+static void			errormessages_20to(int	errornum)
 {
-	char *str;
+	char 	*str;
 
 	str = NULL;
 	if (errornum == 20)
@@ -68,9 +68,9 @@ static void		errormessages_20to(int	errornum)
 		write(STDERR_FILENO, str, ft_strlen(str));
 }
 
-static void		errormessages_10up(int errornum)
+static void			errormessages_10up(int errornum)
 {
-	char *str;
+	char	*str;
 	
 	str = NULL;
 	if (errornum == 10)
@@ -91,9 +91,9 @@ static void		errormessages_10up(int errornum)
 		write(STDERR_FILENO, str, ft_strlen(str));
 }
 
-static void		errormessages_1to10(int errornum)
+static void			errormessages_1to10(int errornum)
 {
-	char *str;
+	char 	*str;
 
 	str = NULL;
 	if (errornum == 1)
@@ -118,32 +118,13 @@ static void		errormessages_1to10(int errornum)
 		write(STDERR_FILENO, str, ft_strlen(str));
 }
 
-// waar exit?
-// void			*error_gnl_cub(int error)
-// {
-// 	char *str;
-
-// 	str = NULL;
-// 	if (error == 2)
-// 		perror("Error\nFailed to open .cub scenefile\n");
-// 	if (error == 3)
-// 		str = "Error\nAn error occurred during processing input file\n";
-// 	if (error == 4)
-// 		perror("Error\nAn error occurred during processing input file\n");
-// 	if (str != NULL)
-// 		write(STDERR_FILENO, str, ft_strlen(str));
-// 	return (NULL);
-// }
-
-// return 1 to functions means error has happened
-
 /* 
 ** Main and gnl_cub errors (errornum >= 30) are treated different because
 ** depending on the location there may or may not be allocated memory yet.
 ** So we don't have to free in every case.
 */
 
-int				error_distr(t_base *base, int errornum)
+int					error_distr(t_base *base, int errornum)
 {
 	if (errornum >= 1 && errornum <= 9)
 		errormessages_1to10(errornum);

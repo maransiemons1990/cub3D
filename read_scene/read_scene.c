@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/02 16:11:17 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/06 14:51:28 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/08 12:11:19 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int		check_save_path(int y, int i, t_base *base, t_read *read)
 {
-	int i_entry;
+	int		i_entry;
 
 	i_entry = i;
 	if ((check_pathstart(y, &i, read->array)) == 0)
@@ -58,7 +58,7 @@ static int		check_save_resolution(int y, int i, t_base *base, t_read *read)
 
 static int		check_save_colors_cf(int y, int i, t_base *base, t_read *read)
 {
-	int entry_i;
+	int 	entry_i;
 	
 	entry_i = i - 1;
 	read->red = -1;
@@ -115,7 +115,7 @@ int				read_scene_file(t_base *base, t_read *read)
 	int		y;
 
 	y = 0;
-	initialise(read, &base->head);
+	initialise_read_scene(read, &base->head);
 	while (read->array[y])
 	{
 		check_scene_line(&y, base, read->array);

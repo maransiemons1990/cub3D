@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:43:54 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/06 14:54:45 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/08 12:13:47 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int				save_path_substr(int y, int i, char **identifier, t_base *base)
 {
-	int ret;
+	int 	ret;
 
 	if (*identifier != NULL)
 		return (error_distr(base, 3));
@@ -27,8 +27,6 @@ int				save_path_substr(int y, int i, char **identifier, t_base *base)
 		return (error_distr(base, 6));
 	return (0);
 }
-
-
 
 int				check_pathstart(int y, int *i, char **array)
 {
@@ -74,8 +72,8 @@ int				create_trgb_colorcode(int y, int entry_i, t_base *base,
 
 int				cfr_itoa(int y, int *i, char **array, int cf_blue_green)
 {
-	int number;
-	int nb_present;
+	int 	number;
+	int 	nb_present;
 
 	number = 0;
 	nb_present = 0;
