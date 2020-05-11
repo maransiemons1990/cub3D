@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 13:30:31 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 14:58:03 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 /*
 ** Draw the pixels as a vertical line.
 ** Texy: Cast the texture coordinate to integer, and mask with (texheight - 1)
-** in case of overflow. 
+** in case of overflow.
 ** Texpos: Starting texture coordinate. Every y increase, change with a step.
 ** Check which side the ray hit the wall. This determines which texture is used
 ** as color.
 ** my_mlx: set wall coordinate to new color.
 */
 
-static void			verLine(t_base *base, t_tex_co *tex_co, int x)
+static void			verline(t_base *base, t_tex_co *tex_co, int x)
 {
 	int		texy;
 	int		color;
@@ -31,16 +31,16 @@ static void			verLine(t_base *base, t_tex_co *tex_co, int x)
 	draw_calculations_wall(&base->read, &base->game, &base->wall);
 	texture_coordinates_wall(tex_co, &base->wall, &base->game,
 		base->read.render_y);
-    y = base->wall.drawstart;
+	y = base->wall.drawstart;
 	while (y < base->wall.drawend)
-    {
-        texy = (int)base->tex_co.texpos & (base->game.texheight - 1);
-        tex_co->texpos += tex_co->step;
+	{
+		texy = (int)base->tex_co.texpos & (base->game.texheight - 1);
+		tex_co->texpos += tex_co->step;
 		color = texture_pick_wallside(base->tex, tex_co->texx, texy,
 			base->game.tex_side);
 		my_mlx_pixel_put(&base->mlx, x, y, color);
 		y++;
-    }
+	}
 }
 
 /*
@@ -51,27 +51,27 @@ static void			verLine(t_base *base, t_tex_co *tex_co, int x)
 ** Hit: check if ray has hit a wall.
 */
 
-static void			DDA(t_game *game, char **array)
+static void			dda(t_game *game, char **array)
 {
-    int		hit;
-	
+	int		hit;
+
 	hit = 0;
-   	while (hit == 0)
+	while (hit == 0)
 	{
-    	if (game->sidedistx < game->sidedisty)
-    	{
-    		game->sidedistx += game->deltadistx;
-    		game->mapx += game->stepx;
-    		game->side = 0;
+		if (game->sidedistx < game->sidedisty)
+		{
+			game->sidedistx += game->deltadistx;
+			game->mapx += game->stepx;
+			game->side = 0;
 			game->tex_side = game->stepx < 0 ? 1 : 3;
-    	}
-    	else
-    	{
-        	game->sidedisty += game->deltadisty;
-        	game->mapy += game->stepy;
-        	game->side = 1;
+		}
+		else
+		{
+			game->sidedisty += game->deltadisty;
+			game->mapy += game->stepy;
+			game->side = 1;
 			game->tex_side = game->stepy < 0 ? 2 : 0;
-    	}
+		}
 		if (array[game->mapy][game->mapx] == '1')
 			hit = 1;
 	}
@@ -83,26 +83,26 @@ static void			DDA(t_game *game, char **array)
 
 static void			initial_step_sidedist(t_read *read, t_game *game)
 {
-    if(game->raydirx < 0)
-    {
-    	game->stepx = -1;
-    	game->sidedistx = (read->x_pos - game->mapx) * game->deltadistx;
-    }
-    else
-    {
+	if (game->raydirx < 0)
+	{
+		game->stepx = -1;
+		game->sidedistx = (read->x_pos - game->mapx) * game->deltadistx;
+	}
+	else
+	{
 		game->stepx = 1;
-    	game->sidedistx = (game->mapx + 1.0 - read->x_pos) * game->deltadistx;
-    }
-    if(game->raydiry < 0)
-    {
+		game->sidedistx = (game->mapx + 1.0 - read->x_pos) * game->deltadistx;
+	}
+	if (game->raydiry < 0)
+	{
 		game->stepy = -1;
 		game->sidedisty = (read->y_pos - game->mapy) * game->deltadisty;
-    }
-    else
-    {
-    	game->stepy = 1;
-    	game->sidedisty = (game->mapy + 1.0 - read->y_pos) * game->deltadisty;
-    }
+	}
+	else
+	{
+		game->stepy = 1;
+		game->sidedisty = (game->mapy + 1.0 - read->y_pos) * game->deltadisty;
+	}
 }
 
 /*
@@ -115,18 +115,18 @@ static void			initial_step_sidedist(t_read *read, t_game *game)
 
 static void			ray_position(t_read *read, t_game *game, int x)
 {
-	double	cameraX;
+	double	camerax;
 
-    if (read->pos == 'W' || read->pos == 'S')
-		cameraX = (2 * x / (double)read->render_x - 1) * -1;
-    else
-		cameraX = 2 * x / (double)read->render_x - 1;
-	game->raydirx = game->dirx + game->planex * cameraX;
-    game->raydiry = game->diry + game->planey * cameraX;
-    game->mapx = (int)read->x_pos;
+	if (read->pos == 'W' || read->pos == 'S')
+		camerax = (2 * x / (double)read->render_x - 1) * -1;
+	else
+		camerax = 2 * x / (double)read->render_x - 1;
+	game->raydirx = game->dirx + game->planex * camerax;
+	game->raydiry = game->diry + game->planey * camerax;
+	game->mapx = (int)read->x_pos;
 	game->mapy = (int)read->y_pos;
-    game->deltadistx = fabs(1 / game->raydirx);
-    game->deltadisty = fabs(1 / game->raydiry);
+	game->deltadistx = fabs(1 / game->raydirx);
+	game->deltadisty = fabs(1 / game->raydiry);
 }
 
 /*
@@ -142,20 +142,20 @@ void				raycasting(t_base *base, t_game *game, t_read *read)
 	double	oldtime;
 
 	x = 0;
-	while(x < read->render_x)
+	while (x < read->render_x)
 	{
 		ray_position(read, game, x);
 		initial_step_sidedist(read, game);
-		DDA(game, read->array);
-		verLine(base, &base->tex_co, x);
+		dda(game, read->array);
+		verline(base, &base->tex_co, x);
 		base->zbuffer[x] = base->wall.perpwalldist;
-	  	x++;
+		x++;
 	}
 	oldtime = game->time;
 	game->time = clock();
 	if (game->time == -1)
 		exit_game(base, 1, 28);
 	frametime = (game->time - oldtime) / CLOCKS_PER_SEC;
-	game->movespeed = frametime * 25.0; 
+	game->movespeed = frametime * 25.0;
 	game->rotspeed = frametime * 5.0;
 }

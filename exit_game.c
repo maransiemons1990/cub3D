@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/08 11:06:37 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 11:17:58 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 14:40:43 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void				free_array(t_read *read)
 {
-	int 	y;
+	int		y;
 
 	y = 0;
 	while (read->array[y])
@@ -28,13 +28,13 @@ void				free_array(t_read *read)
 static void			ll_freelist(t_ll_sprite *head)
 {
 	t_ll_sprite	*tmp;
-	
+
 	while (head != NULL)
-    {
-       tmp = head;
-       head = head->next;
-       free(tmp);
-    }
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp);
+	}
 	tmp = NULL;
 }
 
@@ -64,7 +64,7 @@ void				free_cub_base(t_base *base)
 void				exit_game(t_base *base, int code, int error)
 {
 	int		i;
-	
+
 	i = 0;
 	if (base->zbuffer)
 		free(base->zbuffer);

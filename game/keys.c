@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 17:27:15 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 14:22:30 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 17:11:33 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ int					keypress(int keycode, t_base *base)
 		if (keycode == KEY_RIGHT)
 			base->move.rotate_right = 1;
 	}
-    return (0);
+	return (0);
 }
 
 int					keyrelease(int keycode, t_base *base)
-{	
+{
 	if (keycode == KEY_W)
 		base->move.move_front = 0;
 	if (keycode == KEY_S)
@@ -50,11 +50,11 @@ int					keyrelease(int keycode, t_base *base)
 		base->move.rotate_left = 0;
 	if (keycode == KEY_RIGHT)
 		base->move.rotate_right = 0;
-    return (0);
+	return (0);
 }
 
 int					windowclose_x(t_base *base)
-{	
+{
 	exit_game(base, 0, 0);
 	return (0);
 }

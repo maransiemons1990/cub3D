@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 13:03:52 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/11 11:14:35 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 14:39:17 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ static void			errormessages_30to(t_base *base, int errornum)
 	if (errornum == 33)
 		str = "Error\nAn error occurred during processing input file\n";
 	if (errornum == 34)
-	 	perror("Error\nFailed to allocate memory for struct");
+		perror("Error\nFailed to allocate memory for struct");
 	if (str != NULL)
 		write(STDERR_FILENO, str, ft_strlen(str));
 }
 
-static void			errormessages_20to(int	errornum)
+static void			errormessages_20to(int errornum)
 {
-	char 	*str;
+	char	*str;
 
 	str = NULL;
 	if (errornum == 20)
@@ -72,7 +72,7 @@ static void			errormessages_20to(int	errornum)
 static void			errormessages_10up(int errornum)
 {
 	char	*str;
-	
+
 	str = NULL;
 	if (errornum == 10)
 		str = "Error\nInvalid character in the map\n";
@@ -94,7 +94,7 @@ static void			errormessages_10up(int errornum)
 
 static void			errormessages_1to10(int errornum)
 {
-	char 	*str;
+	char	*str;
 
 	str = NULL;
 	if (errornum == 1)
@@ -106,20 +106,20 @@ static void			errormessages_1to10(int errornum)
 	if (errornum == 4)
 		str = "Error\nInvalid format of identifier(s)";
 	if (errornum == 5)
-	 	str = "Error\nInvalid path(s)\n";
+		str = "Error\nInvalid path(s)\n";
 	if (errornum == 6)
-	 	perror("Error\nMalloc failed");
+		perror("Error\nMalloc failed");
 	if (errornum == 7)
-	 	str = "Error\nResolution can't be 0";
+		str = "Error\nResolution can't be 0";
 	if (errornum == 8)
-	 	str = "Error\nColor values should be between 0 - 255\n";
+		str = "Error\nColor values should be between 0 - 255\n";
 	if (errornum == 9)
-	 	perror("Error\nThe path(s) could not be accessed");
+		perror("Error\nThe path(s) could not be accessed");
 	if (str != NULL)
 		write(STDERR_FILENO, str, ft_strlen(str));
 }
 
-/* 
+/*
 ** Main and gnl_cub errors (errornum >= 30) are treated different because
 ** depending on the location there may or may not be allocated memory yet.
 ** So we don't have to free in every case.
@@ -136,7 +136,7 @@ int					error_distr(t_base *base, int errornum)
 	if (errornum >= 1 && errornum <= 29)
 		free_cub_base(base);
 	if (errornum >= 30)
-	 	errormessages_30to(base, errornum);
+		errormessages_30to(base, errornum);
 	exit(1);
 	return (1);
 }

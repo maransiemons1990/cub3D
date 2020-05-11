@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/06 21:02:35 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 12:36:18 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 14:58:43 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void				rotate_right(t_game *game)
 {
 	double	olddirx;
 	double	oldplanex;
-	
+
 	olddirx = game->dirx;
 	game->dirx = game->dirx * cos(game->rotspeed) - game->diry
 		* sin(game->rotspeed);
@@ -33,7 +33,7 @@ void				rotate_left(t_game *game)
 {
 	double	olddirx;
 	double	oldplanex;
-	
+
 	olddirx = game->dirx;
 	game->dirx = game->dirx * cos(-game->rotspeed) - game->diry
 		* sin(-game->rotspeed);

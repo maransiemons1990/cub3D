@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/09 13:36:12 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 13:40:28 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 17:14:20 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@
 static void		draw_vertical_stripe(int texx, int stripe, t_base *base,
 										t_sprite *sprite)
 {
-	int			texY;
+	int			texy;
 	int			y;
 	int			d;
 	int			color;
 	char		*dest;
-  
+
 	y = sprite->drawstarty;
 	while (y < sprite->drawendy)
 	{
 		d = (y - sprite->vmovescreen) * 256 - base->read.render_y * 128
 			+ sprite->spr_height * 128;
-		texY = ((d * base->game.texheight) / sprite->spr_height) / 256;
-		dest = base->tex[4].xpm_addr + (texY * base->tex[4].xpm_line_length
+		texy = ((d * base->game.texheight) / sprite->spr_height) / 256;
+		dest = base->tex[4].xpm_addr + (texy * base->tex[4].xpm_line_length
 			+ texx * (base->tex[4].xpm_bpp / 8));
 		color = *(unsigned int*)dest;
 		if ((color & 0x00FFFFFF) != 0)
@@ -58,10 +58,10 @@ static void		draw_vertical_stripe(int texx, int stripe, t_base *base,
 */
 
 static void		calculate_size_sprite_screen(t_sprite *sprite, int render_x,
-                                                int render_y)
+												int render_y)
 {
-	sprite->spr_height = abs((int)(render_y / (sprite->transformy)))/ vDiv;
-	sprite->drawstarty = -sprite->spr_height / 2 + render_y/ 2 
+	sprite->spr_height = abs((int)(render_y / (sprite->transformy))) / VDIV;
+	sprite->drawstarty = -sprite->spr_height / 2 + render_y / 2
 		+ sprite->vmovescreen;
 	if (sprite->drawstarty < 0)
 		sprite->drawstarty = 0;
@@ -69,7 +69,7 @@ static void		calculate_size_sprite_screen(t_sprite *sprite, int render_x,
 		+ sprite->vmovescreen;
 	if (sprite->drawendy >= render_y)
 		sprite->drawendy = render_y - 1;
-	sprite->spr_width = abs( (int)(render_y / (sprite->transformy))) / uDiv;
+	sprite->spr_width = abs((int)(render_y / (sprite->transformy))) / UDIV;
 	sprite->drawstartx = -sprite->spr_width / 2 + sprite->spr_screenx;
 	if (sprite->drawstartx < 0)
 		sprite->drawstartx = 0;
@@ -87,20 +87,20 @@ static void		calculate_size_sprite_screen(t_sprite *sprite, int render_x,
 ** inverse camera matrix.
 ** 		InvDet: required for correct matrix multiplication.
 ** 		TrasformX: X coordinate of the sprite in camera space.
-** 		TransformY: Y coordinate of the sprite in camera space. 
+** 		TransformY: Y coordinate of the sprite in camera space.
 **      	Y is the depth inside the screen (that what Z is in 3D).
 ** SpritescreenX: To project it on screen, divide X through the depth,
 ** and then translate and scale it so that it's in pixel coordinates.
 ** Parameters for scaling and moving the sprites:
-** - uDiv and vDiv: to shrink the sprite
+** - UDIV and VDIV: to shrink the sprite
 ** - vMove: to move the sprite down if it has to stand on the floor,
 **   or up if it has to hang on the ceiling.
 ** - vMoveScreen is vMove projected on the screen by dividing it through
 ** the depth.
 */
 
-static void		project_sprite(t_sprite  *sprite, t_ll_sprite *ll_sprite, 
-                                      t_game *game, t_read *read)
+static void		project_sprite(t_sprite *sprite, t_ll_sprite *ll_sprite,
+									t_game *game, t_read *read)
 {
 	double		spritex;
 	double		spritey;
@@ -115,7 +115,7 @@ static void		project_sprite(t_sprite  *sprite, t_ll_sprite *ll_sprite,
 		* spritey);
 	sprite->spr_screenx = (int)((read->render_x / 2)
 		* (1 + transformx / sprite->transformy));
-	sprite->vmovescreen = (int)(vMove / sprite->transformy);
+	sprite->vmovescreen = (int)(VMOVE / sprite->transformy);
 }
 
 /*
@@ -148,7 +148,7 @@ void			sprite(t_base *base, t_sprite *sprite, t_game *game,
 	int			texx;
 	int			stripe;
 	t_ll_sprite	*ll_sprite;
-	
+
 	i = 0;
 	ll_sprite = base->head;
 	while (i < read->nb_sprites)
@@ -163,7 +163,7 @@ void			sprite(t_base *base, t_sprite *sprite, t_game *game,
 				game->texwidth / sprite->spr_width) / 256;
 			if (sprite->transformy > 0 && stripe > 0 && stripe < read->render_x
 				&& sprite->transformy < base->zbuffer[stripe])
-			draw_vertical_stripe(texx, stripe, base, &base->sprite);
+				draw_vertical_stripe(texx, stripe, base, &base->sprite);
 			stripe++;
 		}
 		i++;

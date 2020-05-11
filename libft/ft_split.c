@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_split.c                                         :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: msiemons <marvin@codam.nl>                   +#+                     */
+/*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/12 10:08:48 by msiemons       #+#    #+#                */
-/*   Updated: 2020/03/17 15:38:03 by Maran         ########   odam.nl         */
+/*   Created: 2020/05/11 17:27:23 by Maran         #+#    #+#                 */
+/*   Updated: 2020/05/11 17:27:29 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

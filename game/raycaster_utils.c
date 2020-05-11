@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/06 18:32:30 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 13:13:58 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 14:52:37 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int			texture_pick_wallside(t_tex *tex, int texx, int texy, int i)
 {
 	char	*dest;
 	int		color;
-	
+
 	dest = tex[i].xpm_addr + (texy * tex[i].xpm_line_length + texx *
 		(tex[i].xpm_bpp / 8));
 	color = *(unsigned int*)dest;
@@ -90,7 +90,7 @@ void		texture_coordinates_wall(t_tex_co *tex_co, t_wall *wall,
 void		draw_calculations_wall(t_read *read, t_game *game, t_wall *wall)
 {
 	if (game->side == 0)
-		wall->perpwalldist = (game->mapx -read->x_pos + (1 - game->stepx) / 2)
+		wall->perpwalldist = (game->mapx - read->x_pos + (1 - game->stepx) / 2)
 			/ game->raydirx;
 	else
 		wall->perpwalldist = (game->mapy - read->y_pos + (1 - game->stepy) / 2)
@@ -98,10 +98,10 @@ void		draw_calculations_wall(t_read *read, t_game *game, t_wall *wall)
 	wall->perpwalldist = (wall->perpwalldist < 1) ? 1 : wall->perpwalldist;
 	wall->lineheight = (int)(read->render_y / wall->perpwalldist);
 	wall->drawstart = -wall->lineheight / 2 + read->render_y / 2;
-	if(wall->drawstart < 0)
+	if (wall->drawstart < 0)
 		wall->drawstart = 0;
 	wall->drawend = wall->lineheight / 2 + read->render_y / 2;
-	if(wall->drawend >= read->render_y)
+	if (wall->drawend >= read->render_y)
 		wall->drawend = read->render_y - 1;
 	if (game->side == 0)
 		wall->wallx = read->y_pos + wall->perpwalldist * game->raydiry;

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/08 16:37:28 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/08 12:08:55 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 15:26:39 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static char			*strpaste(char *dest, char const *src1, char const *src2)
 {
-	int 	i;
-	int 	c;
+	int		i;
+	int		c;
 
 	i = 0;
 	c = 0;

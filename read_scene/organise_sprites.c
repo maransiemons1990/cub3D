@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/08 11:12:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 11:08:47 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 15:53:46 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@
 
 static void			swap(double *i, double *j)
 {
-	double 			tmp;
-	
+	double			tmp;
+
 	tmp = *i;
 	*i = *j;
 	*j = tmp;
 }
 
-void				ll_sort_sprites_swap_data(t_base  *base)
+void				ll_sort_sprites_swap_data(t_base *base)
 {
 	t_ll_sprite		*i;
 	t_ll_sprite		*j;
@@ -35,7 +35,7 @@ void				ll_sort_sprites_swap_data(t_base  *base)
 	while (i != NULL)
 	{
 		j = i->next;
-		while(j != NULL)
+		while (j != NULL)
 		{
 			if (i->distance < j->distance)
 			{
@@ -51,8 +51,8 @@ void				ll_sort_sprites_swap_data(t_base  *base)
 
 void				ll_count_sprites(t_base *base)
 {
-	t_ll_sprite 	*current;
-	
+	t_ll_sprite		*current;
+
 	base->read.nb_sprites = 0;
 	current = base->head;
 	while (current != NULL)
@@ -60,5 +60,4 @@ void				ll_count_sprites(t_base *base)
 		current = current->next;
 		base->read.nb_sprites++;
 	}
-	
 }

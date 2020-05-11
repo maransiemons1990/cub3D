@@ -6,13 +6,13 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:35:56 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 11:27:30 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 14:43:53 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BMP_H
 # define BMP_H
-#pragma pack(push, 1)
+# pragma pack(push, 1)
 
 /*
 ** Preprocessor statement: #Pragma pack
@@ -22,7 +22,7 @@
 ** - Push : Pushes the current packing alignment value on the internal compiler
 ** stack, and sets the current packing alignment value to n (-->1).
 ** - Pop: Removes the record from the top of the internal compiler stack.
-*
+**
 ** struct Test
 ** {
 **    char AA;
@@ -33,12 +33,12 @@
 ** Memory default:
 ** |   1   |   2   |   3   |   4   |
 ** | AA(1) | pad.................. |
-** | BB(1) | BB(2) | BB(3) | BB(4) | 
+** | BB(1) | BB(2) | BB(3) | BB(4) |
 ** | CC(1) | pad.................. |
 ** --> sizeof(test) = 4 * 3
 **
 ** #pragma pack(1)
-** |   1   | 
+** |   1   |
 ** | AA(1) |
 ** | BB(1) |
 ** | BB(2) |
@@ -53,7 +53,7 @@ typedef struct			s_bmp_fileheader{
 	uint32_t			filesize;
 	uint16_t			reserved1;
 	uint16_t			reserved2;
-	uint32_t			pixeldataoffset;	
+	uint32_t			pixeldataoffset;
 }						t_bmp_fileheader;
 
 typedef struct			s_bmp_infoheader{
@@ -71,9 +71,9 @@ typedef struct			s_bmp_infoheader{
 }						t_bmp_infoheader;
 
 typedef struct			s_bitmap{
-    t_bmp_fileheader	fileheader;
-    t_bmp_infoheader	infoheader;
-} 						t_bitmap;
+	t_bmp_fileheader	fileheader;
+	t_bmp_infoheader	infoheader;
+}						t_bitmap;
 
-#pragma pack(pop)
+# pragma pack(pop)
 #endif

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/11 10:55:13 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 14:19:36 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,22 @@ static void			display_resolution(int *render_x, int *render_y)
 	int		maindisplayid;
 	int		pixelswidth;
 	int		pixelsheight;
-	
+
 	maindisplayid = CGMainDisplayID();
-    pixelswidth = CGDisplayPixelsWide(maindisplayid);
-    pixelsheight = CGDisplayPixelsHigh(maindisplayid);
+	pixelswidth = CGDisplayPixelsWide(maindisplayid);
+	pixelsheight = CGDisplayPixelsHigh(maindisplayid);
 	if (*render_x > pixelswidth)
 		*render_x = pixelswidth;
 	if (*render_y > pixelsheight)
 		*render_y = pixelsheight;
 }
 
-
 /*
 ** Option: --save to make a screenshot of the first image and save as bmp
 */
 
 int					main(int argc, char **argv)
-{	
+{
 	t_base	*base;
 
 	if (argc != 2 && argc != 3)

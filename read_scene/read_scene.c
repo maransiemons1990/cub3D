@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/02 16:11:17 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/11 10:59:32 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 15:57:29 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int		check_save_path(int y, int i, t_base *base, t_read *read)
 			save_path_substr(y, i, &read->sprite, base);
 	}
 	else
- 		return (error_distr(base, 5));
+		return (error_distr(base, 5));
 	return (0);
 }
 
@@ -50,7 +50,7 @@ static int		check_save_resolution(int y, int i, t_base *base, t_read *read)
 	read->render_y = cfr_itoa(y, &i, read->array, 0);
 	if (read->render_x == -1 || read->render_y == -1)
 		return (error_distr(base, 4));
-	if (read->render_x == 0 || read->render_y ==0)
+	if (read->render_x == 0 || read->render_y == 0)
 		return (error_distr(base, 7));
 	cfr_endspaces(y, i, base, read);
 	return (0);
@@ -58,8 +58,8 @@ static int		check_save_resolution(int y, int i, t_base *base, t_read *read)
 
 static int		check_save_colors_cf(int y, int i, t_base *base, t_read *read)
 {
-	int 	entry_i;
-	
+	int		entry_i;
+
 	entry_i = i - 1;
 	read->red = -1;
 	read->blue = -1;
@@ -72,8 +72,8 @@ static int		check_save_colors_cf(int y, int i, t_base *base, t_read *read)
 	read->blue = cfr_itoa(y, &i, read->array, 1);
 	if (read->red == -1 || read->blue == -1 || read->green == -1)
 		return (error_distr(base, 4));
-	if (!((read->red >= 0 &&  read->red <= 255) && (read->blue >= 0 &&
-	read->blue <= 255) && (read->green >= 0 &&  read->green <= 255)))
+	if (!((read->red >= 0 && read->red <= 255) && (read->blue >= 0 &&
+		read->blue <= 255) && (read->green >= 0 && read->green <= 255)))
 		return (error_distr(base, 8));
 	create_trgb_colorcode(y, entry_i, base, read);
 	cfr_endspaces(y, i, base, read);

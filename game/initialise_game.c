@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/07 12:28:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 12:17:32 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 14:49:25 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static char		*create_path(t_base *base, t_read read, int i)
 {
-	char 	*path;
-	
+	char	*path;
+
 	path = NULL;
 	if (i == 0)
 		path = ft_strjoin(read.no, "/wall_texture.xpm");
@@ -25,7 +25,7 @@ static char		*create_path(t_base *base, t_read read, int i)
 		path = ft_strjoin(read.so, "/dirt.xpm");
 	else if (i == 3)
 		path = ft_strjoin(read.we, "/OreVein.xpm");
-	else if (i == 4)	
+	else if (i == 4)
 		path = ft_strjoin(read.sprite, "/barrel.xpm");
 	if (path == NULL)
 		exit_game(base, 1, 21);
@@ -40,7 +40,7 @@ static char		*create_path(t_base *base, t_read read, int i)
 
 void			load_texture(t_base *base, t_tex *tex, t_game *game, void *mlx)
 {
-	char 	*path;
+	char	*path;
 	int		i;
 
 	i = 0;
@@ -73,8 +73,8 @@ void			load_texture(t_base *base, t_tex *tex, t_game *game, void *mlx)
 
 void			orientation(t_game *game, char pos)
 {
-	game->dirx = 0; 
-	game->diry = 0; 
+	game->dirx = 0;
+	game->diry = 0;
 	if (pos == 'N')
 		game->diry = -1;
 	if (pos == 'S')
@@ -95,8 +95,8 @@ void			orientation(t_game *game, char pos)
 void			initialise_game(t_move *move, t_mlx *mlx, t_tex *tex,
 									t_base *base)
 {
-	int 	i;
-	
+	int		i;
+
 	i = 0;
 	move->move_front = 0;
 	move->move_back = 0;

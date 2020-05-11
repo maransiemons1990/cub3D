@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/17 13:26:51 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 13:21:35 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 15:01:28 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,27 @@
 ** Compression      |4 bytes | 0 to represent no-compression
 ** ImageSize        |4 bytes | final size of the (compressed) image
 ** XpixelsPerMeter  |4 bytes | horizontal resolution of the target device
-** YpixelsPerMeter  |4 bytes | verical resolution of the target device 
+** YpixelsPerMeter  |4 bytes | verical resolution of the target device
 ** TotalColors      |4 bytes | number of colors in the color pallet
 ** ImportantColors  |4 bytes | number of important colors
 */
 
-static void     bmp_header(t_bitmap  *bmp, t_base *base)
+static void		bmp_header(t_bitmap *bmp, t_base *base)
 {
-    bmp->fileheader.filetype = 0x4d42;
-    bmp->fileheader.filesize = base->read.render_y * 
-        base->read.render_x * (base->mlx.bpp / 8) + 54;
-    bmp->fileheader.pixeldataoffset = sizeof(t_bitmap);
-    bmp->infoheader.headersize = sizeof(t_bmp_infoheader);
-    bmp->infoheader.imagewidth = base->read.render_x;
-    bmp->infoheader.imageheight = base->read.render_y;
-    bmp->infoheader.planes = 1;
-    bmp->infoheader.bitsperpixel = base->mlx.bpp;
-    bmp->infoheader.compression = 0;
-    bmp->infoheader.imagesize = bmp->fileheader.filesize - 54;
-    bmp->infoheader.xpixelspermeter = 0;
-    bmp->infoheader.ypixelspermeter = 0;
-    bmp->infoheader.totalcolor = 0;
+	bmp->fileheader.filetype = 0x4d42;
+	bmp->fileheader.filesize = base->read.render_y *
+		base->read.render_x * (base->mlx.bpp / 8) + 54;
+	bmp->fileheader.pixeldataoffset = sizeof(t_bitmap);
+	bmp->infoheader.headersize = sizeof(t_bmp_infoheader);
+	bmp->infoheader.imagewidth = base->read.render_x;
+	bmp->infoheader.imageheight = base->read.render_y;
+	bmp->infoheader.planes = 1;
+	bmp->infoheader.bitsperpixel = base->mlx.bpp;
+	bmp->infoheader.compression = 0;
+	bmp->infoheader.imagesize = bmp->fileheader.filesize - 54;
+	bmp->infoheader.xpixelspermeter = 0;
+	bmp->infoheader.ypixelspermeter = 0;
+	bmp->infoheader.totalcolor = 0;
 }
 
 /*
@@ -61,7 +61,7 @@ static void     bmp_header(t_bitmap  *bmp, t_base *base)
 ** Per y we loop through x and save the color of each individual pixel.
 */
 
-static int      *pixel_data(t_base *base, t_mlx *mlx, uint32_t imagesize)
+static int		*pixel_data(t_base *base, t_mlx *mlx, uint32_t imagesize)
 {
 	int		*pixelbuffer;
 	int		y;
@@ -84,12 +84,12 @@ static int      *pixel_data(t_base *base, t_mlx *mlx, uint32_t imagesize)
 			i++;
 			x++;
 		}
-			y--;
+		y--;
 	}
 	return (pixelbuffer);
 }
 
-static void     error_bmp(t_base *base, t_bitmap *bmp, int *pxlbuf, int code)
+static void		error_bmp(t_base *base, t_bitmap *bmp, int *pxlbuf, int code)
 {
 	if (bmp)
 		free(bmp);
@@ -112,7 +112,7 @@ static void     error_bmp(t_base *base, t_bitmap *bmp, int *pxlbuf, int code)
 ** To check content of bmp file: xxd screenshot.bmp| vim -
 */
 
-void            save_first_image_bmp(t_base *base)
+void			save_first_image_bmp(t_base *base)
 {
 	int			file;
 	int			ret;

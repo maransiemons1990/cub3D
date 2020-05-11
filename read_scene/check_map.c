@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/11 11:01:04 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 15:50:55 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,19 @@ static int			flood_fill(t_base *base, int y, int x, char **array)
 		save_sprite_coordinates(base, y, x);
 		return (0);
 	}
-	if (array[y][x]== '\0' || y <= base->read.map_start ||
-	y >= base->read.map_end)
+	if (array[y][x] == '\0' || y <= base->read.map_start ||
+		y >= base->read.map_end)
 		return (error_distr(base, 12));
 	if (array[y][x] == ' ')
 		return (error_distr(base, 13));
-    if (array[y][x]!= '0' && array[y][x] != base->read.pos)
+	if (array[y][x] != '0' && array[y][x] != base->read.pos)
 		return (error_distr(base, 10));
-    array[y][x] = '+';
-    flood_fill(base, y - 1, x, array);
-    flood_fill(base, y, x + 1, array);
-    flood_fill(base, y + 1, x, array);
-    flood_fill(base, y, x - 1, array);
-    return (0);
+	array[y][x] = '+';
+	flood_fill(base, y - 1, x, array);
+	flood_fill(base, y, x + 1, array);
+	flood_fill(base, y + 1, x, array);
+	flood_fill(base, y, x - 1, array);
+	return (0);
 }
 
 /*
@@ -49,7 +49,7 @@ static int			flood_fill(t_base *base, int y, int x, char **array)
 
 static int			check_wall_edges(int *y, t_base *base, t_read *read)
 {
-	int 	front;
+	int		front;
 
 	while (*y != read->map_end)
 	{
@@ -72,14 +72,14 @@ static int			check_wall_edges(int *y, t_base *base, t_read *read)
 
 static int			check_walls_first_last(int y, t_base *base, t_read *read)
 {
-	int 	i;
+	int		i;
 	int		last;
-	int 	ret;
-	
+	int		ret;
+
 	i = 0;
 	last = last_char_save_pos(y, base, read, read->array);
-	while(read->array[y][i] == ' ')
-			i++;
+	while (read->array[y][i] == ' ')
+		i++;
 	while (i <= last)
 	{
 		if (read->array[y][i] == '1')

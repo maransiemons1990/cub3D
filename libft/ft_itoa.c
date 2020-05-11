@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_itoa.c                                          :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
+/*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/12/06 14:12:25 by msiemons       #+#    #+#                */
-/*   Updated: 2019/12/09 17:06:14 by msiemons      ########   odam.nl         */
+/*   Created: 2020/05/11 17:28:15 by Maran         #+#    #+#                 */
+/*   Updated: 2020/05/11 17:28:21 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

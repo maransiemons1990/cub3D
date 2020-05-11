@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/16 15:34:37 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/06 15:15:57 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 15:42:39 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 
 static int		first_char(char *y)
 {
-	int 	i;
+	int		i;
 
 	i = 0;
 	while (y[i] == ' ')
-	 	i++;
+		i++;
 	return (i);
 }
 
@@ -33,17 +33,17 @@ static int		first_char(char *y)
 int				last_char_save_pos(int y, t_base *base, t_read *read,
 									char **array)
 {
-	int 	i;
+	int		i;
 
 	i = 0;
-	while(array[y][i])
+	while (array[y][i])
 	{
 		if (array[y][i] != '0' && array[y][i] != '1' && array[y][i] != '2'
 			&& array[y][i] != ' ' && array[y][i] != 'N' && array[y][i] != 'S'
 			&& array[y][i] != 'E' && array[y][i] != 'W')
 			return (error_distr(base, 10));
 		if (array[y][i] == 'N' || array[y][i] == 'S' || array[y][i] == 'E' ||
-		array[y][i] =='W')
+		array[y][i] == 'W')
 		{
 			if (read->pos != -1 && y != read->y_pos &&
 			i != read->x_pos)
@@ -54,7 +54,7 @@ int				last_char_save_pos(int y, t_base *base, t_read *read,
 		}
 		i++;
 	}
-	while(array[y][i] == ' ' || array[y][i] == '\0')
+	while (array[y][i] == ' ' || array[y][i] == '\0')
 		i--;
 	return (i);
 }
@@ -68,10 +68,10 @@ int				last_char_save_pos(int y, t_base *base, t_read *read,
 
 int				align_dif_back(int y, t_base *base, t_read *read)
 {
-	int 	back1;
-	int 	back2;
-	int 	dif;
-	int 	count;
+	int		back1;
+	int		back2;
+	int		dif;
+	int		count;
 
 	count = 0;
 	back1 = last_char_save_pos(y, base, read, read->array);
@@ -103,10 +103,10 @@ int				align_dif_back(int y, t_base *base, t_read *read)
 
 int				align_dif_front(char *s1, char *s2)
 {
-	int 	front1;
-	int 	front2;
-	int 	dif;
-	int 	count;
+	int		front1;
+	int		front2;
+	int		dif;
+	int		count;
 
 	count = 0;
 	front1 = first_char(s1);
@@ -128,11 +128,11 @@ int				align_dif_front(char *s1, char *s2)
 }
 
 /*
-** When a space (' ') character appears in a wall, 
+** When a space (' ') character appears in a wall,
 ** the adjacent elements can only consist of 1's and spaces.
 */
 
-int 			space_in_wall(int y, int i, char **array, t_read *read)
+int				space_in_wall(int y, int i, char **array, t_read *read)
 {
 	if (array[y][i - 1] != '1' && array[y][i - 1] != ' ')
 		return (1);
@@ -155,6 +155,6 @@ int 			space_in_wall(int y, int i, char **array, t_read *read)
 			return (1);
 		if (array[y - 1][i + 1] != '1' && array[y - 1][i + 1] != ' ')
 			return (1);
-	}	
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/14 18:35:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 11:07:23 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 15:58:43 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_ll_sprite	*ll_add_new_front(t_base *base, double y, double x)
 static int			ll_search(t_ll_sprite *head, double y, double x)
 {
 	t_ll_sprite		*current;
-	
+
 	current = head;
 	while (current != NULL)
 	{
@@ -61,7 +61,7 @@ static int			ll_search(t_ll_sprite *head, double y, double x)
 /*
 ** How can I save the coordinates of an unknown number of sprites.
 ** Without counting them first and then scanning again to save them.
-** Solution: linked list have a dynamic listsize contrary to the 
+** Solution: linked list have a dynamic listsize contrary to the
 ** fixed size of arrays.
 **
 **         head             second node          third node
@@ -76,7 +76,7 @@ static int			ll_search(t_ll_sprite *head, double y, double x)
 void				save_sprite_coordinates(t_base *base, double y, double x)
 {
 	if (ll_search(base->head, y, x))
-		return;
+		return ;
 	else
 		base->head = ll_add_new_front(base, y, x);
 }

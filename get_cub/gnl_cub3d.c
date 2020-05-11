@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/08 16:37:30 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/11 10:52:24 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 15:27:01 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char			*gnl_cub3d(int fd)
 {
 	static char		*new_line;
 	char			*line;
-	
+
 	if (fd < 0)
 		return (NULL);
 	if (new_line == NULL)
@@ -54,7 +54,7 @@ static char			*gnl_cub3d(int fd)
 		return (NULL);
 	line = gnl_cub3d_read(fd, new_line);
 	if (line == NULL)
-		return (NULL); 
+		return (NULL);
 	return (line);
 }
 
