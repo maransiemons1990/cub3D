@@ -6,49 +6,21 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/09 13:36:12 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 12:43:45 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 13:40:28 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
 /*
-** Sprites are 2D pictures always facing to you.
-**
-** Parameters for scaling and moving the sprites:
-** - uDiv and vDiv: to shrink the sprite
-** - vMove: to move the sprite down if it has to stand on the floor,
-**   or up if it has to hang on the ceiling.
-** - vMoveScreen is vMove projected on the screen by dividing it through the depth.
-**
-** default: 1, 1, 0.0
-** uDiv = 2, vDiv = 2, vMove = 0.0, the sprites are half as big, and float.
-** Put it back on the ground by setting vMove to 64.0 (the size of the texture).
-** 
-*/
-
-
-/*
-** While raycasting the walls, store the perpendicular distance of each
-** vertical stripe in a 1D ZBuffer.
-** Because the ZBuffer is 1D and can only detect if the sprite is in front or behind a wall.
-** Later we draw the sprites vertical stripe by vertical stripe, don't draw the
-** vertical stripe if the distance is further away than the 1D ZBuffer of the walls of the current stripe
-** >>> Ik denk dat dit overbodig is bij mij omdat ik geen sprites opsla die niet in mijn flood fill zitten!!!<<<
-** hmm maar er zijn wel waarden die hij uitlsuit. Af en toe base->sprite.transformy niet kleiner dan Zbuffer!
-** You don't have to update the ZBuffer while drawing the stripes: since they're sorted, 
-** the ones closer to you will be drawn last, so they're drawn over the further away ones.
-*/
-
-/*
-** - 3rd while: for every pixel of the current stripe.
-** - d: 256 and 128 factors to avoid floats.
-** - Dest: Reversed my_mlx_pixel_put-dest formula.
+** 3rd while: for every pixel of the current stripe.
+** d: 256 and 128 factors to avoid floats.
+** Dest: Reversed my_mlx_pixel_put-dest formula.
 ** We got the addr of the sprite. So we can get the pixel color of a certain
 ** spritecoordinate. Coordinate color = addr + coordinate.
-** - Draw pixel if it isn't black, black is the invisible color.
-**   Otherwise the sprites will be rectangles.
-** tex[4] is sprite texture.
+** Draw pixel if it isn't black, black is the invisible color. Otherwise the
+** sprites will be rectangles.
+** Tex[4] is sprite texture.
 */
 
 static void		draw_vertical_stripe(int texx, int stripe, t_base *base,
@@ -78,11 +50,11 @@ static void		draw_vertical_stripe(int texx, int stripe, t_base *base,
 /*
 ** Calculate the size of the sprite on the screen (both in x and y direction)
 ** by using the perpendicular distance:
-**
-** - SpriteHeight: calculate height of the sprite on screen 
-**    --> using TransformY instead of the real distance prevents fisheye.
-** - DrawStart/DrawEnd: calculate lowest and highest pixel to fill in current stripe
-** - SpriteWidth: calculate width of the sprite.
+** SpriteHeight: calculate height of the sprite on screen using TransformY
+** instead of the real distance prevents fisheye.
+** DrawStart/DrawEnd: calculate lowest and highest pixel to fill in current
+** stripe.
+** SpriteWidth: calculate width of the sprite.
 */
 
 static void		calculate_size_sprite_screen(t_sprite *sprite, int render_x,
@@ -108,22 +80,23 @@ static void		calculate_size_sprite_screen(t_sprite *sprite, int render_x,
 
 /*
 ** Project the sprite on the camera plane (in 2D):
-**
-** - SpriteX: subtract the player's position from the sprite's position,
+** SpriteX: subtract the player's position from the sprite's position,
 ** then you have the position of the sprite relative to the player (camera).
-** - InvDet/TransformX: Then it has to be rotated so that the direction is
+** InvDet/TransformX: Then it has to be rotated so that the direction is
 ** relative to the player. Therefore we transform the sprite with the
 ** inverse camera matrix.
-** *    InvDet --> required for correct matrix multiplication.
-** *    TrasformX --> X coordinate of the sprite in camera space.
-** *    TransformY --> Y coordinate of the sprite in camera space. 
-**          Y is the depth inside the screen (that what Z is in 3D).
-** - SpritescreenX: To project it on screen, divide X through the depth,
-**  and then translate and scale it so that it's in pixel coordinates.
-** - VMoveScreen: is vMove projected on the screen by dividing 
-**   it through the depth.
-** *    vMove to move the sprite down if it has to stand on the floor,
-**      or up if it has to hang on the ceiling.
+** 		InvDet: required for correct matrix multiplication.
+** 		TrasformX: X coordinate of the sprite in camera space.
+** 		TransformY: Y coordinate of the sprite in camera space. 
+**      	Y is the depth inside the screen (that what Z is in 3D).
+** SpritescreenX: To project it on screen, divide X through the depth,
+** and then translate and scale it so that it's in pixel coordinates.
+** Parameters for scaling and moving the sprites:
+** - uDiv and vDiv: to shrink the sprite
+** - vMove: to move the sprite down if it has to stand on the floor,
+**   or up if it has to hang on the ceiling.
+** - vMoveScreen is vMove projected on the screen by dividing it through
+** the depth.
 */
 
 static void		project_sprite(t_sprite  *sprite, t_ll_sprite *ll_sprite, 
@@ -146,19 +119,26 @@ static void		project_sprite(t_sprite  *sprite, t_ll_sprite *ll_sprite,
 }
 
 /*
-**  - 1st while: loop per sprite.
-**  - Project the sprite on the camera plane (in 2D).
-**  - Calculate the size of the sprite on the screen (in x and y direction)
-**  by using the perpendicular distance.
-**  - 2nd While: loop through every vertical stripe of the sprite on screen.
-**      --> per x <--------------> (width of sprite).
-**  - IF conditions are met: Draw the sprites vertical stripe by vertical
-**  stripe.
-**  - The conditions in the if are:
-**  1) it's in front of camera plane so you don't see things behind you
-**  2) it's on the screen (left)
-**  3) it's on the screen (right)
-**  4) Distance is smaller than the 1D ZBuffer(with perpendicular distance) of the walls of the current stripe
+** Sprites are 2D pictures always facing to you.
+** 1st while: loop per sprite.
+** Project the sprite on the camera plane (in 2D).
+** Calculate the size of the sprite on the screen (in x and y direction)
+** by using the perpendicular distance.
+** 2nd While: loop through every vertical stripe of the sprite on screen.
+** Per x <--------------> (width of sprite).
+** If conditions are met: Draw the sprites vertical stripe by vertical
+** stripe.
+** The conditions in the if are:
+** 1) it's in front of camera plane so you don't see things behind you
+** 2) it's on the screen (left)
+** 3) it's on the screen (right)
+** 4) Distance is smaller than the 1D ZBuffer(with perpendicular distance)
+** of the walls of the current stripe. Don't draw the vertical stripe if the
+** distance is further away than the 1D ZBuffer of the walls of the current
+** stripe.
+** You don't have to update the ZBuffer while drawing the stripes: since
+** they're sorted, the ones closer to you will be drawn last,
+** so they're drawn over the further away ones.
 */
 
 void			sprite(t_base *base, t_sprite *sprite, t_game *game,

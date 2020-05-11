@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/14 18:35:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 12:22:41 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 11:07:23 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ static t_ll_sprite	*ll_add_new_front(t_base *base, double y, double x)
 	return (base->head);
 }
 
+/*
+** First check if node already exist in the linked list with ll_search.
+** Because the floodfill function returns 4 times to the same coordinates.
+** Otherwise each sprite coordinate would be saved 4 times.
+*/
+
 static int			ll_search(t_ll_sprite *head, double y, double x)
 {
 	t_ll_sprite		*current;
@@ -53,9 +59,20 @@ static int			ll_search(t_ll_sprite *head, double y, double x)
 }
 
 /*
-** First check if node already exist in the linked list with ll_search.
-** Because the floodfill function returns 4 times to the same coordinates.
+** How can I save the coordinates of an unknown number of sprites.
+** Without counting them first and then scanning again to save them.
+** Solution: linked list have a dynamic listsize contrary to the 
+** fixed size of arrays.
+**
+**         head             second node          third node
+**           |                   |                   |
+**           |                   |                   |
+**    +------+------+     +------+------+     +------+------+
+**    | x= 8 | o--------> | x= 15| o--------> | x= 31| NULL |
+**    | y= 17| o--------> | y= 20| o--------> | y= 35| NULL |
+**    +------+------+     +------+------+     +------+------+
 */
+
 void				save_sprite_coordinates(t_base *base, double y, double x)
 {
 	if (ll_search(base->head, y, x))

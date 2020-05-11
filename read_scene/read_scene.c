@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/02 16:11:17 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/08 12:11:19 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 10:59:32 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,9 @@ static int		check_save_colors_cf(int y, int i, t_base *base, t_read *read)
 }
 
 /*
-** First information is the type identifier. Each type of information from an
-** element can be separated by one or more space(s).
+** First information on the line in the .cub file is the type identifier.
+** Each type of information from an element can be separated by one
+** or more space(s).
 */
 
 static int		check_scene_line(int *y, t_base *base, char **array)

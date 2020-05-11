@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/08 12:18:15 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 11:01:04 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int			check_wall_edges(int *y, t_base *base, t_read *read)
 
 /*
 ** Walls can be composed of 1's and under condition out of spaces.
-** Spaces in walls are allowed when they don't touch empty floor space ('0'). 
+** Spaces in walls are allowed when they don't touch empty floor space ('0').
 */
 
 static int			check_walls_first_last(int y, t_base *base, t_read *read)

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/11 10:10:39 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 13:43:09 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,6 @@ typedef struct			s_read {
 	int					nb_sprites;
 	char				pos;
 }						t_read;
-
-//stepx y what direction to step in x or y-direction (either +1 or -1)
-//sidedist: length of ray from current position to next x or y-side
-// side: was a NS or a EW wall hit?
 
 typedef struct			s_game{
 	double				dirx;

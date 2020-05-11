@@ -6,15 +6,16 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 13:03:52 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/08 12:47:29 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 11:14:35 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-//perror als er een bestaande message is. 
-// STDERR_FILENO write(STDOUT_FILENO, str, ft_strlen(str));
-
+/*
+** Use of perror when there is an existing system error message available.
+** Otherwise a manual error message is written to the standard error output.
+*/
 
 static void			errormessages_30to(t_base *base, int errornum)
 {

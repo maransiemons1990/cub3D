@@ -6,18 +6,13 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/11 10:20:31 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 10:55:13 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-/*
-** Other option I could have used:
-** mlx_get_screen_size(base->mlx.mlx, &base->read.render_x, &base->read.render_y);
-*/
-
-static void			display_resolution(t_base *base)
+static void			display_resolution(int *render_x, int *render_y)
 {
 	int		maindisplayid;
 	int		pixelswidth;
@@ -26,10 +21,10 @@ static void			display_resolution(t_base *base)
 	maindisplayid = CGMainDisplayID();
     pixelswidth = CGDisplayPixelsWide(maindisplayid);
     pixelsheight = CGDisplayPixelsHigh(maindisplayid);
-	if (base->read.render_x > pixelswidth)
-		base->read.render_x = pixelswidth;
-	if (base->read.render_y > pixelsheight)
-		base->read.render_y = pixelsheight;
+	if (*render_x > pixelswidth)
+		*render_x = pixelswidth;
+	if (*render_y > pixelsheight)
+		*render_y = pixelsheight;
 }
 
 
@@ -51,7 +46,7 @@ int					main(int argc, char **argv)
 			return (error_distr(base, 31));
 	}
 	read_scene_file(base, &base->read);
-	display_resolution(base);
+	display_resolution(&base->read.render_x, &base->read.render_y);
 	game_mlx(base);
 	return (0);
 }

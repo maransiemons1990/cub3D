@@ -6,21 +6,28 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 10:13:03 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 11:52:21 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
 /*
-** 
-** img_ptr - specifies the image to use. 
-** bits_per_pixel - the number of bits needed to represent a pixel color
-** (also called the depth of the image).
-** size_line - the number of bytes used to store one line of the image in memory.
-** This information is needed to move from one line to another in the image.
-** endian - tells you wether the pixel color in the image needs to be stored in
-** little endian (== 0), or big endian (== 1).
+** Mlx_new_image: creates a new image in memory.
+** The user can draw inside the image, and can dump the image inside a specified
+** window. This is done using "mlx_put_image_to_window ()".
+** Mlx_get_data_addr: returns information about the created image, allowing a
+** user to modify it later. It returns a char * address that represents the
+** beginning of the memory area where the image is stored. We should always
+** calculate the memory offset using the line length set by mlx_get_data_addr.
+** 		Img_ptr: specifies the image to use. 
+** 		Bits_per_pixel: the number of bits needed to represent a pixel color
+** 		(also called the depth of the image).
+** 		Size_line: the number of bytes used to store one line of the image
+**		in memory. This information is needed to move from one line to another
+** 		in the image.
+** 		Endian: tells you wether the pixel color in the image needs to be stored in
+**		little endian (== 0), or big endian (== 1) (byteorder).
 */
 static int			loop(t_base *base)
 {
@@ -39,21 +46,14 @@ static int			loop(t_base *base)
 }
 
 /*
-** mlx_init: This will establish a connection to the correct graphical system
-** and will return a void * which holds the location of our current MLX instance/ connection identifier.
-** mlx_new_window: creating a window. Return a pointer to the window we have just created.
-** mlx_loop: to initiate the window rendering. It is an infinite loop that waits for
-** an event, and then calls a user-defined function associated with this event.
-** Loop over the given mlx pointer. Each hook that was registered prior to this will be called accordingly by order of registration.
-** mlx_new_image creates a new image in memory.
-** The user can draw inside the image, and can dump the image inside a specified window
-** at any  time  to  display  it  on  the screen. This is done using **mlx_put_image_to_window ()**.
-** mlx_get_data_addr: returns information about the created image, allowing a user to modify it later.
-** returns a char * address that represents the begining of the memory area where the image is stored.
-** We should ALWAYS calculate the memory offset using the line length set by mlx_get_data_addr.
-** TO DO: temporary image aanmaken.
-** X11_EVENT_KEY_PRESS 2, X11_EVENT_KEY_RELEASE 3, X11_EVENT_EXIT 17
+** Mlx_init: This will establish a connection to the correct graphical system
+** and returns the location of our current MLX instance/connection identifier.
+** Mlx_new_window: creates a window and returns a pointer to it.
+** Mlx_loop: to initiate the window rendering. It is an infinite loop that
+** waits for an event. Each hook that was registered prior to this will be
+** called accordingly by order of registration.
 */
+
 int					game_mlx(t_base *base)
 {
 	initialise_game(&base->move, &base->mlx, base->tex, base);

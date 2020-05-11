@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/08 11:06:37 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 19:34:20 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 11:17:58 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,11 @@ void				free_cub_base(t_base *base)
 	free(base);
 }
 
-//exit 0 is success
-//exit(1) is failure
+/*
+** Exit code (0) indicates successful program termination
+** Exit code (1) indicates unsucessful termination.
+*/
+
 void				exit_game(t_base *base, int code, int error)
 {
 	int		i;

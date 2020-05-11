@@ -6,17 +6,9 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/17 13:26:51 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 12:33:51 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 13:21:35 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-xxd screenshot.bmp| vim -
-Sources:
-https://engineering.purdue.edu/ece264/17au/hw/HW15
-https://stackoverflow.com/questions/11004868/creating-a-bmp-file-bitmap-in-c
-https://itnext.io/bits-to-bitmaps-a-simple-walkthrough-of-bmp-image-format-765dc6857393
-*/
 
 #include "../cub3d.h"
 #include "bmp.h"
@@ -33,7 +25,8 @@ https://itnext.io/bits-to-bitmaps-a-simple-walkthrough-of-bmp-image-format-765dc
 ** ImageWidth       |4 bytes | width of the final image in pixels
 ** ImageHeight      |4 bytes | height of the final image in pixels
 ** Planes           |2 bytes | number of color planes of the target device
-** BitsPerPixel     |2 bytes | number of bits (memory) a pixel takes (in pixel data) to represent a color
+** BitsPerPixel     |2 bytes | number of bits (memory) a pixel takes (in pixel
+**								data) to represent a color
 ** Compression      |4 bytes | 0 to represent no-compression
 ** ImageSize        |4 bytes | final size of the (compressed) image
 ** XpixelsPerMeter  |4 bytes | horizontal resolution of the target device
@@ -61,9 +54,9 @@ static void     bmp_header(t_bitmap  *bmp, t_base *base)
 }
 
 /*
-** - Memory allocation: for pixelbuffer.
-**   * Pixelbuffer - Contains color values of each individual pixel.
-** - The coordinates of a BMP image start from the bottom-left corner.
+** Memory allocation: for pixelbuffer.
+** 		Pixelbuffer - Contains color values of each individual pixel.
+** The coordinates of a BMP image start from the bottom-left corner.
 ** So we loop through y starting at the bottom of the image.
 ** Per y we loop through x and save the color of each individual pixel.
 */
@@ -96,7 +89,6 @@ static int      *pixel_data(t_base *base, t_mlx *mlx, uint32_t imagesize)
 	return (pixelbuffer);
 }
 
-
 static void     error_bmp(t_base *base, t_bitmap *bmp, int *pxlbuf, int code)
 {
 	if (bmp)
@@ -107,16 +99,17 @@ static void     error_bmp(t_base *base, t_bitmap *bmp, int *pxlbuf, int code)
 }
 
 /*
-** - Open file: O_WRONLY - writing only, O_CREAT - create is non existant
+** Open file: O_WRONLY - writing only, O_CREAT - create is non existant
 ** ,S_IRUSR - Read rights owner, S_IWUSR -  write rights owner.
-** - Memory allocation: for both bitmap headers, fileheader and infoheader.
-    * Bitmapfileheader - information about BMP file.
-    * Bitmapinfoheader - information about BMP image.
-** - Initialise both BMP headers with values.
-** - Write: bmp headers to newly opened file.
-** - Pixelbuffer - Contains color values of each individual pixel.
-** - Write: pixelbuffer to file.
-** - Close: deletes the file descriptor.
+** Memory allocation: for both bitmap headers, fileheader and infoheader.
+**		Bitmapfileheader - information about BMP file.
+**		Bitmapinfoheader - information about BMP image.
+** Initialise both BMP headers with values.
+** Write: bmp headers to newly opened file.
+** Pixelbuffer: Contains color values of each individual pixel.
+** Write: pixelbuffer to file.
+** Close: deletes the file descriptor.
+** To check content of bmp file: xxd screenshot.bmp| vim -
 */
 
 void            save_first_image_bmp(t_base *base)

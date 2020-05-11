@@ -1,0 +1,74 @@
+Display_resolution: 
+
+/*
+** Other option I could have used:
+** mlx_get_screen_size(base->mlx.mlx, &base->read.render_x, &base->read.render_y);
+*/
+
+
+Colors and textures:
+
+/*
+** optional:
+** color = (color >> 1) & 8355711; makes the color a bit darker.
+*/
+
+Preprocessor statement: #Pragma Pack
+
+/*
+** https://stackoverflow.com/questions/3318410/pragma-pack-effect
+** Preprocessor statement: #Pragma pack
+** Instructs the compiler to pack structure members with particular alignment.
+** - Most compilers, when you declare a struct, will insert padding between
+** members to ensure that they are aligned to appropriate addresses in memory. 
+** - We need to ensure that the compiler does not insert padding into the data.
+** Each member of the struct should follow the previous one.
+**
+** - push : Pushes the current packing alignment value on the internal compiler
+** stack, and sets the current packing alignment value to n (-->1).
+** - pop: Removes the record from the top of the internal compiler stack.
+*
+** struct Test
+** {
+**    char AA;
+**    int BB;
+**    char CC;
+** }
+**
+** Memory default:
+** |   1   |   2   |   3   |   4   |
+** | AA(1) | pad.................. |
+** | BB(1) | BB(2) | BB(3) | BB(4) | 
+** | CC(1) | pad.................. |
+** --> sizeof(test) = 4 * 3
+**
+** #pragma pack(1)
+** |   1   | 
+** | AA(1) |
+** | BB(1) |
+** | BB(2) |
+** | BB(3) |
+** | BB(4) |
+** | CC(1) |
+** --> sizeof(test) = 1 * 6
+**
+** Downside: it's slower!
+**-----------------------------------
+** uint16, uint32:
+** - unsigned integer of length 16 or 32 bits
+*/
+
+Check content o bmp file:
+xxd screenshot.bmp| vim -
+
+Scaling and moving sprites:
+** Parameters for scaling and moving the sprites:
+** - uDiv and vDiv: to shrink the sprite
+** - vMove: to move the sprite down if it has to stand on the floor,
+**   or up if it has to hang on the ceiling.
+** - vMoveScreen is vMove projected on the screen by dividing it through the depth.
+**
+** default: 1, 1, 0.0
+** uDiv = 2, vDiv = 2, vMove = 0.0, the sprites are half as big, and float.
+** Put it back on the ground by setting vMove to 64.0 (the size of the texture).
+** 

@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/08 16:37:30 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/08 12:07:31 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 10:52:24 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static char			*gnl_cub3d(int fd)
 		return (NULL); 
 	return (line);
 }
-
 
 static int			check_filetype(char *s)
 {

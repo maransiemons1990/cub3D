@@ -6,15 +6,15 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/08 11:12:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 12:24:03 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 11:08:47 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
 /*
-** Swapped the data content of the node. Not the whole node. So the node blocks don't move only the content.
-** Adresses of the nodes stay with the node. Seemed easier then switching the whole node!
+** Swapped the data content of the node. Not the whole node. So the node blocks
+** don't move only the content. Adresses of the nodes stay with the node.
 */
 
 static void			swap(double *i, double *j)
@@ -48,20 +48,6 @@ void				ll_sort_sprites_swap_data(t_base  *base)
 		i = i->next;
 	}
 }
-
-/*
-** Problem: how can I save the coordinates of an unknown number of sprites.
-** Without counting them first and then scanning again to save them.
-** Solution: linked list have a dynamic listsize contrary to the fixed size of arrays.
-**
-**         head             second node          third node 
-**           |                   |                   |  
-**           |                   |                   |  
-**    +------+------+     +------+------+     +------+------+  
-**    | x= 8 | o--------> | x= 15| o--------> | x= 31| NULL |
-**    | y= 17| o--------> | x= 20| o--------> | y= 35| NULL |
-**    +------+------+     +------+------+     +------+------+  
-*/
 
 void				ll_count_sprites(t_base *base)
 {

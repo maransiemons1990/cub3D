@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/06 20:46:32 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 14:24:47 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 12:21:18 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ static void			move_left(t_game *game, t_read *read, char **array)
 		[(int)read->x_pos] == '+')
 		read->y_pos -= game->dirx * game->movespeed;
 }
-
 
 void				move_rotate(t_game *game, t_read *read, t_move *move,
 									char **array)

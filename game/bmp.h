@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:35:56 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 14:09:15 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 11:27:30 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,13 @@
 #pragma pack(push, 1)
 
 /*
-** https://stackoverflow.com/questions/3318410/pragma-pack-effect
 ** Preprocessor statement: #Pragma pack
 ** Instructs the compiler to pack structure members with particular alignment.
-** - Most compilers, when you declare a struct, will insert padding between
-** members to ensure that they are aligned to appropriate addresses in memory. 
 ** - We need to ensure that the compiler does not insert padding into the data.
 ** Each member of the struct should follow the previous one.
-**
-** - push : Pushes the current packing alignment value on the internal compiler
+** - Push : Pushes the current packing alignment value on the internal compiler
 ** stack, and sets the current packing alignment value to n (-->1).
-** - pop: Removes the record from the top of the internal compiler stack.
+** - Pop: Removes the record from the top of the internal compiler stack.
 *
 ** struct Test
 ** {
@@ -50,11 +46,6 @@
 ** | BB(4) |
 ** | CC(1) |
 ** --> sizeof(test) = 1 * 6
-**
-** Downside: it's slower!
-**-----------------------------------
-** uint16, uint32:
-** - unsigned integer of length 16 or 32 bits
 */
 
 typedef struct			s_bmp_fileheader{

@@ -6,20 +6,19 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 10:14:43 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 13:30:31 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
 /*
-** TEXy: Cast the texture coordinate to integer, and mask with (texheight - 1) in case of overflow. 
-** TEXpOS: Starting texture coordinate change with a step.
-** ----OWN PART----
-** Check which side the ray the wall hit (1[N], E[2], S[3], W[4])
-** This determines which texture is used as color.
-** E and W walls have a slightly darker color (shadow): R, G and B byte each
-** divided through two with a "shift" and an "and"
+** Draw the pixels as a vertical line.
+** Texy: Cast the texture coordinate to integer, and mask with (texheight - 1)
+** in case of overflow. 
+** Texpos: Starting texture coordinate. Every y increase, change with a step.
+** Check which side the ray hit the wall. This determines which texture is used
+** as color.
 ** my_mlx: set wall coordinate to new color.
 */
 
@@ -45,12 +44,11 @@ static void			verLine(t_base *base, t_tex_co *tex_co, int x)
 }
 
 /*
-** perform DDA
-** HIT: was there a wall hit?
-** jump to next map square, OR in x-direction, OR in y-direction.
-** if: Jump in X direction.
-** else: JUmp in Y direction.
-** Check if ray has hit a wall
+** Perform Digital Differential Analysis (DDA)
+** Jump to next map square, in x-direction OR in y-direction.
+** if --> jump in X direction.
+** else --> jump in Y direction.
+** Hit: check if ray has hit a wall.
 */
 
 static void			DDA(t_game *game, char **array)
@@ -80,7 +78,7 @@ static void			DDA(t_game *game, char **array)
 }
 
 /*
-** Calculate step and initial sideDist
+** Calculate step and initial sidedist
 */
 
 static void			initial_step_sidedist(t_read *read, t_game *game)
@@ -108,14 +106,11 @@ static void			initial_step_sidedist(t_read *read, t_game *game)
 }
 
 /*
-** -PLANE: the 2d raycaster version of camera plane
-** if (base->game.diry == 0) THEN planex = 0, planey 0.66 -y> N and S
-** if (base->game.diry == 1 || == -1) THEN planex = 0.66 , ylaneY 0 --> E and W
-** -CAMERAX: x-coordinate in camera space
-** if W || S the image was mirrored. Unmirror: camerax * -1.
-** -RAYDIR: calculate ray position and direction
-** -MAPx/Y: which box of the map we're in
-** -DELTADIST: length of ray from one x or y-side to next x or y-side
+** Camerax: x-coordinate in camera space.
+** To prevent a mirrored image if West or South, camerax * -1.
+** Raydir: calculate ray position and direction.
+** Mapx & -y: which box of the map we're in.
+** Deltadist: length of ray from one x or y-side to next x or y-side.
 */
 
 static void			ray_position(t_read *read, t_game *game, int x)
@@ -134,7 +129,12 @@ static void			ray_position(t_read *read, t_game *game, int x)
     game->deltadisty = fabs(1 / game->raydiry);
 }
 
-//draw the pixels of the stripe as a vertical line //and calculate first
+/*
+** Zbuffer: while raycasting the walls, store the perpendicular distance of
+** each vertical stripe in a 1D ZBuffer. Because the ZBuffer is 1D and can
+** only detect if the sprite is in front or behind a wall.
+*/
+
 void				raycasting(t_base *base, t_game *game, t_read *read)
 {
 	int		x;

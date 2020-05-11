@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/07 12:28:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 10:11:02 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 12:17:32 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,11 @@ static char		*create_path(t_base *base, t_read read, int i)
 }
 
 /*
-** 
-** img_ptr - specifies the image to use. 
-** bits_per_pixel - the number of bits needed to represent a pixel color
-** (also called the depth of the image).
-** size_line - the number of bytes used to store one line of the image in memory.
-** This information is needed to move from one line to another in the image.
-** endian - tells you wether the pixel color in the image needs to be stored in
-** little endian (== 0), or big endian (== 1).
-** https://opengameart.org/content/64x-textures-an-overlays
-** https://gamebanana.com/textures/download/4678
-** https://anyconv.com/png-to-xpm-converter/
-** Tutorial states "mlx_png_file_to_image currently leaks memory".
-** So changed all png functions to xpm.
-** no 0, ea 1, so 2, we 3, sprite 4
+** mlx_png_file_to_image currently leaks memory. Therefore using xpm function
+** instead.
+** i = 0: North, i = 1: East, i = 2: South , i = 3: West, i = 4: Sprite
 */
+
 void			load_texture(t_base *base, t_tex *tex, t_game *game, void *mlx)
 {
 	char 	*path;
@@ -71,13 +61,14 @@ void			load_texture(t_base *base, t_tex *tex, t_game *game, void *mlx)
 }
 
 /*
-** Initial direction vector out of scene file: N, E, S, W.
-** - PLANE: the 2d raycaster version of camera plane.
-** Initial camera plane value. Value changes when rotating.
-** Done rotating, the updated value will be the new constant value
-** use to determine your rayposition.
-** if (base->game.diry == 0) THEN planex = 0, planey 0.66 --> N and S 
-** if (base->game.diry == 1 || == -1) THEN planex = 0.66 , planey 0 --> E and W --> otherwise skewed wall
+** Initial direction vector is based on the viewing direction of the player:
+** N, E, S or W.
+** Plane: the 2d raycaster version of camera plane. Initial camera plane value
+** changes when rotating. Done rotating, the updated value will be the new
+** constant value use to determine your rayposition.
+** Initial camera plane set on:
+**		Planex = 0, planey = 0.66 --> N and S
+**		Planex = 0.66, planey = 0 --> E and W (otherwise skewed wall)
 */
 
 void			orientation(t_game *game, char pos)
@@ -89,15 +80,18 @@ void			orientation(t_game *game, char pos)
 	if (pos == 'S')
 		game->diry = 1;
 	if (pos == 'E')
-		game->dirx = 1;	
+		game->dirx = 1;
 	if (pos == 'W')
 		game->dirx = -1;
 	game->planex = (game->diry == 0) ? 0 : 0.66;
 	game->planey = (game->diry == 0) ? 0.66 : 0;
 }
 
-//wss new_window ook nog op NULL
-//win en img has to be set to NULL otherwise sefgault in exit_game
+/*
+** Mlx_win en img has to be set to NULL otherwise sefgault during the exit
+** of the game
+*/
+
 void			initialise_game(t_move *move, t_mlx *mlx, t_tex *tex,
 									t_base *base)
 {

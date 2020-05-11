@@ -6,16 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/08 14:53:21 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 12:29:00 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 11:20:03 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
-
-/*
-** optional:
-** color = (color >> 1) & 8355711; makes the floor or ceiling a bit darker.
-*/
 
 void				floor_ceiling_smooth(t_mlx *mlx, t_read *read)
 {

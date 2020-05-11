@@ -6,7 +6,7 @@
 #    By: msiemons <msiemons@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/03/04 17:11:26 by msiemons      #+#    #+#                  #
-#    Updated: 2020/05/08 19:30:29 by Maran         ########   odam.nl          #
+#    Updated: 2020/05/11 13:53:23 by Maran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,12 +43,10 @@ SRC = main.c\
 		game/floor_ceiling.c\
 		game/sprites.c\
 
-#twod_checker.c valuechecker.c\#
 OBJ = $(SRC:.c=.o)
 
 FLAGS = -Wall -Wextra -Werror
 
-# You may also need to specify the path to the  MiniLibX  library,  using the -L flag.
 LINKING = -lmlx -framework OpenGL -framework AppKit
 
 LINK_DISPLAY = -framework CoreGraphics
@@ -58,7 +56,6 @@ all: $(NAME)
 $(NAME): $(LIBMLX) lib_ft $(OBJ)
 	@ar rcs $(NAME) $(OBJ)
 	gcc $(FLAGS) -I $(MLX) -L $(MLX) $(LINKING) $(LINK_DISPLAY) $(NAME) -o cub3D
-#	./a.out	example.cub
 
 $(LIBMLX):
 	@make -C $(MLX)
@@ -70,7 +67,6 @@ lib_ft:
 
 %.o: %.c
 	gcc -Wall -Wextra -Werror -c $< -o $@
-#	gcc -I . -I libft/. -Wall -Wextra -Werror -c $< -o $@
 
 clean:
 		$(RM) $(OBJ) $(LIBMLX) $(BMP)
@@ -82,25 +78,3 @@ fclean: clean
 		@make fclean -C $(LIBFT)
 
 re: 	fclean all
-
-
-#$(NAME): $(LIBMLX) $(OBJ)
-#	gcc $(FLAGS) -I $(MLX) -L $(MLX) $(LINKING) $(SRC) && ./a.out
-
-#$(LIBMLX):
-#	@make -C $(MLX)
-#	@cp $(MLX)/$(LIBMLX) .
-
-#$(LIBFT):
-#	make -C $(LIBFT)
-#	cp $(LIBFT)/$(LIBFT).a .
-
-#clean:
-#	make clean -C $(MLX)
-#	$(RM) $(OBJ) $(LIBMLX) a.out
-
-#fclean: clean
-#	$(RM) $(NAME)
-
-#re: fclean all
-#--------------
