@@ -6,7 +6,7 @@
 #    By: msiemons <msiemons@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/03/04 17:11:26 by msiemons      #+#    #+#                  #
-#    Updated: 2020/05/08 12:02:24 by Maran         ########   odam.nl          #
+#    Updated: 2020/05/08 19:30:29 by Maran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ SRC = main.c\
 		game/move.c\
 		game/rotate.c\
 		game/floor_ceiling.c\
-		game/sprites.c 
+		game/sprites.c\
 
 #twod_checker.c valuechecker.c\#
 OBJ = $(SRC:.c=.o)

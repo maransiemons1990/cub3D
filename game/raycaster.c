@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 12:38:40 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 10:14:43 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,9 +141,6 @@ void				raycasting(t_base *base, t_game *game, t_read *read)
 	double	frametime;
 	double	oldtime;
 
-	base->zbuffer = (double *)malloc(sizeof(double) * read->render_x);
-	if (base->zbuffer == NULL)
-		exit_game(base, 1, 27);
 	x = 0;
 	while(x < read->render_x)
 	{

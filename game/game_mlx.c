@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 14:48:22 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 10:13:03 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int			loop(t_base *base)
 */
 int					game_mlx(t_base *base)
 {
-	initialise_game(&base->move, &base->mlx, base->tex, base->zbuffer);
+	initialise_game(&base->move, &base->mlx, base->tex, base);
 	orientation(&base->game, base->read.pos);
 	base->mlx.mlx = mlx_init();
 	if (base->mlx.mlx == NULL)

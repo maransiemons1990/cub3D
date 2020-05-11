@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/08 15:47:29 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 10:10:39 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ void					ll_count_sprites(t_base *base);
 void					ll_sort_sprites_swap_data(t_base  *base);
 int						game_mlx(t_base *base);
 void					initialise_game(t_move *move, t_mlx *mlx, t_tex *tex,
-							double *zbuffer);
+							t_base *base);
 void					orientation(t_game *game, char pos);
 void					load_texture(t_base *base, t_tex *tex, t_game *game,
 							void *mlx);

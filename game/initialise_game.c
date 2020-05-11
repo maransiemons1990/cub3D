@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/07 12:28:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/08 14:49:33 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/11 10:11:02 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void			orientation(t_game *game, char pos)
 //wss new_window ook nog op NULL
 //win en img has to be set to NULL otherwise sefgault in exit_game
 void			initialise_game(t_move *move, t_mlx *mlx, t_tex *tex,
-									double *zbuffer)
+									t_base *base)
 {
 	int 	i;
 	
@@ -117,5 +117,7 @@ void			initialise_game(t_move *move, t_mlx *mlx, t_tex *tex,
 		tex[i].xpm_img = NULL;
 		i++;
 	}
-	zbuffer = NULL;
+	base->zbuffer = (double *)malloc(sizeof(double) * base->read.render_x);
+	if (base->zbuffer == NULL)
+		exit_game(base, 1, 27);
 }
