@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/08 11:06:37 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 14:40:43 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/12 18:35:27 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,10 @@ void				exit_game(t_base *base, int code, int error)
 	while (i < 5)
 	{
 		if (base->tex[i].xpm_img)
+		{
 			mlx_destroy_image(base->mlx.mlx, base->tex[i].xpm_img);
+			base->tex[i].xpm_img = NULL;
+		}
 		i++;
 	}
 	if (base->mlx.img)
@@ -86,3 +89,4 @@ void				exit_game(t_base *base, int code, int error)
 		exit(code);
 	}
 }
+

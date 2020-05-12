@@ -6,30 +6,24 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/07 12:28:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 14:49:25 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/12 18:39:56 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-static char		*create_path(t_base *base, t_read read, int i)
+static char		*create_path(t_read *read, int i)
 {
-	char	*path;
-
-	path = NULL;
 	if (i == 0)
-		path = ft_strjoin(read.no, "/wall_texture.xpm");
+		return (read->no);
 	else if (i == 1)
-		path = ft_strjoin(read.ea, "/CrateOver.xpm");
+		return (read->ea);
 	else if (i == 2)
-		path = ft_strjoin(read.so, "/dirt.xpm");
+		return (read->so);
 	else if (i == 3)
-		path = ft_strjoin(read.we, "/OreVein.xpm");
-	else if (i == 4)
-		path = ft_strjoin(read.sprite, "/barrel.xpm");
-	if (path == NULL)
-		exit_game(base, 1, 21);
-	return (path);
+		return (read->we);
+	else
+		return (read->sprite);
 }
 
 /*
@@ -48,10 +42,9 @@ void			load_texture(t_base *base, t_tex *tex, t_game *game, void *mlx)
 	game->texheight = 64;
 	while (i < 5)
 	{
-		path = create_path(base, base->read, i);
+		path = create_path(&base->read, i);
 		tex[i].xpm_img = mlx_xpm_file_to_image(mlx, path, &game->texwidth,
 			&game->texheight);
-		free(path);
 		if (tex[i].xpm_img == NULL)
 			exit_game(base, 1, 22);
 		tex[i].xpm_addr = mlx_get_data_addr(tex[i].xpm_img, &tex[i].xpm_bpp,
@@ -104,8 +97,9 @@ void			initialise_game(t_move *move, t_mlx *mlx, t_tex *tex,
 	move->move_left = 0;
 	move->rotate_right = 0;
 	move->rotate_left = 0;
-	mlx->img = NULL;
+	mlx->mlx = NULL;
 	mlx->mlx_win = NULL;
+	mlx->img = NULL;
 	while (i < 5)
 	{
 		tex[i].xpm_img = NULL;

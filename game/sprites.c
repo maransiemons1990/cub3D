@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/09 13:36:12 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 17:14:20 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/12 15:00:11 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,10 @@ static void		project_sprite(t_sprite *sprite, t_ll_sprite *ll_sprite,
 	spritex = ll_sprite->x - read->x_pos;
 	spritey = ll_sprite->y - read->y_pos;
 	invdet = 1.0 / (game->planex * game->diry - game->dirx * game->planey);
-	transformx = invdet * (game->diry * spritex - game->dirx * spritey);
+	if (read->pos == 'W' || read->pos == 'S')
+		transformx = (invdet * (game->diry * spritex - game->dirx * spritey) * -1); //
+	else
+		transformx = invdet * (game->diry * spritex - game->dirx * spritey);
 	sprite->transformy = invdet * (-game->planey * spritex + game->planex
 		* spritey);
 	sprite->spr_screenx = (int)((read->render_x / 2)

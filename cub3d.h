@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/11 17:08:20 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/12 23:37:15 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,6 @@ typedef struct			s_tex{
 	int					xpm_endian;
 }						t_tex;
 
-typedef struct			s_floor{
-	float				floorstepx;
-	float				floorstepy;
-	float				floorx;
-	float				floory;
-}						t_floor;
-
 typedef struct			s_tex_co{
 	double				step;
 	double				texpos;
@@ -153,9 +146,6 @@ typedef struct			s_base{
 	t_game				game;
 	t_move				move;
 	t_tex				tex[5];
-	t_tex				tex_f;
-	t_tex				tex_c;
-	t_floor				floor;
 	t_tex_co			tex_co;
 	t_wall				wall;
 	t_ll_sprite			*head;
@@ -206,8 +196,7 @@ void					draw_calculations_wall(t_read *read, t_game *game,
 							t_wall *wall);
 void					texture_coordinates_wall(t_tex_co *tex_co,
 							t_wall *wall, t_game *game, int render_y);
-int						texture_pick_wallside(t_tex *tex, int texx, int texy,
-							int i);
+int						texture_pick(t_tex *tex, int texx, int texy, int i);
 void					my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
 void					sprite(t_base *base, t_sprite *sprite, t_game *game,
 							t_read *read);

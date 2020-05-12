@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/06 18:32:30 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 14:52:37 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/12 23:37:30 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void		my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color)
 ** divided through two with a "shift" and an "and".
 */
 
-int			texture_pick_wallside(t_tex *tex, int texx, int texy, int i)
+int			texture_pick(t_tex *tex, int texx, int texy, int i)
 {
 	char	*dest;
 	int		color;
@@ -46,8 +46,6 @@ int			texture_pick_wallside(t_tex *tex, int texx, int texy, int i)
 	dest = tex[i].xpm_addr + (texy * tex[i].xpm_line_length + texx *
 		(tex[i].xpm_bpp / 8));
 	color = *(unsigned int*)dest;
-	if (i == 1 || i == 3)
-		color = (color >> 1) & 8355711;
 	return (color);
 }
 

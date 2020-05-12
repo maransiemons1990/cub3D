@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 14:58:03 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/12 23:37:40 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ static void			verline(t_base *base, t_tex_co *tex_co, int x)
 	{
 		texy = (int)base->tex_co.texpos & (base->game.texheight - 1);
 		tex_co->texpos += tex_co->step;
-		color = texture_pick_wallside(base->tex, tex_co->texx, texy,
+		color = texture_pick(base->tex, tex_co->texx, texy,
 			base->game.tex_side);
+		if (base->game.tex_side == 1 || base->game.tex_side == 3)
+			color = (color >> 1) & 8355711;
 		my_mlx_pixel_put(&base->mlx, x, y, color);
 		y++;
 	}

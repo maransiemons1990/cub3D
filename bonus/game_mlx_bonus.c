@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   game_mlx.c                                         :+:    :+:            */
+/*   game_mlx_bonus.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/12 18:04:23 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/12 22:09:18 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3d.h"
+#include "cub3d_bonus.h"
 
 /*
 ** Mlx_new_image: creates a new image in memory.
@@ -40,7 +40,7 @@ static int			loop(t_base *base)
 		&base->mlx.line_length, &base->mlx.endian);
 	if (base->game.update)
 		move_rotate(&base->game, &base->read, &base->move, base->read.array);
-	floor_ceiling_smooth(&base->mlx, &base->read);
+	floor_ceiling_texture(base);
 	raycasting(base, &base->game, &base->read);
 	sprite(base, &base->sprite, &base->game, &base->read);
 	mlx_put_image_to_window(base->mlx.mlx, base->mlx.mlx_win,
@@ -58,7 +58,7 @@ static int			loop(t_base *base)
 ** called accordingly by order of registration.
 */
 
-int					game_mlx(t_base *base)
+int					game_mlx_bonus(t_base *base)
 {
 	initialise_game(&base->move, &base->mlx, base->tex, base);
 	orientation(&base->game, base->read.pos);
