@@ -6,11 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/30 14:12:22 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 13:07:16 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 15:48:49 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d_bonus.h"
+# include "../cub3d_bonus.h"
 
 /*
 ** Cell: the cell coord is got from the integer parts of floorx and floory
@@ -101,22 +101,22 @@ static void		floor_ceiling_tex_y(t_read *read, t_game *game, t_floor *floor
 	floor->floory = read->y_pos + floor->rowdistance * raydiry0;
 }
 
-void				exit_bonus(t_base *base, t_tex *tex_fc)
-{
-	int		i;
+// void				exit_bonus(t_base *base, t_tex *tex_fc)
+// {
+// 	int		i;
 
-	i = 0;
-	while (i < 2)
-	{
-		if (tex_fc[i].xpm_img)
-		{
-			mlx_destroy_image(base->mlx.mlx, tex_fc[i].xpm_img);
-			tex_fc[i].xpm_img = NULL;
-		}
-		i++;
-	}
-	exit_game(base, 1, 22); //
-}
+// 	i = 0;
+// 	while (i < 2)
+// 	{
+// 		if (tex_fc[i].xpm_img)
+// 		{
+// 			mlx_destroy_image(base->mlx.mlx, tex_fc[i].xpm_img);
+// 			tex_fc[i].xpm_img = NULL;
+// 		}
+// 		i++;
+// 	}
+// 	exit_game(base, 1, 22); //
+// }
 
 /*
 ** i = 0: floor, i = 1: ceiling.
@@ -138,7 +138,7 @@ static void			load_floor_ceiling(t_base *base, t_tex *tex_fc,
 		tex_fc[i].xpm_img = mlx_xpm_file_to_image(mlx, path, &game->texwidth,
 			&game->texheight);
 		if (tex_fc[i].xpm_img == NULL)
-			exit_bonus(base, tex_fc); //
+			exit_game(base, 1, 22); //
 		tex_fc[i].xpm_addr = mlx_get_data_addr(tex_fc[i].xpm_img,
 			&tex_fc[i].xpm_bpp, &tex_fc[i].xpm_line_length,
 			&tex_fc[i].xpm_endian);
@@ -156,15 +156,15 @@ static void			load_floor_ceiling(t_base *base, t_tex *tex_fc,
 void			floor_ceiling_texture(t_base *base)
 {
 	int 		y;
-	t_tex		tex_fc[2]; //is een pointer
+	//t_tex		tex_fc[2]; //is een pointer
 	t_floor		floor;
 
-	load_floor_ceiling(base, tex_fc, &base->game, base->mlx.mlx);
+	load_floor_ceiling(base, base->tex_fc, &base->game, base->mlx.mlx);
 	y = base->read.render_y / 2 + 1;
 	while (y < base->read.render_y)
     {
 		floor_ceiling_tex_y(&base->read, &base->game, &floor, y);
-		floor_ceiling_tex_x_loop(base, &floor, tex_fc, y);
+		floor_ceiling_tex_x_loop(base, &floor, base->tex_fc, y);
 	  	y++;
     }
 }

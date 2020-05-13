@@ -6,7 +6,7 @@
 #    By: msiemons <msiemons@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/03/04 17:11:26 by msiemons      #+#    #+#                  #
-#    Updated: 2020/05/12 22:03:52 by Maran         ########   odam.nl          #
+#    Updated: 2020/05/13 17:07:06 by Maran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ LIBMLX = libmlx.dylib
 
 BMP = screenshot.bmp
 
-SRC = exit_game.c\
+SRC = main.c\
+		exit_game.c\
 		errormessages.c\
 		get_cub/gnl_cub3d.c\
 		get_cub/gnl_cub3d_utils.c\
@@ -33,6 +34,8 @@ SRC = exit_game.c\
 		read_scene/check_map_utils.c\
 		read_scene/save_sprites.c\
 		read_scene/organise_sprites.c\
+		game/game_mlx.c\
+		game/floor_ceiling.c\
 		game/initialise_game.c\
 		game/save_first_image.c\
 		game/keys.c\
@@ -42,15 +45,30 @@ SRC = exit_game.c\
 		game/rotate.c\
 		game/sprites.c\
 
-REGULAR = main.c\
-		game/game_mlx.c\
-		game/floor_ceiling.c\
-
 BONUS = bonus/main_bonus.c\
-		bonus/game_mlx_bonus.c\
-		bonus/floor_ceiling_texture_bonus.c\
+		bonus/exit_game_bonus.c\
+		bonus/errormessages_bonus.c\
+		bonus/get_cub/gnl_cub3d_bonus.c\
+		bonus/get_cub/gnl_cub3d_utils_bonus.c\
+		bonus/read_scene/read_scene_bonus.c\
+		bonus/read_scene/initialise_read_scene_bonus.c\
+		bonus/read_scene/read_scene_utils_bonus.c\
+		bonus/read_scene/check_map_bonus.c\
+		bonus/read_scene/check_map_utils_bonus.c\
+		bonus/read_scene/save_sprites_bonus.c\
+		bonus/read_scene/organise_sprites_bonus.c\
+		bonus/game/game_mlx_bonus.c\
+		bonus/game/floor_ceiling_texture_bonus.c\
+		bonus/game/initialise_game_bonus.c\
+		bonus/game/save_first_image_bonus.c\
+		bonus/game/keys_bonus.c\
+		bonus/game/raycaster_bonus.c\
+		bonus/game/raycaster_utils_bonus.c\
+		bonus/game/move_bonus.c\
+		bonus/game/rotate_bonus.c\
+		bonus/game/sprites_bonus.c\
 
-HEADER_FILES = cub3d.h bonus/cub3d_bonus.h\
+HEADER_FILES = cub3d.h game/bmp.h bonus/cub3d_bonus.h bonus/game/bmp_bonus.h\
 
 CFLAGS = -Wall -Wextra -Werror
 
@@ -58,17 +76,21 @@ LINKING = -lmlx -framework OpenGL -framework AppKit
 
 LINK_DISPLAY = -framework CoreGraphics
 
-ifdef WITH_BONUS
-	OBJ = $(SRC:.c=.o) $(BONUS:.c=.o)
-else
-	OBJ = $(SRC:.c=.o) $(REGULAR:.c=.o)
-endif
+OBJ = $(SRC:.c=.o)
+
+OBJ_BONUS = $(BONUS:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBMLX) lib_ft
 	@ar rcs $(LIB) $(OBJ)
 	$(CC) -I $(MLX) -L $(MLX) $(LINKING) $(LINK_DISPLAY) $(LIB) -o $(NAME)
+	@echo "\n>>>>>Finished making<<<<<"
+
+bonus_cub3D: $(OBJ_BONUS) $(LIBMLX) lib_ft
+	@ar rcs $(LIB) $(OBJ_BONUS)
+	$(CC) -I $(MLX) -L $(MLX) $(LINKING) $(LINK_DISPLAY) $(LIB) -o $(NAME)
+	@echo "\n>>>>>Finished making bonus<<<<<"
 
 $(LIBMLX):
 	@make -C $(MLX)
@@ -81,11 +103,10 @@ lib_ft:
 %.o: %.c $(HEADER_FILES)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-bonus: $(OBJ)
-	WITH_BONUS=1 make all
+bonus: $(OBJ_BONUS) bonus_cub3D
 
 clean:
-	$(RM) $(SRC:.c=.o) $(REGULAR:.c=.o) $(BONUS:.c=.o) $(LIBMLX) $(BMP)
+	$(RM) $(SRC:.c=.o) $(BONUS:.c=.o) $(LIBMLX) $(BMP)
 	@make clean -C $(LIBFT)
 	@make clean -C $(MLX)
 

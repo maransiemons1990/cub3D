@@ -6,13 +6,12 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 13:09:28 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 15:46:43 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "cub3d_bonus.h"
 # include <CoreGraphics/CGDirectDisplay.h>
-
 
 static void			display_resolution(int *render_x, int *render_y)
 {
@@ -48,6 +47,6 @@ int					main(int argc, char **argv)
 	}
 	read_scene_file(base, &base->read);
 	display_resolution(&base->read.render_x, &base->read.render_y);
-	game_mlx_bonus(base);
+	game_mlx(base);
 	return (0);
 }

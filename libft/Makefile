@@ -6,7 +6,7 @@
 #    By: msiemons <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/28 13:34:09 by msiemons      #+#    #+#                  #
-#    Updated: 2020/04/17 12:08:40 by Maran         ########   odam.nl          #
+#    Updated: 2020/05/13 16:53:13 by Maran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ bonus: $(BONUS_OFILE)
 	ar rcs $(NAME) $^
 
 %.o: %.c
-	gcc -I . -Wall -Wextra -Werror -c $< -o $@
+	@gcc -I . -Wall -Wextra -Werror -c $< -o $@
 
 clean:
 		$(RM) $(OFILE)
