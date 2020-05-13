@@ -6,11 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/06 18:32:30 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 15:50:09 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:57:45 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d_bonus.h"
+#include "../cub3d_bonus.h"
 
 /*
 ** Buffer all our pixels to a image. Which we later push to the window.

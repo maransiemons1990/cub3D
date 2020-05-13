@@ -6,11 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/07 12:28:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 15:49:52 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:57:28 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d_bonus.h"
+#include "../cub3d_bonus.h"
 
 static char		*create_path(t_read *read, int i)
 {

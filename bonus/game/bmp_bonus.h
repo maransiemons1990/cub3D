@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   bmp.h                                              :+:    :+:            */
+/*   bmp_bonus.h                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:35:56 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 13:15:52 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:58:33 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BMP_H
-# define BMP_H
+#ifndef BMP_BONUS_H
+# define BMP_BONUS_H
 
 # include <fcntl.h>
 

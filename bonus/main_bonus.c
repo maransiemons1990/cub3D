@@ -6,12 +6,12 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/04 18:30:15 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 15:46:43 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 18:01:36 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d_bonus.h"
-# include <CoreGraphics/CGDirectDisplay.h>
+#include "cub3d_bonus.h"
+#include <CoreGraphics/CGDirectDisplay.h>
 
 static void			display_resolution(int *render_x, int *render_y)
 {

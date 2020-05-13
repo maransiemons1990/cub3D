@@ -6,12 +6,12 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/08 16:37:30 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 15:48:22 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:59:08 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d_bonus.h"
-# include <fcntl.h>
+#include "../cub3d_bonus.h"
+#include <fcntl.h>
 
 static char			*gnl_cub3d_read(int fd, char *new_line)
 {

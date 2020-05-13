@@ -6,12 +6,12 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:43:54 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 15:51:03 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:59:46 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d_bonus.h"
-# include <fcntl.h>
+#include "../cub3d_bonus.h"
+#include <fcntl.h>
 
 int				save_path_substr(int y, int i, char **identifier, t_base *base)
 {

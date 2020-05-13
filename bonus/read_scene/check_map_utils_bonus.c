@@ -6,11 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/16 15:34:37 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 15:50:45 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:59:27 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d_bonus.h"
+#include "../cub3d_bonus.h"
 
 /*
 ** Looks for first character in line except spaces. Returns position.

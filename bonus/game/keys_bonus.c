@@ -6,11 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 17:27:15 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 15:49:56 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:57:31 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d_bonus.h"
+#include "../cub3d_bonus.h"
 
 int					keypress(int keycode, t_base *base)
 {

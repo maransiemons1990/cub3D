@@ -6,11 +6,11 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/02 16:11:17 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 15:50:58 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:59:40 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d_bonus.h"
+#include "../cub3d_bonus.h"
 
 static int		check_save_path(int y, int i, t_base *base, t_read *read)
 {

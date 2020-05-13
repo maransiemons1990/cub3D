@@ -6,11 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/30 14:12:22 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 15:48:49 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:57:03 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d_bonus.h"
+#include "../cub3d_bonus.h"
 
 /*
 ** Cell: the cell coord is got from the integer parts of floorx and floory
@@ -29,7 +29,7 @@ static void		get_tex_coordinate(t_game *game, t_floor *floor)
 	floor->ty = (int)(game->texheight * (floor->floory - celly))
 		& (game->texheight - 1);
 	floor->floorx += floor->floorstepx;
-	floor->floory += floor->floorstepy;	
+	floor->floory += floor->floorstepy;
 }
 
 /*
@@ -63,8 +63,8 @@ static void		floor_ceiling_tex_x_loop(t_base *base, t_floor *floor,
 }
 
 /*
-** The camera ray goes through the following two points: 
-** 		1. The camera itself, which is at a certain height (posZ). 
+** The camera ray goes through the following two points:
+** 		1. The camera itself, which is at a certain height (posZ).
 **		2. A point in front of the camera (through an imagined vertical plane)
 ** Raydir: for leftmost ray (x = 0) and rightmost ray (x = width screen)
 ** P: Current y position compared to the center of the screen (the horizon)
@@ -85,7 +85,7 @@ static void		floor_ceiling_tex_y(t_read *read, t_game *game, t_floor *floor
 	float	raydiry0;
 	float	raydirx1;
 	float	raydiry1;
-	
+
 	raydirx0 = game->dirx - game->planex;
 	raydirx1 = game->dirx + game->planex;
 	raydiry0 = game->diry - game->planey;
@@ -101,28 +101,11 @@ static void		floor_ceiling_tex_y(t_read *read, t_game *game, t_floor *floor
 	floor->floory = read->y_pos + floor->rowdistance * raydiry0;
 }
 
-// void				exit_bonus(t_base *base, t_tex *tex_fc)
-// {
-// 	int		i;
-
-// 	i = 0;
-// 	while (i < 2)
-// 	{
-// 		if (tex_fc[i].xpm_img)
-// 		{
-// 			mlx_destroy_image(base->mlx.mlx, tex_fc[i].xpm_img);
-// 			tex_fc[i].xpm_img = NULL;
-// 		}
-// 		i++;
-// 	}
-// 	exit_game(base, 1, 22); //
-// }
-
 /*
 ** i = 0: floor, i = 1: ceiling.
 */
 
-static void			load_floor_ceiling(t_base *base, t_tex *tex_fc,
+static void		load_floor_ceiling(t_base *base, t_tex *tex_fc,
 										t_game *game, void *mlx)
 {
 	char	*path;
@@ -138,7 +121,7 @@ static void			load_floor_ceiling(t_base *base, t_tex *tex_fc,
 		tex_fc[i].xpm_img = mlx_xpm_file_to_image(mlx, path, &game->texwidth,
 			&game->texheight);
 		if (tex_fc[i].xpm_img == NULL)
-			exit_game(base, 1, 22); //
+			exit_game(base, 1, 22);
 		tex_fc[i].xpm_addr = mlx_get_data_addr(tex_fc[i].xpm_img,
 			&tex_fc[i].xpm_bpp, &tex_fc[i].xpm_line_length,
 			&tex_fc[i].xpm_endian);
@@ -155,16 +138,15 @@ static void			load_floor_ceiling(t_base *base, t_tex *tex_fc,
 
 void			floor_ceiling_texture(t_base *base)
 {
-	int 		y;
-	//t_tex		tex_fc[2]; //is een pointer
-	t_floor		floor;
+	int		y;
+	t_floor	floor;
 
 	load_floor_ceiling(base, base->tex_fc, &base->game, base->mlx.mlx);
 	y = base->read.render_y / 2 + 1;
 	while (y < base->read.render_y)
-    {
+	{
 		floor_ceiling_tex_y(&base->read, &base->game, &floor, y);
 		floor_ceiling_tex_x_loop(base, &floor, base->tex_fc, y);
-	  	y++;
-    }
+		y++;
+	}
 }

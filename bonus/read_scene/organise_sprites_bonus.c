@@ -6,11 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/08 11:12:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 15:50:54 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:59:36 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d_bonus.h"
+#include "../cub3d_bonus.h"
 
 /*
 ** Swapped the data content of the node. Not the whole node. So the node blocks

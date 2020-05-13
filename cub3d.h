@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 13:21:26 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:49:28 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ typedef struct			s_wall{
 }						t_wall;
 
 typedef struct			s_sprite{
-	double				transformy;
+	double				yform;
 	int					vmovescreen;
 	int					spr_screenx;
 	int					drawstartx;

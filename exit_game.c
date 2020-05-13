@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/08 11:06:37 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/12 18:35:27 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:38:29 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,11 @@ void				free_cub_base(t_base *base)
 	free(base);
 }
 
-/*
-** Exit code (0) indicates successful program termination
-** Exit code (1) indicates unsucessful termination.
-*/
-
-void				exit_game(t_base *base, int code, int error)
+static void			destroy_texture(t_base *base)
 {
 	int		i;
 
 	i = 0;
-	if (base->zbuffer)
-		free(base->zbuffer);
 	while (i < 5)
 	{
 		if (base->tex[i].xpm_img)
@@ -77,6 +70,18 @@ void				exit_game(t_base *base, int code, int error)
 		}
 		i++;
 	}
+}
+
+/*
+** Exit code (0) indicates successful program termination
+** Exit code (1) indicates unsucessful termination.
+*/
+
+void				exit_game(t_base *base, int code, int error)
+{
+	if (base->zbuffer)
+		free(base->zbuffer);
+	destroy_texture(base);
 	if (base->mlx.img)
 		mlx_destroy_image(base->mlx.mlx, base->mlx.img);
 	if (base->mlx.mlx_win)
@@ -89,4 +94,3 @@ void				exit_game(t_base *base, int code, int error)
 		exit(code);
 	}
 }
-

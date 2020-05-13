@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 15:28:24 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 18:09:41 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ typedef struct			s_wall{
 }						t_wall;
 
 typedef struct			s_sprite{
-	double				transformy;
+	double				yform;
 	int					vmovescreen;
 	int					spr_screenx;
 	int					drawstartx;
@@ -184,20 +184,7 @@ void					save_sprite_coordinates(t_base *base, double y,
 							double x);
 void					ll_count_sprites(t_base *base);
 void					ll_sort_sprites_swap_data(t_base *base);
-
-
-
-
-
 int						game_mlx(t_base *base);
-void					floor_ceiling_texture(t_base *base);
-void					exit_game(t_base *base, int code, int error);
-
-
-
-
-
-
 void					initialise_game(t_move *move, t_mlx *mlx, t_tex *tex,
 							t_base *base);
 void					orientation(t_game *game, char pos);
@@ -211,8 +198,7 @@ void					move_rotate(t_game *game, t_read *read, t_move *move,
 							char **array);
 void					rotate_right(t_game *game);
 void					rotate_left(t_game *game);
-
-
+void					floor_ceiling_texture(t_base *base);
 void					raycasting(t_base *base, t_game *game, t_read *read);
 void					draw_calculations_wall(t_read *read, t_game *game,
 							t_wall *wall);
@@ -223,6 +209,7 @@ void					my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
 void					sprite(t_base *base, t_sprite *sprite, t_game *game,
 							t_read *read);
 int						error_distr(t_base *base, int errornum);
+void					exit_game(t_base *base, int code, int error);
 void					free_cub_base(t_base *base);
 void					free_array(t_read *read);
 

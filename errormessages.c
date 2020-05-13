@@ -6,12 +6,12 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 13:03:52 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 13:20:19 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:34:57 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d.h"
-# include <stdio.h>
+#include "cub3d.h"
+#include <stdio.h>
 
 /*
 ** Use of perror when there is an existing system error message available.
@@ -48,8 +48,6 @@ static void			errormessages_20to(int errornum)
 	str = NULL;
 	if (errornum == 20)
 		str = "Error\nMlx failed to create a new window\n";
-	// if (errornum == 21)
-	// 	str = "Error\nFailed to create .xpm file path\n";
 	if (errornum == 22)
 		str = "Error\nMlx failed to create an image out of .xpm file\n";
 	if (errornum == 23)

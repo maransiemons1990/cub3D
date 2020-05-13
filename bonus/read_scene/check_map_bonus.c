@@ -6,11 +6,11 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 15:50:40 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:59:21 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d_bonus.h"
+#include "../cub3d_bonus.h"
 
 /*
 ** Spaces are a valid part of the map. Except when player can reach a space.

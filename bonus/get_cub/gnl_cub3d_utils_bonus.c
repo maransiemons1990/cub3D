@@ -6,11 +6,11 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/08 16:37:28 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 15:48:27 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:59:14 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d_bonus.h"
+#include "../cub3d_bonus.h"
 
 static char			*strpaste(char *dest, char const *src1, char const *src2)
 {

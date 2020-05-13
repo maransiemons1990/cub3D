@@ -6,13 +6,13 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 13:12:58 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:52:48 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d.h"
-# include <math.h>
-# include <time.h>
+#include "../cub3d.h"
+#include <math.h>
+#include <time.h>
 
 /*
 ** Draw the pixels as a vertical line.

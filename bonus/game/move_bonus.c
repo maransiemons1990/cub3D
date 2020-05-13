@@ -6,11 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/06 20:46:32 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 15:49:35 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 17:57:35 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../cub3d_bonus.h"
+#include "../cub3d_bonus.h"
 
 /*
 ** 1st if: position East or West
