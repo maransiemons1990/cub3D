@@ -6,11 +6,12 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/06 21:02:35 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 14:58:43 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 13:11:33 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../cub3d.h"
+# include "../cub3d.h"
+# include <math.h>
 
 void				rotate_right(t_game *game)
 {

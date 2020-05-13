@@ -6,11 +6,12 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 13:03:52 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/12 11:08:57 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 13:20:19 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+# include "cub3d.h"
+# include <stdio.h>
 
 /*
 ** Use of perror when there is an existing system error message available.

@@ -6,12 +6,15 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/21 16:35:56 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/11 14:43:53 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 13:15:52 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BMP_H
 # define BMP_H
+
+# include <fcntl.h>
+
 # pragma pack(push, 1)
 
 /*

@@ -6,11 +6,11 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/30 14:12:22 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 11:17:35 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 13:07:16 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d_bonus.h"
+# include "cub3d_bonus.h"
 
 /*
 ** Cell: the cell coord is got from the integer parts of floorx and floory

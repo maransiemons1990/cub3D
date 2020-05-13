@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/12 23:37:15 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/13 13:21:26 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,6 @@
 
 # include "mlx/mlx.h"
 # include "libft/libft.h"
-# include <CoreGraphics/CGDirectDisplay.h>
-# include <stdio.h>
-# include <math.h>
-# include <time.h>
-# include <fcntl.h>
 # include <unistd.h>
 
 typedef struct			s_mlx {
