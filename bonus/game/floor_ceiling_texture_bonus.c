@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/30 14:12:22 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 17:57:03 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/14 20:43:13 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ static void		get_tex_coordinate(t_game *game, t_floor *floor)
 
 /*
 ** Ceiling is symmetrical, at (screenHeight - y - 1) instead of y.
+** i = 7: floor, i = 8: ceiling.
 */
 
 static void		floor_ceiling_tex_x_loop(t_base *base, t_floor *floor,
-											t_tex *tex_fc, int y)
+											t_tex *tex, int y)
 {
 	int		color;
 	int		x;
@@ -46,12 +47,12 @@ static void		floor_ceiling_tex_x_loop(t_base *base, t_floor *floor,
 	x = 0;
 	while (x < base->read.render_x)
 	{
-		i = 0;
+		i = 7;
 		get_tex_coordinate(&base->game, floor);
-		while (i < 2)
+		while (i < 9)
 		{
-			color = texture_pick(tex_fc, floor->tx, floor->ty, i);
-			if (i == 0)
+			color = texture_pick(tex, floor->tx, floor->ty, i);
+			if (i == 7)
 				my_mlx_pixel_put(&base->mlx, x, y, color);
 			else
 				my_mlx_pixel_put(&base->mlx, x, (base->read.render_y - y - 1)
@@ -102,34 +103,6 @@ static void		floor_ceiling_tex_y(t_read *read, t_game *game, t_floor *floor
 }
 
 /*
-** i = 0: floor, i = 1: ceiling.
-*/
-
-static void		load_floor_ceiling(t_base *base, t_tex *tex_fc,
-										t_game *game, void *mlx)
-{
-	char	*path;
-	int		i;
-
-	i = 0;
-	while (i < 2)
-	{
-		if (i == 0)
-			path = "bonus/textures_xpm_floor_ceiling/Sand.xpm";
-		else
-			path = "bonus/textures_xpm_floor_ceiling/ice.xpm";
-		tex_fc[i].xpm_img = mlx_xpm_file_to_image(mlx, path, &game->texwidth,
-			&game->texheight);
-		if (tex_fc[i].xpm_img == NULL)
-			exit_game(base, 1, 22);
-		tex_fc[i].xpm_addr = mlx_get_data_addr(tex_fc[i].xpm_img,
-			&tex_fc[i].xpm_bpp, &tex_fc[i].xpm_line_length,
-			&tex_fc[i].xpm_endian);
-		i++;
-	}
-}
-
-/*
 ** Floor and ceiling textures are drawn horizontal. The perspective is similar
 ** to that of walls but 90 degrees rotated, but unlike the walls which used
 ** exactly 1 texture per vertical stripes, multiple floor textures may cross
@@ -141,12 +114,11 @@ void			floor_ceiling_texture(t_base *base)
 	int		y;
 	t_floor	floor;
 
-	load_floor_ceiling(base, base->tex_fc, &base->game, base->mlx.mlx);
 	y = base->read.render_y / 2 + 1;
 	while (y < base->read.render_y)
 	{
 		floor_ceiling_tex_y(&base->read, &base->game, &floor, y);
-		floor_ceiling_tex_x_loop(base, &floor, base->tex_fc, y);
+		floor_ceiling_tex_x_loop(base, &floor, base->tex, y);
 		y++;
 	}
 }

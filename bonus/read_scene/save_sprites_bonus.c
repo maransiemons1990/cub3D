@@ -6,13 +6,13 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/14 18:35:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 17:59:51 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/14 21:01:00 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d_bonus.h"
 
-static t_ll_sprite	*ll_create_node(t_base *base, double y, double x)
+static t_ll_sprite	*ll_create_node(t_base *base, double y, double x, int id)
 {
 	t_ll_sprite		*new_node;
 
@@ -23,17 +23,18 @@ static t_ll_sprite	*ll_create_node(t_base *base, double y, double x)
 		error_distr(base, 6);
 	new_node->x = x;
 	new_node->y = y;
+	new_node->id = id;
 	new_node->distance = ((base->read.x_pos - x) * (base->read.x_pos - x)
 		+ (base->read.y_pos - y) * (base->read.y_pos - y));
 	new_node->next = base->head;
 	return (new_node);
 }
 
-static t_ll_sprite	*ll_add_new_front(t_base *base, double y, double x)
+static t_ll_sprite	*ll_add_new_front(t_base *base, double y, double x, int id)
 {
 	t_ll_sprite		*new_node;
 
-	new_node = ll_create_node(base, y, x);
+	new_node = ll_create_node(base, y, x, id);
 	base->head = new_node;
 	return (base->head);
 }
@@ -73,10 +74,11 @@ static int			ll_search(t_ll_sprite *head, double y, double x)
 **    +------+------+     +------+------+     +------+------+
 */
 
-void				save_sprite_coordinates(t_base *base, double y, double x)
+void				save_sprite_coordinates(t_base *base, double y, double x,
+												int id)
 {
 	if (ll_search(base->head, y, x))
 		return ;
 	else
-		base->head = ll_add_new_front(base, y, x);
+		base->head = ll_add_new_front(base, y, x, id);
 }

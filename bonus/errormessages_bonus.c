@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/05 13:03:52 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 18:01:01 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/14 20:20:49 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,6 @@ static void			errormessages_1to10(int errornum)
 		perror("Error\nMalloc failed");
 	if (errornum == 7)
 		str = "Error\nResolution can't be 0";
-	if (errornum == 8)
-		str = "Error\nColor values should be between 0 - 255\n";
 	if (errornum == 9)
 		perror("Error\nThe path(s) could not be accessed");
 	if (str != NULL)

@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/07 12:28:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 17:57:28 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/14 20:42:53 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,23 @@ static char		*create_path(t_read *read, int i)
 		return (read->so);
 	else if (i == 3)
 		return (read->we);
+	else if (i == 4)
+		return (read->sprite2);
+	else if (i == 5)
+		return (read->sprite3);
+	else if (i == 6)
+		return (read->sprite4);
+	else if (i == 7)
+		return (read->floor);
 	else
-		return (read->sprite);
+		return (read->ceiling);
 }
 
 /*
 ** mlx_png_file_to_image currently leaks memory. Therefore using xpm function
 ** instead.
-** i = 0: North, i = 1: East, i = 2: South , i = 3: West, i = 4: Sprite
+** i = 0: North, i = 1: East, i = 2: South , i = 3: West, i = 4: Sprite #2
+** i = 5: Sprite #3, i = 6: Sprite #4, i = 7: Floor , i = 8: Ceiling
 */
 
 void			load_texture(t_base *base, t_tex *tex, t_game *game, void *mlx)
@@ -40,7 +49,7 @@ void			load_texture(t_base *base, t_tex *tex, t_game *game, void *mlx)
 	i = 0;
 	game->texwidth = 64;
 	game->texheight = 64;
-	while (i < 5)
+	while (i < 9)
 	{
 		path = create_path(&base->read, i);
 		tex[i].xpm_img = mlx_xpm_file_to_image(mlx, path, &game->texwidth,
@@ -100,7 +109,7 @@ void			initialise_game(t_move *move, t_mlx *mlx, t_tex *tex,
 	mlx->mlx = NULL;
 	mlx->mlx_win = NULL;
 	mlx->img = NULL;
-	while (i < 5)
+	while (i < 9)
 	{
 		tex[i].xpm_img = NULL;
 		i++;

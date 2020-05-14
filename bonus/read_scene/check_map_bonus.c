@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 17:59:21 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/14 19:38:58 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ static int			flood_fill(t_base *base, int y, int x, char **array)
 {
 	if (array[y][x] == '+' || array[y][x] == '1')
 		return (0);
-	if (array[y][x] == '2')
+	if (array[y][x] >= '2' && array[y][x] <= '4')
 	{
-		save_sprite_coordinates(base, y, x);
+		save_sprite_coordinates(base, y, x, array[y][x]);
 		return (0);
 	}
 	if (array[y][x] == '\0' || y <= base->read.map_start ||
@@ -100,10 +100,10 @@ static int			check_walls_first_last(int y, t_base *base, t_read *read)
 static int			check_elements_complete(t_base *base, t_read *read)
 {
 	if (read->render_x == -1 || read->render_y == -1 ||
-	read->c_color == -1 || read->f_color == -1 ||
+	read->ceiling == NULL || read->floor == NULL ||
 	read->no == NULL || read->ea == NULL ||
 	read->so == NULL || read->we == NULL ||
-	read->sprite == NULL)
+	read->sprite2 == NULL || read->sprite3 == NULL || read->sprite4 == NULL)
 		return (error_distr(base, 14));
 	return (0);
 }

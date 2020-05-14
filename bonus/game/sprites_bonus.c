@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/09 13:36:12 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 18:05:47 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/14 20:59:52 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ static void		draw_vertical_stripe(int texx, int stripe, t_base *base,
 		d = (y - sprite->vmovescreen) * 256 - base->read.render_y * 128
 			+ sprite->spr_height * 128;
 		texy = ((d * base->game.texheight) / sprite->spr_height) / 256;
-		dest = base->tex[4].xpm_addr + (texy * base->tex[4].xpm_line_length
-			+ texx * (base->tex[4].xpm_bpp / 8));
+		dest = base->tex[sprite->i].xpm_addr + (texy *
+			base->tex[sprite->i].xpm_line_length + texx *
+			(base->tex[sprite->i].xpm_bpp / 8));
 		color = *(unsigned int*)dest;
 		if ((color & 0x00FFFFFF) != 0)
 			my_mlx_pixel_put(&base->mlx, stripe, y, color);
@@ -60,7 +61,7 @@ static void		draw_vertical_stripe(int texx, int stripe, t_base *base,
 static void		calculate_size_sprite_screen(t_sprite *sprite, int render_x,
 												int render_y)
 {
-	sprite->spr_height = abs((int)(render_y / (sprite->yform))) / VDIV;
+	sprite->spr_height = abs((int)(render_y / (sprite->yform))) / sprite->vdiv;
 	sprite->drawstarty = -sprite->spr_height / 2 + render_y / 2
 		+ sprite->vmovescreen;
 	if (sprite->drawstarty < 0)
@@ -69,13 +70,47 @@ static void		calculate_size_sprite_screen(t_sprite *sprite, int render_x,
 		+ sprite->vmovescreen;
 	if (sprite->drawendy >= render_y)
 		sprite->drawendy = render_y - 1;
-	sprite->spr_width = abs((int)(render_y / (sprite->yform))) / UDIV;
+	sprite->spr_width = abs((int)(render_y / (sprite->yform))) / sprite->udiv;
 	sprite->drawstartx = -sprite->spr_width / 2 + sprite->spr_screenx;
 	if (sprite->drawstartx < 0)
 		sprite->drawstartx = 0;
 	sprite->drawendx = sprite->spr_width / 2 + sprite->spr_screenx;
 	if (sprite->drawendx >= render_x)
 		sprite->drawendx = render_y - 1;
+}
+
+/*
+** Ninja [2,2,192]
+** Barrel [1, 1, 64]
+** sprite->i equals the index number of "t_tex tex[i]"  belonging
+** to the particular sprite:
+** i = 4: Sprite #2 i = 5: Sprite #3, i = 6: Sprite #4.
+** Each sprite has it's own udiv, vdiv, vmove.
+*/
+
+void			sprite_distributor(t_sprite *sprite, t_ll_sprite *ll_sprite)
+{
+	if (ll_sprite->id == '2')
+	{
+		sprite->i = 4;
+		sprite->udiv = 1;
+		sprite->vdiv = 1;
+		sprite->vmove = 64;
+	}
+	else if (ll_sprite->id == '3')
+	{
+		sprite->i = 5;
+		sprite->udiv = 1.5;
+		sprite->vdiv = 1.5;
+		sprite->vmove = 256;
+	}
+	else
+	{
+		sprite->i = 6;
+		sprite->udiv = 1;
+		sprite->vdiv = 1;
+		sprite->vmove = 0;
+	}
 }
 
 /*
@@ -107,6 +142,7 @@ static void		project_sprite(t_sprite *sprite, t_ll_sprite *ll_sprite,
 	double		invdet;
 	double		xform;
 
+	sprite_distributor(sprite, ll_sprite);
 	spritex = ll_sprite->x - read->x_pos;
 	spritey = ll_sprite->y - read->y_pos;
 	invdet = 1.0 / (game->planex * game->diry - game->dirx * game->planey);
@@ -118,7 +154,7 @@ static void		project_sprite(t_sprite *sprite, t_ll_sprite *ll_sprite,
 		* spritey);
 	sprite->spr_screenx = (int)((read->render_x / 2)
 		* (1 + xform / sprite->yform));
-	sprite->vmovescreen = (int)(VMOVE / sprite->yform);
+	sprite->vmovescreen = (int)(sprite->vmove / sprite->yform);
 }
 
 /*

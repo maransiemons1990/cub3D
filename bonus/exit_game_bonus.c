@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/08 11:06:37 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 18:03:23 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/14 20:43:32 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,16 @@ void				free_cub_base(t_base *base)
 		free(base->read.so);
 	if (base->read.we)
 		free(base->read.we);
-	if (base->read.sprite)
-		free(base->read.sprite);
+	if (base->read.sprite2)
+		free(base->read.sprite2);
+	if (base->read.sprite3)
+		free(base->read.sprite3);
+	if (base->read.sprite4)
+		free(base->read.sprite4);
+	if (base->read.floor)
+		free(base->read.floor);
+	if (base->read.ceiling)
+		free(base->read.ceiling);
 	if (base->head)
 		ll_freelist(base->head);
 	free(base);
@@ -61,22 +69,12 @@ static void			destroy_texture(t_base *base)
 	int		i;
 
 	i = 0;
-	while (i < 5)
+	while (i < 9)
 	{
 		if (base->tex[i].xpm_img)
 		{
 			mlx_destroy_image(base->mlx.mlx, base->tex[i].xpm_img);
 			base->tex[i].xpm_img = NULL;
-		}
-		i++;
-	}
-	i = 0;
-	while (i < 2)
-	{
-		if (base->tex_fc[i].xpm_img)
-		{
-			mlx_destroy_image(base->mlx.mlx, base->tex_fc[i].xpm_img);
-			base->tex_fc[i].xpm_img = NULL;
 		}
 		i++;
 	}

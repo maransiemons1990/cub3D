@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/13 18:09:41 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/14 21:00:21 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@
 # define KEY_W		13
 # define KEY_A		0
 # define KEY_S		1
-# define KEY_D		2
-# define UDIV		1
-# define VDIV		1
-# define VMOVE		0.0
+# define KEY_D		1
 
 # include "../mlx/mlx.h"
 # include "../libft/libft.h"
@@ -44,16 +41,15 @@ typedef struct			s_read {
 	char				*ea;
 	char				*so;
 	char				*we;
-	char				*sprite;
+	char				*sprite2;
+	char				*sprite3;
+	char				*sprite4;
 	double				x_pos;
 	double				y_pos;
 	int					render_x;
 	int					render_y;
-	int					c_color;
-	int					f_color;
-	int					red;
-	int					blue;
-	int					green;
+	char				*ceiling;
+	char				*floor;
 	int					map_start;
 	int					map_end;
 	int					nb_sprites;
@@ -126,12 +122,17 @@ typedef struct			s_sprite{
 	int					drawendy;
 	int					spr_height;
 	int					spr_width;
+	double				udiv;
+	double				vdiv;
+	double				vmove;
+	int					i;
 }						t_sprite;
 
 typedef struct			s_ll_sprite{
 	double				x;
 	double				y;
 	double				distance;
+	int					id;
 	struct s_ll_sprite	*next;
 }						t_ll_sprite;
 
@@ -152,8 +153,7 @@ typedef struct			s_base{
 	t_mlx				mlx;
 	t_game				game;
 	t_move				move;
-	t_tex				tex[5];
-	t_tex				tex_fc[2];
+	t_tex				tex[9];
 	t_tex_co			tex_co;
 	t_wall				wall;
 	t_ll_sprite			*head;
@@ -166,10 +166,7 @@ t_base					*get_cub_file(char *filename);
 char					*gnl_strjoin(char *s1, char *s2);
 int						read_scene_file(t_base *base, t_read *read);
 void					initialise_read_scene(t_read *read, t_ll_sprite **head);
-int						cfr_itoa(int y, int *i, char **array,
-							int cf_blue_green);
-int						create_trgb_colorcode(int y, int entry_i, t_base *base,
-							t_read *read);
+int						cfr_itoa(int y, int *i, char **array);
 int						cfr_endspaces(int y, int i, t_base *base, t_read *read);
 int						check_pathstart(int y, int *i, char **array);
 int						save_path_substr(int y, int i, char **identifier,
@@ -181,7 +178,7 @@ int						space_in_wall(int y, int i, char **array, t_read *read);
 int						align_dif_front(char *s1, char *s2);
 int						align_dif_back(int y, t_base *base, t_read *read);
 void					save_sprite_coordinates(t_base *base, double y,
-							double x);
+							double x, int id);
 void					ll_count_sprites(t_base *base);
 void					ll_sort_sprites_swap_data(t_base *base);
 int						game_mlx(t_base *base);

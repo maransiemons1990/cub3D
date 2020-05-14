@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/16 15:34:37 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 17:59:27 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/14 17:49:28 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int				last_char_save_pos(int y, t_base *base, t_read *read,
 	i = 0;
 	while (array[y][i])
 	{
-		if (array[y][i] != '0' && array[y][i] != '1' && array[y][i] != '2'
+		if ((array[y][i] < '0' || array[y][i] > '4')
 			&& array[y][i] != ' ' && array[y][i] != 'N' && array[y][i] != 'S'
 			&& array[y][i] != 'E' && array[y][i] != 'W')
 			return (error_distr(base, 10));
