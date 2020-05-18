@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/09 13:36:12 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/14 20:59:52 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/18 09:56:51 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ static void		calculate_size_sprite_screen(t_sprite *sprite, int render_x,
 ** to the particular sprite:
 ** i = 4: Sprite #2 i = 5: Sprite #3, i = 6: Sprite #4.
 ** Each sprite has it's own udiv, vdiv, vmove.
+** udiv and vdiv for size, vmove for height in space.
 */
 
 void			sprite_distributor(t_sprite *sprite, t_ll_sprite *ll_sprite)
@@ -100,16 +101,16 @@ void			sprite_distributor(t_sprite *sprite, t_ll_sprite *ll_sprite)
 	else if (ll_sprite->id == '3')
 	{
 		sprite->i = 5;
-		sprite->udiv = 1.5;
-		sprite->vdiv = 1.5;
-		sprite->vmove = 256;
+		sprite->udiv = 2;
+		sprite->vdiv = 2;
+		sprite->vmove = 320;
 	}
 	else
 	{
 		sprite->i = 6;
 		sprite->udiv = 1;
 		sprite->vdiv = 1;
-		sprite->vmove = 0;
+		sprite->vmove = 32;
 	}
 }
 

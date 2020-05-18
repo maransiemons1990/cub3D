@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/14 21:00:21 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/18 10:33:11 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ typedef struct			s_ll_sprite{
 	double				x;
 	double				y;
 	double				distance;
-	int					id;
+	double				id;
 	struct s_ll_sprite	*next;
 }						t_ll_sprite;
 
@@ -178,7 +178,7 @@ int						space_in_wall(int y, int i, char **array, t_read *read);
 int						align_dif_front(char *s1, char *s2);
 int						align_dif_back(int y, t_base *base, t_read *read);
 void					save_sprite_coordinates(t_base *base, double y,
-							double x, int id);
+							double x, double id);
 void					ll_count_sprites(t_base *base);
 void					ll_sort_sprites_swap_data(t_base *base);
 int						game_mlx(t_base *base);

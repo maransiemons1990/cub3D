@@ -6,13 +6,13 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/14 18:35:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/14 21:01:00 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/18 10:31:48 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d_bonus.h"
 
-static t_ll_sprite	*ll_create_node(t_base *base, double y, double x, int id)
+static t_ll_sprite	*ll_create_node(t_base *base, double y, double x, double id)
 {
 	t_ll_sprite		*new_node;
 
@@ -30,7 +30,7 @@ static t_ll_sprite	*ll_create_node(t_base *base, double y, double x, int id)
 	return (new_node);
 }
 
-static t_ll_sprite	*ll_add_new_front(t_base *base, double y, double x, int id)
+static t_ll_sprite	*ll_add_new_front(t_base *base, double y, double x, double id)
 {
 	t_ll_sprite		*new_node;
 
@@ -75,7 +75,7 @@ static int			ll_search(t_ll_sprite *head, double y, double x)
 */
 
 void				save_sprite_coordinates(t_base *base, double y, double x,
-												int id)
+												double id)
 {
 	if (ll_search(base->head, y, x))
 		return ;

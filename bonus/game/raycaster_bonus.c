@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/25 10:58:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 17:54:18 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/18 09:26:00 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,6 @@ void				raycasting(t_base *base, t_game *game, t_read *read)
 	if (game->time == -1)
 		exit_game(base, 1, 28);
 	frametime = (game->time - oldtime) / CLOCKS_PER_SEC;
-	game->movespeed = frametime * 25.0;
-	game->rotspeed = frametime * 5.0;
+	game->movespeed = frametime * 20.0;
+	game->rotspeed = frametime * 3.0;
 }

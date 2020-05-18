@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/05/08 11:12:10 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/13 17:59:36 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/18 10:17:12 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void				ll_sort_sprites_swap_data(t_base *base)
 			{
 				swap(&i->x, &j->x);
 				swap(&i->y, &j->y);
+				swap(&i->id, &j->id);
 				swap(&i->distance, &j->distance);
 			}
 			j = j->next;

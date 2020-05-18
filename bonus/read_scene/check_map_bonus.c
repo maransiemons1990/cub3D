@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/10 13:47:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/14 19:38:58 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/18 10:32:31 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int			flood_fill(t_base *base, int y, int x, char **array)
 		return (0);
 	if (array[y][x] >= '2' && array[y][x] <= '4')
 	{
-		save_sprite_coordinates(base, y, x, array[y][x]);
+		save_sprite_coordinates(base, y, x, (double)array[y][x]);
 		return (0);
 	}
 	if (array[y][x] == '\0' || y <= base->read.map_start ||
