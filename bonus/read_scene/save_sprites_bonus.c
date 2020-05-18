@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/04/14 18:35:38 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/18 10:31:48 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/18 15:26:15 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static t_ll_sprite	*ll_create_node(t_base *base, double y, double x, double id)
 	return (new_node);
 }
 
-static t_ll_sprite	*ll_add_new_front(t_base *base, double y, double x, double id)
+static t_ll_sprite	*ll_add_new_front(t_base *base, double y, double x,
+										double id)
 {
 	t_ll_sprite		*new_node;
 
