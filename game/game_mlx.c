@@ -6,7 +6,7 @@
 /*   By: Maran <Maran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/03/24 16:30:07 by Maran         #+#    #+#                 */
-/*   Updated: 2020/05/12 18:04:23 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/18 15:14:09 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int					game_mlx(t_base *base)
 	if (base->mlx.mlx == NULL)
 		exit_game(base, 1, 29);
 	base->mlx.mlx_win = mlx_new_window(base->mlx.mlx, base->read.render_x,
-		base->read.render_y, "Wolfenstein 3D! | Maran Siemons");
+		base->read.render_y, "Cub3D! | Maran Siemons");
 	if (base->mlx.mlx_win == NULL)
 		exit_game(base, 1, 20);
 	load_texture(base, base->tex, &base->game, base->mlx.mlx);
