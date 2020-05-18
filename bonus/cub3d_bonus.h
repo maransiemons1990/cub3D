@@ -6,7 +6,7 @@
 /*   By: msiemons <msiemons@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/26 11:30:21 by msiemons      #+#    #+#                 */
-/*   Updated: 2020/05/18 10:33:11 by Maran         ########   odam.nl         */
+/*   Updated: 2020/05/18 15:05:45 by Maran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define KEY_W		13
 # define KEY_A		0
 # define KEY_S		1
-# define KEY_D		1
+# define KEY_D		2
 
 # include "../mlx/mlx.h"
 # include "../libft/libft.h"
