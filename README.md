@@ -1,7 +1,7 @@
 # Cub3D
 <a href><img src="info/screenshot_bonus.png" title="Screenshot_bonus" alt="Screenshot_bonus"></a>
 
-"This project is inspired by the world-famous eponymous 90's game, which was the first FPS ever. It will enable you to explore ray-casting. Your goal will be to make a dynamic view inside a maze, in which you'll have to find your way."
+"This project is inspired by the world-famous eponymous 90's game, which was the first FPS ever. It will enable you to explore ray-casting. Your goal will be to make a dynamic view inside a maze from a first person perspective, in which you'll have to find your way "
 
 This project is part of the Codam curriculum. It's a project out of the 2nd circle of the curriculum:</br>
 </br>
@@ -63,7 +63,18 @@ Keys:
 Game option:
 - "--save" as a second argument to save the first rendered image in bmp format
 
+## MiniLibX
+MiniLibX is an easy way to create graphical software,
+without any X-Window/X11 programming knowledge under Unix/Linux, nor
+any AppKit programming knowledge under MacOS. It provides
+simple window creation, a drawing tool, image and basic events
+management.
+
+> ! Troubles with running the program you may need a different mlx library:
+see [info/MiniLibx_sources](info/MiniLibx_sources) for the MiniLibX sources 42 has made available for this project.
+
 ## Acknowledgments and sources
 
 * https://lodev.org/cgtutor/raycasting.html
+* https://harm-smits.github.io/42docs/libs/minilibx
 * https://itnext.io/bits-to-bitmaps-a-simple-walkthrough-of-bmp-image-format-765dc6857393
