@@ -1,11 +1,11 @@
-<a href><img src="images/screenshot_bonus.png" title="Screenshot_bonus" alt="Screenshot_bonus"></a>
-
 # Cub3D
+<a href><img src="images/screenshot_bonus.png" title="Screenshot_bonus" alt="Screenshot_bonus"></a>
 
 "This project is inspired by the world-famous eponymous 90's game, which was the first FPS ever. It will enable you to explore ray-casting. Your goal will be to make a dynamic view inside a maze, in which you'll have to find your way."
 
-This project is part of the Codam curriculum. It's a project out of the 2nd circle:
-<a href><img src="images/curriculum_cub3d.png" title="cub3d" alt="cub3d"></a>
+This project is part of the Codam curriculum. It's a project out of the 2nd circle of the curriculum:</br>
+</br>
+<a href><img src="images/curriculum_cub3d.png" width="300" title="cub3d" alt="cub3d"></a>
 
 For more information check the subject documentation.
 
@@ -22,7 +22,7 @@ Extra:
 ```
 $ make bonus
 ```
-- execute program
+- Execute program
 ```
 ./cub3D <scene_file.cub>
 ```
