@@ -32,7 +32,7 @@ For example:
 ./cub3D maps/bonus_map.cub
 ```
 
-> ! Bonus needs a different <scene_file.cub>. In the directory maps there is an example for the mandatory part and the bonus part.
+> ! Bonus needs a different <scene_file.cub>. In the directory "maps" there is an example for the mandatory part and the bonus part.
 
 ## Scene_file.cub
 
