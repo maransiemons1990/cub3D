@@ -7,8 +7,7 @@ This project is part of the Codam curriculum. It's a project out of the 2nd circ
 </br>
 <a href><img src="info/curriculum_cub3d.png" width="300" title="cub3d" alt="cub3d"></a>
 
-For more information check the <a href="info/en.subject.cub3d">subject documentation</a>.
-
+For more information check the [subject documentation](info/en.subject.cub3d.pdf)
 
 ## Bonus
 
